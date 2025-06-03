@@ -16,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -54,17 +53,14 @@ class Login : AppCompatActivity() {
         edt_password=findViewById(R.id.edtTextPassword)
         btn_login=findViewById(R.id.btn_login)
 
-        //btn_signUp=findViewById(R.id.btnSignUp)
-
         mAuth= FirebaseAuth.getInstance()
-    /*
-        btn_signUp.setOnClickListener()
-        {
-            val intent = Intent(this,Login::class.java)
+
+        if (mAuth.currentUser != null) {
+            val intent = Intent(this, MainApp::class.java)
             startActivity(intent)
             finish()
+            return
         }
-*/
         btn_login.setOnClickListener()
         {
             val email = edt_email.text.toString()
