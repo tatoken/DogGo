@@ -16,16 +16,23 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.chatapplication.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class Registration : AppCompatActivity() {
 
-    private lateinit var edt_email: EditText
-    private lateinit var edt_password: EditText
-   // private lateinit var btn_signUp:Button
+    private lateinit var edtName: EditText
+    private lateinit var edtSurname: EditText
+    private lateinit var edtEmail: EditText
+    private lateinit var edtPassword: EditText
+
+    private lateinit var btnSignUp:Button
+
+    private lateinit var mDbRef: DatabaseReference
 
     private lateinit var mAuth: FirebaseAuth
 
@@ -41,20 +48,25 @@ class Registration : AppCompatActivity() {
 
         setUpLoginText()
 
-        edt_email=findViewById(R.id.edtTextEmail)
-        edt_password=findViewById(R.id.edtTextPassword)
+        edtName=findViewById(R.id.edtTextName)
+        edtSurname=findViewById(R.id.edtTextSurname)
+        edtEmail=findViewById(R.id.edtTextEmail)
+        edtPassword=findViewById(R.id.edtTextPassword)
 
-        //btn_signUp=findViewById(R.id.btnSignUp)
+        btnSignUp=findViewById(R.id.btnSignUp)
 
-        //mAuth= FirebaseAuth.getInstance()
-    /*
-        btn_signUp.setOnClickListener()
+        mAuth= FirebaseAuth.getInstance()
+
+        btnSignUp.setOnClickListener()
         {
-            val intent = Intent(this,Login::class.java)
-            startActivity(intent)
-            finish()
+            val name = edtName.text.toString()
+            val surname = edtSurname.text.toString()
+            val email = edtEmail.text.toString()
+            val password = edtPassword.text.toString()
+
+            signup(name,surname,email,password)
         }
-*/
+
 
     }
 
@@ -94,4 +106,125 @@ class Registration : AppCompatActivity() {
         }
     }
 
+    private fun signup(name: String,surname:String, email: String, password: String) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+
+                    addUserToDatabase(name,surname,email,mAuth.currentUser?.uid!!)
+
+                    Toast.makeText(
+                        baseContext,
+                        "Registration successful. Now log in",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+
+                    val intent = Intent(this,Login::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+    }
+
+    private fun addUserToDatabase(name: String,surname:String, email: String, uid: String) {
+        mDbRef= FirebaseDatabase.getInstance("https://doggo-6c19f-default-rtdb.europe-west1.firebasedatabase.app").getReference()
+        mDbRef.child("user").child(uid).setValue(User(name,surname,email,uid))
+    }
+
 }
+
+/*
+package com.example.chatapplication
+
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
+class SignUp : AppCompatActivity() {
+
+    private lateinit var edt_name: EditText
+    private lateinit var edt_email: EditText
+    private lateinit var edt_password: EditText
+    private lateinit var btn_login: Button
+    private lateinit var btn_signUp: Button
+    private lateinit var mDbRef: DatabaseReference
+
+    private lateinit var mAuth: FirebaseAuth
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_sign_up)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        edt_name=findViewById(R.id.edt_name)
+        edt_email=findViewById(R.id.edt_email)
+        edt_password=findViewById(R.id.edt_password)
+        btn_login=findViewById(R.id.btnLogin)
+        btn_signUp=findViewById(R.id.btnSignUp)
+
+        mAuth= FirebaseAuth.getInstance()
+
+        btn_login.setOnClickListener()
+        {
+            val intent = Intent(this,Login::class.java)
+            startActivity(intent)
+        }
+
+        btn_signUp.setOnClickListener()
+        {
+            val name = edt_name.text.toString()
+            val email = edt_email.text.toString()
+            val password = edt_password.text.toString()
+
+            signup(name,email,password)
+        }
+    }
+
+    private fun signup(name: String, email: String, password: String) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+
+                    addUserToDatabase(name,email,mAuth.currentUser?.uid!!)
+
+                    val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+    }
+
+    private fun addUserToDatabase(name: String, email: String, uid: String) {
+        mDbRef=FirebaseDatabase.getInstance().getReference()
+        mDbRef.child("user").child(uid).setValue(User(name,email,uid))
+    }
+}
+ */
