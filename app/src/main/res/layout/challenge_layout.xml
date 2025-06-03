@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/myWhite">
+
+    <FrameLayout
+        android:id="@+id/progress_circular"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:padding="20dp"
+        app:layout_constraintWidth_percent="0.65"
+
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/infoMainChallenge"
+        app:layout_constraintBottom_toTopOf="@id/secondaryChallenge"
+        >
+
+        <!-- Outer circle -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="75"
+            android:max="100"
+            android:indeterminate="false"
+            app:indicatorColor="@color/firstColorCircularProgressBar"
+            app:trackColor="@color/myGray"
+            android:layout_gravity="center"
+            app:indicatorSize="200dp"
+            app:trackThickness="12dp" />
+
+        <!-- Middle circle -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            android:max="100"
+            android:indeterminate="false"
+            app:indicatorColor="@color/secondColorCircularProgressBar"
+            app:trackColor="@color/myGray"
+            android:layout_gravity="center"
+            app:indicatorSize="160dp"
+            app:trackThickness="12dp" />
+
+        <!-- Inner circle -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="30"
+            android:max="100"
+            android:indeterminate="false"
+            app:indicatorColor="@color/thirdColorCircularProgressBar"
+            app:trackColor="@color/myGray"
+            android:layout_gravity="center"
+            app:indicatorSize="110dp"
+            app:trackThickness="12dp" />
+
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/infoMainChallenge"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/progress_circular"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/secondaryChallenge"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/firstMainChallenge"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/secondMainChallenge"
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/firstColorCircularProgressBar"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Do 20 Km"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/secondMainChallenge"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/firstMainChallenge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/thirdMainChallenge"
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/secondColorCircularProgressBar"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Do 20 Km"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/thirdMainChallenge"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/secondMainChallenge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center"
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/thirdColorCircularProgressBar"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Do 20 Km"/>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+    <ScrollView
+        android:id="@+id/secondaryChallenge"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/infoMainChallenge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+            <com.example.doggo_ourapp.GeneralProgressBarComponent
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progressBar_upperBoundValueText="75"
+                app:progressBar_valueText="40"
+                app:progressBar_labelText="Do 40 Km">
+            </com.example.doggo_ourapp.GeneralProgressBarComponent>
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

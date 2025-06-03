@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">DogGo</string>
+
+    <string name="progress_text">%1$s/%2$s%3$s</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <string name="loginPage_string1">Login to your account</string>
+    <string name="loginPage_string2">Enter your email and password to sign in for this app</string>
+    <string name="loginPage_EmailEditTextHide">Email…</string>
+    <string name="loginPage_loginButton">Login</string>
+    <string name="loginPage_continueWithGoogleButton">Continue with Google</string>
+    <string name="loginPage_continueWithAppleButton">Continue with Apple</string>
+    <string name="loginPage_or">or</string>
+    <string name="loginPage_image_content_description">logo</string>
+    <string name="loginPage_terms_and_policy">By clicking continue, you agree to our Terms of Service and Privacy Policy</string>
+    <string name="EdtTextLoginPassword">Password</string>
+    <string name="loginPage_registrationButton">Not a member? SignUp</string>
+    <string name="loginPage_registrationButton_clickable">SignUp</string>
+
+    <string name="registrationPage_string1">Create an account</string>
+    <string name="registrationPage_string2">Enter your data to sign up for this app</string>
+    <string name="loginPage_NameEditTextHide">Name...</string>
+    <string name="loginPage_SurnameEditTextHide">Surname...</string>
+
+</resources>

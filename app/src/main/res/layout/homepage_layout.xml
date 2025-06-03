@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="@color/myWhite">
+
+    <!-- Sezione dedicata alla pagina Gym ( grafico )-->
+    <LinearLayout
+        android:id="@+id/chartSection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/component_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/calendarSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Km covered this month"
+            android:fontFamily="@font/roboto"
+            android:textStyle="bold"
+            android:textColor="@color/myBlack"
+            style="?android:attr/actionDropDownStyle"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/chart"
+            />
+
+    </LinearLayout>
+
+    <!-- Sezione dedicata alla pagina Calendar ( Lista di eventi )-->
+    <LinearLayout
+        android:id="@+id/calendarSection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/component_background"
+        app:layout_constraintTop_toBottomOf="@id/chartSection"
+        app:layout_constraintBottom_toTopOf="@id/trophySection"
+        app:layout_constraintEnd_toStartOf="@id/foodSection"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Upcoming events"
+            android:fontFamily="@font/roboto"
+            android:textStyle="bold"
+            android:textColor="@color/myBlack"/>
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="2"
+           >
+           <TextView
+               android:id="@+id/calendarSection_month_1"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="3 March"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintBottom_toTopOf="@id/calendarSection_hour_1"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toStartOf="@id/calendarSection_event_1"
+               />
+           <TextView
+               android:id="@+id/calendarSection_hour_1"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="16:20"
+               app:layout_constraintTop_toBottomOf="@id/calendarSection_month_1"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toStartOf="@id/calendarSection_event_1"
+
+               />
+
+           <TextView
+               android:id="@+id/calendarSection_event_1"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Pill"
+               android:textStyle="bold"
+               android:gravity="center"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/calendarSection_month_1"
+               />
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#CCCCCC" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            >
+            <TextView
+                android:id="@+id/calendarSection_month_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 March"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/calendarSection_hour_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/calendarSection_event_2"
+                />
+            <TextView
+                android:id="@+id/calendarSection_hour_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09:00"
+                app:layout_constraintTop_toBottomOf="@id/calendarSection_month_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/calendarSection_event_2"
+
+                />
+
+            <TextView
+                android:id="@+id/calendarSection_event_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vet"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/calendarSection_month_2"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <!-- Sezione dedicata alla pagina Food ( Ricetta giornaliera )-->
+    <LinearLayout
+        android:id="@+id/foodSection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/component_background"
+        app:layout_constraintTop_toBottomOf="@id/chartSection"
+        app:layout_constraintBottom_toTopOf="@id/trophySection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/calendarSection"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daily receipe"
+            android:fontFamily="@font/roboto"
+            android:textStyle="bold"
+            android:textColor="@color/myBlack"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/receipe"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Flavored Watemelon with lemon"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- Sezione dedicata alla pagina Trophy ( Lista di challenge in corso )-->
+    <LinearLayout
+        android:id="@+id/trophySection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/component_background"
+        app:layout_constraintTop_toBottomOf="@id/calendarSection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ongoing challenge"
+            android:fontFamily="@font/roboto"
+            android:textStyle="bold"
+            android:textColor="@color/myBlack"
+            style="?android:attr/actionDropDownStyle"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Km covered this month"
+                android:textSize="14sp"
+                android:gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/pbProgressBar_1"
+                    android:layout_width="0dp"
+                    android:layout_height="18dp"
+                    android:layout_weight="1"
+                    android:max="100"
+                    android:progress="28"
+                    style="@android:style/Widget.ProgressBar.Large"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    />
+
+                <TextView
+                    android:id="@+id/tvProgress_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="28/100km"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New receips prepared"
+                android:textSize="14sp"
+                android:gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/pbProgressBar_2"
+                    android:layout_width="0dp"
+                    android:layout_height="18dp"
+                    android:layout_weight="1"
+                    android:max="10"
+                    android:progress="4"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    />
+
+                <TextView
+                    android:id="@+id/tvProgress_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4/10 Rec."
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Training progress"
+                android:textSize="14sp"
+                android:gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/pbProgressBar_3"
+                    android:layout_width="0dp"
+                    android:layout_height="18dp"
+                    android:layout_weight="1"
+                    android:max="30"
+                    android:progress="24"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    />
+
+                <TextView
+                    android:id="@+id/tvProgress_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24/30 Exe."
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

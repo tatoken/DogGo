@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/progress_bar_section"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@drawable/component_background"
+    app:layout_constraintTop_toBottomOf="@id/badge_section"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/leaderboard_section"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ongoing challenge"
+        android:fontFamily="@font/roboto"
+        android:textStyle="bold"
+        android:textColor="@color/myBlack"/>
+
+
+
+    <com.example.doggo_ourapp.GeneralProgressBarComponent
+        android:id="@+id/progressBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:progressBar_labelText="Km covered this month"
+        app:progressBar_valueText="30"
+        app:progressBar_upperBoundValueText="100"
+        >
+    </com.example.doggo_ourapp.GeneralProgressBarComponent>
+</LinearLayout>
