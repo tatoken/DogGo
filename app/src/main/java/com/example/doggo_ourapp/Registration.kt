@@ -39,7 +39,7 @@ class Registration : AppCompatActivity() {
             insets
         }
 
-        setUpRegistrationText()
+        setUpLoginText()
 
         edt_email=findViewById(R.id.edtTextEmail)
         edt_password=findViewById(R.id.edtTextPassword)
@@ -58,10 +58,10 @@ class Registration : AppCompatActivity() {
 
     }
 
-    private fun setUpRegistrationText() {
+    private fun setUpLoginText() {
         val textView = findViewById<TextView>(R.id.btn_login_section)
-        val fullText = getString(R.string.loginPage_registrationButton)
-        val clickablePart = getString(R.string.loginPage_registrationButton_clickable)
+        val fullText = getString(R.string.registrationPage_loginButton)
+        val clickablePart = getString(R.string.registrationPage_loginButton_clickable)
 
         val start = fullText.indexOf(clickablePart)
         val end = start + clickablePart.length
@@ -89,7 +89,7 @@ class Registration : AppCompatActivity() {
             textView.movementMethod = LinkMovementMethod.getInstance()
             textView.highlightColor = Color.TRANSPARENT
         } else {
-            Log.e("RegistrationText", "clickablePart non trovato in fullText")
+            Log.e("LoginText", "clickablePart non trovato in fullText")
             textView.text = fullText
         }
     }

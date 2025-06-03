@@ -21,7 +21,10 @@
 
     <string name="registrationPage_string1">Create an account</string>
     <string name="registrationPage_string2">Enter your data to sign up for this app</string>
-    <string name="loginPage_NameEditTextHide">Name...</string>
-    <string name="loginPage_SurnameEditTextHide">Surname...</string>
+    <string name="registrationPage_loginButton">Already a member? Login</string>
+    <string name="registrationPage_loginButton_clickable">Login</string>
+
+    <string name="registrationPage_NameEditTextHide">Name…</string>
+    <string name="registrationPage_SurnameEditTextHide">Surname…</string>
 
 </resources>
