@@ -135,8 +135,17 @@
 
         </LinearLayout>
 
-
+        <android.widget.Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_primary_bg"
+            android:text="@string/logout"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/myWhite"
+            android:textSize="20sp" />
 
     </LinearLayout>
-
 </ScrollView>

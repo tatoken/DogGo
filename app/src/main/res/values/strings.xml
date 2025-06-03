@@ -26,5 +26,6 @@
 
     <string name="registrationPage_NameEditTextHide">Name…</string>
     <string name="registrationPage_SurnameEditTextHide">Surname…</string>
+    <string name="logout">Logout</string>
 
 </resources>
