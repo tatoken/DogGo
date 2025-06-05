@@ -28,4 +28,7 @@
     <string name="registrationPage_SurnameEditTextHide">Surname…</string>
     <string name="logout">Logout</string>
 
+    <string name="default_web_client_id">tuo-id.apps.googleusercontent.com</string>
+
+
 </resources>

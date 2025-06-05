@@ -22,11 +22,9 @@ import com.google.firebase.auth.FirebaseAuth
 
 class Login : AppCompatActivity() {
 
-    private lateinit var edt_email: EditText
-    private lateinit var edt_password: EditText
-    private lateinit var btn_login:Button
-   // private lateinit var btn_signUp:Button
-
+    private lateinit var edtEmail: EditText
+    private lateinit var edtPassword: EditText
+    private lateinit var btnLogin:Button
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +47,10 @@ class Login : AppCompatActivity() {
 
         setUpRegistrationText()
 
-        edt_email=findViewById(R.id.edtTextEmail)
-        edt_password=findViewById(R.id.edtTextPassword)
-        btn_login=findViewById(R.id.btn_login)
+        edtEmail=findViewById(R.id.edtTextEmail)
+        edtPassword=findViewById(R.id.edtTextPassword)
+
+        btnLogin=findViewById(R.id.btn_login)
 
         mAuth= FirebaseAuth.getInstance()
 
@@ -61,18 +60,33 @@ class Login : AppCompatActivity() {
             finish()
             return
         }
-        btn_login.setOnClickListener()
+        btnLogin.setOnClickListener()
         {
-            val email = edt_email.text.toString()
-            val password = edt_password.text.toString()
+            val email = edtEmail.text.toString()
+            val password = edtPassword.text.toString()
 
-            login(email,password)
+            if(checkLoginFields())
+                login(email,password)
         }
 
     }
 
+    private fun checkLoginFields():Boolean {
+        if(edtEmail.text.trim().isEmpty() || edtPassword.text.trim().isEmpty())
+        {
+            Toast.makeText(
+                baseContext,
+                "Incomplete fields: Email or Password",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return false
+        }
+        return true
+    }
+
     private fun setUpRegistrationText() {
         val textView = findViewById<TextView>(R.id.btn_registration_section)
+
         val fullText = getString(R.string.loginPage_registrationButton)
         val clickablePart = getString(R.string.loginPage_registrationButton_clickable)
 
@@ -118,7 +132,7 @@ class Login : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         baseContext,
-                        "Authentication failed.",
+                        "Authentication failed. Wrong credentials",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
