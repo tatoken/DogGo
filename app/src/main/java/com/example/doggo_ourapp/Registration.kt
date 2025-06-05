@@ -17,10 +17,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.chatapplication.User
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -31,11 +32,14 @@ class Registration : AppCompatActivity() {
 
     private lateinit var edtName: EditText
     private lateinit var edtSurname: EditText
+    private lateinit var edtBirthDate: EditText
     private lateinit var edtEmail: EditText
     private lateinit var edtPassword: EditText
-    private lateinit var edtBirthDate: EditText
+    private lateinit var edtCheckPassword:EditText
 
-    private lateinit var selectedDate:LocalDate
+    private lateinit var textProva:TextInputLayout
+
+    private var birthDate:LocalDate? =null
 
     private lateinit var btnSignUp:Button
 
@@ -59,13 +63,14 @@ class Registration : AppCompatActivity() {
         edtSurname=findViewById(R.id.edtTextSurname)
         edtEmail=findViewById(R.id.edtTextEmail)
         edtPassword=findViewById(R.id.edtTextPassword)
+        edtCheckPassword=findViewById(R.id.edtTextCheckPassword)
         edtBirthDate=findViewById(R.id.edtBirthDate)
+
+        textProva=findViewById(R.id.textProva)
 
         btnSignUp=findViewById(R.id.btnSignUp)
 
         mAuth= FirebaseAuth.getInstance()
-
-        val edtBirthDate = findViewById<EditText>(R.id.edtBirthDate)
 
         val showDatePicker = {
             val today = LocalDate.now()
@@ -73,9 +78,9 @@ class Registration : AppCompatActivity() {
             val datePickerDialog = DatePickerDialog(
                 this,
                 { _, year, month, dayOfMonth ->
-                    selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                    birthDate = LocalDate.of(year, month + 1, dayOfMonth)
                     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    edtBirthDate.setText(selectedDate.format(formatter))
+                    edtBirthDate.setText(birthDate?.format(formatter))
                 },
                 today.year,
                 today.monthValue - 1,
@@ -94,14 +99,99 @@ class Registration : AppCompatActivity() {
 
         btnSignUp.setOnClickListener()
         {
+
             val name = edtName.text.toString()
             val surname = edtSurname.text.toString()
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
+            val checkPassword = edtCheckPassword.text.toString()
 
-
-            signup(name,surname,selectedDate,"",email,password)
+            if(checkRegisterFields(name,surname,birthDate,email,password,checkPassword))
+                signup(name,surname,birthDate!!,"",email,password)
         }
+
+    }
+
+    private fun checkRegisterFields(name: String, surname: String, birthDate: LocalDate?, email: String, password: String, checkPassword: String):Boolean {
+
+        var errorMessage:String=""
+        var error:Boolean=true
+
+        resetBgEdtText()
+
+        if(name.trim().isEmpty()){
+            errorMessage+="Name, "
+            edtName.setBackgroundResource(R.drawable.edit_text_bg_error)
+            textProva.error="Name is empty"
+            error=false
+        }
+        if(surname.trim().isEmpty()){
+            errorMessage+="Surname, "
+            edtSurname.setBackgroundResource(R.drawable.edit_text_bg_error)
+            error=false
+        }
+        if(birthDate==null){
+            errorMessage+="Birthdate, "
+            edtBirthDate.setBackgroundResource(R.drawable.edit_text_bg_error)
+
+            error=false
+        }
+        if(email.trim().isEmpty()){
+            errorMessage+="Email, "
+            edtEmail.setBackgroundResource(R.drawable.edit_text_bg_error)
+            error=false
+        }
+        if(password.trim().isEmpty()){
+            errorMessage+="Password, "
+            edtPassword.setBackgroundResource(R.drawable.edit_text_bg_error)
+            error=false
+        }
+        if(checkPassword.trim().isEmpty()){
+            errorMessage+="CheckPassword "
+            edtCheckPassword.setBackgroundResource(R.drawable.edit_text_bg_error)
+            error=false
+        }
+
+        errorMessage+="is not compiled"
+
+        if(!error)
+        {
+            Toast.makeText(
+                baseContext,
+                errorMessage,
+                Toast.LENGTH_SHORT,
+            ).show()
+            return false
+        }
+        else
+        {
+            val today =LocalDate.now()
+            val thirteenYearsAgo=today.minusYears(13)
+
+            if(birthDate!!.isAfter(thirteenYearsAgo))
+            {
+                errorMessage="You must have almost 13 years"
+                Toast.makeText(
+                    baseContext,
+                    errorMessage,
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return false
+            }
+
+
+        }
+
+        return true
+    }
+
+    private fun resetBgEdtText() {
+        edtName.setBackgroundResource(R.drawable.edit_text_bg)
+        edtSurname.setBackgroundResource(R.drawable.edit_text_bg)
+        edtBirthDate.setBackgroundResource(R.drawable.edit_text_bg)
+        edtEmail.setBackgroundResource(R.drawable.edit_text_bg)
+        edtPassword.setBackgroundResource(R.drawable.edit_text_bg)
+        edtCheckPassword.setBackgroundResource(R.drawable.edit_text_bg)
 
     }
 
