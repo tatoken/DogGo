@@ -10,6 +10,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -17,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.chatapplication.User
@@ -30,14 +32,14 @@ import java.time.format.DateTimeFormatter
 
 class Registration : AppCompatActivity() {
 
-    private lateinit var edtName: EditText
-    private lateinit var edtSurname: EditText
-    private lateinit var edtBirthDate: EditText
-    private lateinit var edtEmail: EditText
-    private lateinit var edtPassword: EditText
-    private lateinit var edtCheckPassword:EditText
+    private lateinit var edtName: TextInputLayout
+    private lateinit var edtSurname: TextInputLayout
+    private lateinit var edtBirthDate: TextInputLayout
+    private lateinit var edtEmail: TextInputLayout
+    private lateinit var edtPassword: TextInputLayout
+    private lateinit var edtCheckPassword: TextInputLayout
 
-    private lateinit var textProva:TextInputLayout
+    //private lateinit var textProva:TextInputLayout
 
     private var birthDate:LocalDate? =null
 
@@ -66,7 +68,7 @@ class Registration : AppCompatActivity() {
         edtCheckPassword=findViewById(R.id.edtTextCheckPassword)
         edtBirthDate=findViewById(R.id.edtBirthDate)
 
-        textProva=findViewById(R.id.textProva)
+        //textProva=findViewById(R.id.textProva)
 
         btnSignUp=findViewById(R.id.btnSignUp)
 
@@ -80,7 +82,7 @@ class Registration : AppCompatActivity() {
                 { _, year, month, dayOfMonth ->
                     birthDate = LocalDate.of(year, month + 1, dayOfMonth)
                     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    edtBirthDate.setText(birthDate?.format(formatter))
+                    edtBirthDate.editText?.setText(birthDate?.format(formatter))
                 },
                 today.year,
                 today.monthValue - 1,
@@ -91,8 +93,8 @@ class Registration : AppCompatActivity() {
         }
 
         // Apri il calendario anche al primo click o focus
-        edtBirthDate.setOnClickListener { showDatePicker() }
-        edtBirthDate.setOnFocusChangeListener { _, hasFocus ->
+        edtBirthDate.editText?.setOnClickListener { showDatePicker() }
+        edtBirthDate.editText?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) showDatePicker()
         }
 
@@ -100,11 +102,11 @@ class Registration : AppCompatActivity() {
         btnSignUp.setOnClickListener()
         {
 
-            val name = edtName.text.toString()
-            val surname = edtSurname.text.toString()
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
-            val checkPassword = edtCheckPassword.text.toString()
+            val name = edtName.editText?.text.toString()
+            val surname = edtSurname.editText?.text.toString()
+            val email = edtEmail.editText?.text.toString()
+            val password = edtPassword.editText?.text.toString()
+            val checkPassword = edtCheckPassword.editText?.text.toString()
 
             if(checkRegisterFields(name,surname,birthDate,email,password,checkPassword))
                 signup(name,surname,birthDate!!,"",email,password)
@@ -113,18 +115,77 @@ class Registration : AppCompatActivity() {
     }
 
     private fun checkRegisterFields(name: String, surname: String, birthDate: LocalDate?, email: String, password: String, checkPassword: String):Boolean {
+        edtName.error = null
+        edtSurname.error = null
+        edtBirthDate.error = null
+        edtEmail.error = null
+        edtPassword.error = null
+        edtCheckPassword.error = null
 
+        var error: Boolean = true
+
+        if (name.isBlank()) {
+            edtName.error = "Name is required"
+            error = false
+        }
+
+        if (surname.isBlank()) {
+            edtSurname.error = "Surname is required"
+            error = false
+        }
+
+        if (birthDate == null) {
+            edtBirthDate.error = "Birth date is required"
+            error = false
+        } else {
+            val today = LocalDate.now()
+            val minBirthDate = today.minusYears(13)
+            if (birthDate.isAfter(minBirthDate)) {
+                edtBirthDate.error = "You must be at least 13 years old"
+                error = false
+            }
+        }
+
+        if (email.isBlank()) {
+            edtEmail.error = "Email is required"
+            error = false
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.error = "Invalid email address"
+            error = false
+        }
+
+        val passwordPattern = Regex(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#\$%^&+=!?.*(){}\\[\\]\\-_/\\\\|<>,:;\"']).{8,}$"
+        )
+        if (password.isBlank()) {
+            edtPassword.error = "Password is required"
+            error = false
+        } else if (!password.matches(passwordPattern)) {
+            edtPassword.error =
+                    "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character."
+            error = false
+        }
+        if(checkPassword.isBlank()) {
+            edtCheckPassword.error = "Check password is required"
+            error = false
+        } else if (password != checkPassword) {
+            edtCheckPassword.error = "Passwords do not match"
+            error = false
+        }
+
+        return error
+        /*
         var errorMessage:String=""
         var error:Boolean=true
 
         resetBgEdtText()
-
+        /*
         if(name.trim().isEmpty()){
             errorMessage+="Name, "
             edtName.setBackgroundResource(R.drawable.edit_text_bg_error)
             textProva.error="Name is empty"
             error=false
-        }
+        }*/
         if(surname.trim().isEmpty()){
             errorMessage+="Surname, "
             edtSurname.setBackgroundResource(R.drawable.edit_text_bg_error)
@@ -182,7 +243,7 @@ class Registration : AppCompatActivity() {
 
         }
 
-        return true
+        return true*/
     }
 
     private fun resetBgEdtText() {
