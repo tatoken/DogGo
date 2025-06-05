@@ -71,13 +71,28 @@
         android:id="@+id/edtTextSurname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/registrationPage_SurnameEditTextHide"
+        android:layout_marginTop="10dp"
         android:background="@drawable/edit_text_bg"
+        android:hint="@string/registrationPage_SurnameEditTextHide"
         android:padding="12dp"
         android:textColor="#000000"
-        android:textSize="15sp"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edtBirthDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        />
+        android:background="@drawable/edit_text_bg"
+        android:hint="@string/registrationPage_BirthdateEditTextHide"
+        android:padding="12dp"
+        android:inputType="date"
+        android:clickable="true"
+        android:focusable="false"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+
 
     <View
         android:layout_width="match_parent"
@@ -105,6 +120,20 @@
         android:layout_height="wrap_content"
         android:autofillHints="password"
         android:hint="@string/EdtTextLoginPassword"
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_bg"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        />
+
+    <EditText
+        android:id="@+id/edtTextCheckPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        android:hint="@string/EdtTextLoginConfirmPassword"
         android:inputType="textPassword"
         android:background="@drawable/edit_text_bg"
         android:padding="12dp"
@@ -148,7 +177,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/loginPage_terms_and_policy"
+        android:text="@string/loginPage_terms_and_policy_signup"
         android:textAlignment="center"
         android:layout_marginTop="10dp"
         android:textSize="12sp"

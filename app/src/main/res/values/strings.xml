@@ -14,7 +14,7 @@
     <string name="loginPage_continueWithAppleButton">Continue with Apple</string>
     <string name="loginPage_or">or</string>
     <string name="loginPage_image_content_description">logo</string>
-    <string name="loginPage_terms_and_policy">By clicking continue, you agree to our Terms of Service and Privacy Policy</string>
+    <string name="loginPage_terms_and_policy_signup">By clicking Signup, you agree to our Terms of Service and Privacy Policy</string>
     <string name="EdtTextLoginPassword">Password</string>
     <string name="loginPage_registrationButton">Not a member? SignUp</string>
     <string name="loginPage_registrationButton_clickable">SignUp</string>
@@ -29,6 +29,8 @@
     <string name="logout">Logout</string>
 
     <string name="default_web_client_id">tuo-id.apps.googleusercontent.com</string>
+    <string name="registrationPage_BirthdateEditTextHide">Birth date…</string>
+    <string name="EdtTextLoginConfirmPassword">Confirm password…</string>
 
 
 </resources>
