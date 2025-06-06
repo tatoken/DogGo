@@ -24,12 +24,16 @@
     <string name="registrationPage_loginButton">Already a member? Login</string>
     <string name="registrationPage_loginButton_clickable">Login</string>
 
+
     <string name="registrationPage_NameEditTextHide">Name…</string>
     <string name="registrationPage_SurnameEditTextHide">Surname…</string>
+    <string name="registrationPage_BirthdateEditTextHide">Birthdate…</string>
+    <string name="registrationPage_EmailEditTextHide">Email…</string>
+    <string name="registrationPage_PasswordEditTextHide">Password…</string>
+    <string name="registrationPage_ConfirmPasswordEditTextHide">Confirm password…</string>
     <string name="logout">Logout</string>
 
     <string name="default_web_client_id">tuo-id.apps.googleusercontent.com</string>
-    <string name="registrationPage_BirthdateEditTextHide">Birth date…</string>
     <string name="EdtTextLoginConfirmPassword">Confirm password…</string>
 
 
