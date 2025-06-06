@@ -18,12 +18,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 
 class Login : AppCompatActivity() {
 
-    private lateinit var edtEmail: EditText
-    private lateinit var edtPassword: EditText
+    private lateinit var edtEmail: TextInputLayout
+    private lateinit var edtPassword: TextInputLayout
     private lateinit var btnLogin:Button
     private lateinit var mAuth: FirebaseAuth
 
@@ -62,8 +63,8 @@ class Login : AppCompatActivity() {
         }
         btnLogin.setOnClickListener()
         {
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
+            val email = edtEmail.editText?.text.toString()
+            val password = edtPassword.editText?.text.toString()
 
             if(checkLoginFields())
                 login(email,password)
@@ -72,16 +73,21 @@ class Login : AppCompatActivity() {
     }
 
     private fun checkLoginFields():Boolean {
-        if(edtEmail.text.trim().isEmpty() || edtPassword.text.trim().isEmpty())
+        var error=true
+        edtEmail.error = null
+        edtPassword.error = null
+
+        if(edtEmail.editText?.text.toString().trim().isEmpty() )
         {
-            Toast.makeText(
-                baseContext,
-                "Incomplete fields: Email or Password",
-                Toast.LENGTH_SHORT,
-            ).show()
-            return false
+            edtEmail.error = "Email is required"
+            error=false
         }
-        return true
+        if(edtPassword.editText?.text.toString().trim().isEmpty())
+        {
+            edtPassword.error = "Password is required"
+            error=false
+        }
+        return error
     }
 
     private fun setUpRegistrationText() {

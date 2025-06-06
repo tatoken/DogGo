@@ -1,3 +1,5 @@
+
+
 package com.example.doggo_ourapp
 
 import android.app.DatePickerDialog
@@ -13,16 +15,13 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.chatapplication.User
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -38,8 +37,6 @@ class Registration : AppCompatActivity() {
     private lateinit var edtEmail: TextInputLayout
     private lateinit var edtPassword: TextInputLayout
     private lateinit var edtCheckPassword: TextInputLayout
-
-    //private lateinit var textProva:TextInputLayout
 
     private var birthDate:LocalDate? =null
 
@@ -68,8 +65,6 @@ class Registration : AppCompatActivity() {
         edtCheckPassword=findViewById(R.id.edtTextCheckPassword)
         edtBirthDate=findViewById(R.id.edtBirthDate)
 
-        //textProva=findViewById(R.id.textProva)
-
         btnSignUp=findViewById(R.id.btnSignUp)
 
         mAuth= FirebaseAuth.getInstance()
@@ -92,7 +87,6 @@ class Registration : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // Apri il calendario anche al primo click o focus
         edtBirthDate.editText?.setOnClickListener { showDatePicker() }
         edtBirthDate.editText?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) showDatePicker()
@@ -162,10 +156,10 @@ class Registration : AppCompatActivity() {
             error = false
         } else if (!password.matches(passwordPattern)) {
             edtPassword.error =
-                    "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character."
+                "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character."
             error = false
         }
-        if(checkPassword.isBlank()) {
+        if (checkPassword.isBlank()) {
             edtCheckPassword.error = "Check password is required"
             error = false
         } else if (password != checkPassword) {
@@ -174,87 +168,8 @@ class Registration : AppCompatActivity() {
         }
 
         return error
-        /*
-        var errorMessage:String=""
-        var error:Boolean=true
-
-        resetBgEdtText()
-        /*
-        if(name.trim().isEmpty()){
-            errorMessage+="Name, "
-            edtName.setBackgroundResource(R.drawable.edit_text_bg_error)
-            textProva.error="Name is empty"
-            error=false
-        }*/
-        if(surname.trim().isEmpty()){
-            errorMessage+="Surname, "
-            edtSurname.setBackgroundResource(R.drawable.edit_text_bg_error)
-            error=false
-        }
-        if(birthDate==null){
-            errorMessage+="Birthdate, "
-            edtBirthDate.setBackgroundResource(R.drawable.edit_text_bg_error)
-
-            error=false
-        }
-        if(email.trim().isEmpty()){
-            errorMessage+="Email, "
-            edtEmail.setBackgroundResource(R.drawable.edit_text_bg_error)
-            error=false
-        }
-        if(password.trim().isEmpty()){
-            errorMessage+="Password, "
-            edtPassword.setBackgroundResource(R.drawable.edit_text_bg_error)
-            error=false
-        }
-        if(checkPassword.trim().isEmpty()){
-            errorMessage+="CheckPassword "
-            edtCheckPassword.setBackgroundResource(R.drawable.edit_text_bg_error)
-            error=false
-        }
-
-        errorMessage+="is not compiled"
-
-        if(!error)
-        {
-            Toast.makeText(
-                baseContext,
-                errorMessage,
-                Toast.LENGTH_SHORT,
-            ).show()
-            return false
-        }
-        else
-        {
-            val today =LocalDate.now()
-            val thirteenYearsAgo=today.minusYears(13)
-
-            if(birthDate!!.isAfter(thirteenYearsAgo))
-            {
-                errorMessage="You must have almost 13 years"
-                Toast.makeText(
-                    baseContext,
-                    errorMessage,
-                    Toast.LENGTH_SHORT,
-                ).show()
-                return false
-            }
-
-
-        }
-
-        return true*/
     }
 
-    private fun resetBgEdtText() {
-        edtName.setBackgroundResource(R.drawable.edit_text_bg)
-        edtSurname.setBackgroundResource(R.drawable.edit_text_bg)
-        edtBirthDate.setBackgroundResource(R.drawable.edit_text_bg)
-        edtEmail.setBackgroundResource(R.drawable.edit_text_bg)
-        edtPassword.setBackgroundResource(R.drawable.edit_text_bg)
-        edtCheckPassword.setBackgroundResource(R.drawable.edit_text_bg)
-
-    }
 
     private fun setUpLoginText() {
         val textView = findViewById<TextView>(R.id.btn_login_section)

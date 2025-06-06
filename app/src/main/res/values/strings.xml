@@ -7,7 +7,7 @@
     <string name="close">close</string>
 
     <string name="loginPage_string1">Login to your account</string>
-    <string name="loginPage_string2">Enter your email and password to sign in for this app</string>
+    <string name="loginPage_string2">Enter your email and password to login </string>
     <string name="loginPage_EmailEditTextHide">Email…</string>
     <string name="loginPage_loginButton">Login</string>
     <string name="loginPage_continueWithGoogleButton">Continue with Google</string>
