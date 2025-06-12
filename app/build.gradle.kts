@@ -45,6 +45,15 @@ dependencies {
     implementation ("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("io.github.jan-tennert.supabase:supabase-kt:3.2.0-beta-1")
+    implementation("io.github.jan-tennert.supabase:storage-kt-android:3.2.0-beta-1")
+    implementation("io.ktor:ktor-client-core:3.1.2")
+    implementation("io.ktor:ktor-client-okhttp:3.1.2")
+    implementation("io.ktor:ktor-client-android:3.1.2")
+    implementation("io.ktor:ktor-client-serialization:3.1.2")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.3.1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
