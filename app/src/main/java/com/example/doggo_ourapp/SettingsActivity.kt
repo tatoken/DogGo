@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.doggo_ourapp.SupabaseManager.downloadImage
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -31,7 +32,9 @@ class SettingsActivity : AppCompatActivity() {
 
     private var back_button: Button?=null
     private lateinit var btnSelPic: Button
+    private lateinit var btnDwld: Button
     private lateinit var ivPic: ImageView
+    private lateinit var dwldPic: ImageView
     private var imageBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +48,16 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         btnSelPic = findViewById(R.id.btnSelPic)
+        btnDwld=findViewById(R.id.btnDownload)
         ivPic = findViewById(R.id.ivPic)
+        dwldPic=findViewById(R.id.dwldPic)
 
         btnSelPic.setOnClickListener {
             selectImageFromGallery()
+        }
+
+        btnDwld.setOnClickListener {
+            downloadImageFromSupabase()
         }
 
         back_button=findViewById(R.id.back_button)
@@ -75,6 +84,15 @@ class SettingsActivity : AppCompatActivity() {
             Log.e("Supabase", "Fine funzione upload")
         }
     }
+
+    private fun downloadImageFromSupabase()
+    {
+        lifecycleScope.launch {
+            val bitmap = downloadImage("profile-image", "user-image.jpeg")
+            dwldPic.setImageBitmap(bitmap)
+        }
+    }
+
 
     private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
         val stream = java.io.ByteArrayOutputStream()

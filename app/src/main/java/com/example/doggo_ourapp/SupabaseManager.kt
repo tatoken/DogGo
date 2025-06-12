@@ -1,5 +1,6 @@
 package com.example.doggo_ourapp
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import io.github.jan.supabase.SupabaseClient
@@ -48,6 +49,18 @@ object SupabaseManager {
             } catch (e: Exception) {
                 Log.e("barbara", "File upload failed", e)
             }
+        }
+    }
+
+
+    suspend fun downloadImage(bucketName: String, fileName: String): Bitmap? {
+        return try {
+            val bucket = client.storage.from(bucketName)
+            val bytes = bucket.downloadPublic(fileName)
+            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        } catch (e: Exception) {
+            Log.e("barbara", "File download failed", e)
+            null
         }
     }
 
