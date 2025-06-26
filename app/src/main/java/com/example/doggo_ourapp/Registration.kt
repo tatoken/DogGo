@@ -19,9 +19,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.chatapplication.User
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -41,10 +41,6 @@ class Registration : AppCompatActivity() {
     private var birthDate:LocalDate? =null
 
     private lateinit var btnSignUp:Button
-
-    private lateinit var mDbRef: DatabaseReference
-
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +62,6 @@ class Registration : AppCompatActivity() {
         edtBirthDate=findViewById(R.id.edtBirthDate)
 
         btnSignUp=findViewById(R.id.btnSignUp)
-
-        mAuth= FirebaseAuth.getInstance()
 
         val showDatePicker = {
             val today = LocalDate.now()
@@ -106,6 +100,33 @@ class Registration : AppCompatActivity() {
                 signup(name,surname,birthDate!!,"",email,password)
         }
 
+    }
+
+    private fun signup(name: String, surname: String, birthDate: LocalDate, bio: String, email: String, password: String) {
+
+        FirebaseDB.signup(name,surname,birthDate,bio,email,password) { success ->
+            if(success)
+            {
+                Toast.makeText(
+                    baseContext,
+                    "Registration successful. Now log in",
+                    Toast.LENGTH_SHORT,
+                ).show()
+
+                val intent = Intent(this,Login::class.java)
+                startActivity(intent)
+                finish()
+
+            }
+            else
+            {
+                Toast.makeText(
+                    baseContext,
+                    "Authentication failed.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        }
     }
 
     private fun checkRegisterFields(name: String, surname: String, birthDate: LocalDate?, email: String, password: String, checkPassword: String):Boolean {
@@ -206,38 +227,4 @@ class Registration : AppCompatActivity() {
             textView.text = fullText
         }
     }
-
-    private fun signup(name: String, surname:String, birthDate: LocalDate,bio:String, email: String, password: String) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-
-                    addUserToDatabase(name,surname,birthDate,bio,email,mAuth.currentUser?.uid!!)
-
-                    mAuth.signOut()
-
-                    Toast.makeText(
-                        baseContext,
-                        "Registration successful. Now log in",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-
-                    val intent = Intent(this,Login::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-    }
-
-    private fun addUserToDatabase(name: String, surname:String, birthDate: LocalDate,bio:String,email: String, uid: String) {
-        mDbRef= FirebaseDatabase.getInstance("https://doggo-6c19f-default-rtdb.europe-west1.firebasedatabase.app").getReference()
-        mDbRef.child("user").child(uid).setValue(User(name,surname,birthDate,bio,email,uid))
-    }
-
 }

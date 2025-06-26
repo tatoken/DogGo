@@ -36,5 +36,7 @@
     <string name="default_web_client_id">tuo-id.apps.googleusercontent.com</string>
     <string name="EdtTextLoginConfirmPassword">Confirm password…</string>
 
+    <string name="settings">Settings</string>
+
 
 </resources>

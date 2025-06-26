@@ -22,13 +22,16 @@
         <activity
             android:name=".MainApp"
             android:exported="false" />
-        <activity android:name=".Registration" />
+        <activity
+            android:name=".Registration"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

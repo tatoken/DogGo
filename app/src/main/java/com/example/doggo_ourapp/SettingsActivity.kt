@@ -21,6 +21,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.doggo_ourapp.SupabaseManager.downloadImage
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -69,6 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
 
     }
+
 
     private fun uploadImageOnSupabase() {
         if (imageBitmap == null) {

@@ -1,4 +1,4 @@
-package com.example.chatapplication
+package com.example.doggo_ourapp
 
 import java.time.LocalDate
 
@@ -9,6 +9,8 @@ class User {
     var birthDate:LocalDate?=null
     var bio:String?=null
     var email:String?=null
+
+    var settings:Settings?=null
 
     var uid:String?=null
 
@@ -22,5 +24,7 @@ class User {
         this.bio=bio
         this.email=email
         this.uid=uid
+
+        this.settings=Settings(uid)
     }
 }
