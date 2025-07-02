@@ -104,7 +104,7 @@ class Registration : AppCompatActivity() {
 
     private fun signup(name: String, surname: String, birthDate: LocalDate, bio: String, email: String, password: String) {
 
-        FirebaseDB.signup(name,surname,birthDate,bio,email,password) { success ->
+        UserFirebase.signup(name,surname,birthDate,bio,email,password) { success ->
             if(success)
             {
                 Toast.makeText(

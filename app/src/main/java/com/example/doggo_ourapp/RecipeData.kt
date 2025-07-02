@@ -1,6 +1,7 @@
 package com.example.doggo_ourapp
 
 data class RecipeData(
+    var id: String?,
     var name: String?,
     var duration: String?,
     var description: String?,

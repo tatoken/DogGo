@@ -26,7 +26,6 @@ class Login : AppCompatActivity() {
     private lateinit var edtEmail: TextInputLayout
     private lateinit var edtPassword: TextInputLayout
     private lateinit var btnLogin:Button
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +52,7 @@ class Login : AppCompatActivity() {
 
         btnLogin=findViewById(R.id.btn_login)
 
-        mAuth= FirebaseAuth.getInstance()
-
-        if (mAuth.currentUser != null) {
+        if (UserFirebase.getCurrentUserId() != "") {
             val intent = Intent(this, MainApp::class.java)
             startActivity(intent)
             finish()
@@ -129,20 +126,19 @@ class Login : AppCompatActivity() {
 
 
     private fun login(email: String, password: String) {
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val intent = Intent(this,MainApp::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed. Wrong credentials",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
+        UserFirebase.login(email, password) { success ->
+            if (success) {
+                val intent = Intent(this, MainApp::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(
+                    baseContext,
+                    "Authentication failed. Wrong credentials",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
+        }
     }
 
 }

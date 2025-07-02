@@ -30,7 +30,7 @@ class TestActivity : AppCompatActivity() {
 
         addDogButton.setOnClickListener()
         {
-            FirebaseDB.saveDog(DogData("0","Billo","Bastardino","Male","15","2312312312","80","030123123"))
+            DogFirebase.saveDog(DogData("0","Billo","Bastardino","Male","15","2312312312","80","030123123"))
         }
 
         loadDogButton=findViewById(R.id.loadDog)
@@ -38,7 +38,7 @@ class TestActivity : AppCompatActivity() {
 
         loadDogButton.setOnClickListener()
         {
-            FirebaseDB.loadDog(0) { dog ->
+            DogFirebase.loadDog(0) { dog ->
                 if (dog != null) {
                     infoDog.text="Nome: ${dog.name}, Razza: ${dog.breed}"
                 } else {
