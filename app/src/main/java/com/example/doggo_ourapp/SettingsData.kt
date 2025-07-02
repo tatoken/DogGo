@@ -1,8 +1,6 @@
 package com.example.doggo_ourapp
 
-import java.time.LocalDate
-
-class Settings {
+class SettingsData {
 
     var idUser:String?=null
     var notifications:Boolean?=null

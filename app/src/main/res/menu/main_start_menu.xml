@@ -8,6 +8,12 @@
         />
 
     <item
+        android:id="@+id/testItem"
+        android:title="Test"
+        android:icon="@drawable/baseline_app_settings_alt_24"
+        />
+
+    <item
         android:id="@+id/secondItem"
         android:title="Messages"/>
 

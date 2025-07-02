@@ -74,6 +74,13 @@ class MainApp : AppCompatActivity() {
                     finish()
                 }
 
+                R.id.testItem -> {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(this, TestActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+
                 R.id.secondItem -> {
                     Toast.makeText(this@MainApp, "Second item clicked", Toast.LENGTH_SHORT).show()
                 }
