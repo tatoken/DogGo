@@ -12,7 +12,7 @@ data class UserData(
     var points: String = "0",
     var settings: SettingsData? = null,
     var dogs: MutableList<DogData>? = mutableListOf(),
-    var badgeAchieved: MutableList<BadgeData>? = mutableListOf(),
+    var badgeAchieved: MutableList<BadgeAchievedData>? = mutableListOf(),
     var prizeAchieved: MutableList<PrizeAchievedData>? = mutableListOf()
 ) {
 
