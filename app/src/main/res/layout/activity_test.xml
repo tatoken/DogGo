@@ -29,5 +29,25 @@
         android:layout_height="wrap_content"
         android:text="DogInfo"/>
 
+    <Button
+        android:id="@+id/addDiet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aggiungi dieta"
+        />
+
+    <Button
+        android:id="@+id/loadDiet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Carica dieta"
+        />
+
+    <TextView
+        android:id="@+id/dietInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DietInfo"/>
+
 
 </LinearLayout>
