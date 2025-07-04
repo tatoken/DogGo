@@ -17,6 +17,21 @@
         />
 
     <Button
+        android:id="@+id/getActualDog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prendi il cane attuale"
+        />
+
+    <Button
+        android:id="@+id/selectActualDog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleziona il cane attuale"
+        />
+
+
+    <Button
         android:id="@+id/loadDog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

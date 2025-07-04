@@ -14,6 +14,8 @@ class TestActivity : AppCompatActivity() {
     private lateinit var addDogButton: Button
     private lateinit var loadDogButton: Button
     private lateinit var infoDog:TextView
+    private lateinit var getActualDog:Button
+    private lateinit var selectActualDog:Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +30,12 @@ class TestActivity : AppCompatActivity() {
 
         addDogButton=findViewById(R.id.addDog)
 
+        getActualDog=findViewById(R.id.getActualDog)
+        selectActualDog=findViewById(R.id.selectActualDog)
+
         addDogButton.setOnClickListener()
         {
-            DogFirebase.saveDog(DogData("0","Billo","Bastardino","Male","15","2312312312","80","030123123"))
+            DogFirebase.saveDog(DogData(null,"Billo","Bastardino","Male","15","2312312312","80","030123123"))
         }
 
         loadDogButton=findViewById(R.id.loadDog)
@@ -38,7 +43,7 @@ class TestActivity : AppCompatActivity() {
 
         loadDogButton.setOnClickListener()
         {
-            DogFirebase.loadDog(0) { dog ->
+            DogFirebase.loadDog("-OU9JYKmtiQQUxkHcxoW") { dog ->
                 if (dog != null) {
                     infoDog.text="Nome: ${dog.name}, Razza: ${dog.breed}"
                 } else {
@@ -46,6 +51,29 @@ class TestActivity : AppCompatActivity() {
                 }
             }
 
+        }
+
+        getActualDog.setOnClickListener()
+        {
+            DogFirebase.getActualDog () { dog ->
+                if (dog != null) {
+                    infoDog.text="ID actual dog: ${dog}"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
+
+        }
+
+        selectActualDog.setOnClickListener()
+        {
+            DogFirebase.selectDog ("-OU9JYKmtiQQUxkHcxoW") { result ->
+                if (result) {
+                    infoDog.text="cane selezionato"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
         }
 
     }

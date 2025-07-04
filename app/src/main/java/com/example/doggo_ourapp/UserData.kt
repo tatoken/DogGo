@@ -11,6 +11,7 @@ data class UserData(
     var uid: String? = null,
     var points: String = "0",
     var settings: SettingsData? = null,
+    var actualDog:String?=null,
     var dogs: MutableList<DogData>? = mutableListOf(),
     var badgeAchieved: MutableList<BadgeAchievedData>? = mutableListOf(),
     var prizeAchieved: MutableList<PrizeAchievedData>? = mutableListOf()
