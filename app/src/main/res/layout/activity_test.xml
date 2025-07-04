@@ -136,12 +136,6 @@
             android:text="Carica dieta"
             />
 
-        <TextView
-            android:id="@+id/dietInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DietInfo"/>
-
         <Button
             android:id="@+id/addDietRecipe"
             android:layout_width="wrap_content"
@@ -157,10 +151,10 @@
             />
 
         <TextView
-            android:id="@+id/dietRecipeInfo"
+            android:id="@+id/dietInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DietRecipeInfo"/>
+            android:text="DietInfo"/>
 
         <View
             android:layout_width="match_parent"

@@ -31,11 +31,12 @@ class TestActivity : AppCompatActivity() {
 
     private lateinit var addDietButton: Button
     private lateinit var loadDietButton: Button
-    private lateinit var infoDiet:TextView
-
     private lateinit var addDietRecipeButton: Button
     private lateinit var loadDietRecipeButton: Button
-    private lateinit var infoDietRecipe:TextView
+    private lateinit var infoDiet:TextView
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -237,11 +238,17 @@ class TestActivity : AppCompatActivity() {
         }
 
         loadDietRecipeButton=findViewById(R.id.loadDietRecipe)
-        infoDietRecipe=findViewById(R.id.dietRecipeInfo)
+        infoDiet=findViewById(R.id.dietInfo)
 
         loadDietRecipeButton.setOnClickListener()
         {
-
+            DietFirebase.loadDietRecipe("-OUM9kBIKpiIyqXfzIzD") { diet ->
+                if (diet != null) {
+                    infoDiet.text="IdRecipe: ${diet.idRecipe}, Data: ${diet.lastDataDone}"
+                } else {
+                    infoDiet.text="Errore"
+                }
+            }
 
         }
 

@@ -7,5 +7,5 @@ data class DietData(
     var proteins: String = "",
     var fibers: String = "",
     var vitamins: String = "",
-    var dietRecipe: MutableList<DietRecipeData> = mutableListOf()
+    var dietRecipe: Map<String, DietRecipeData> = emptyMap()
 )
