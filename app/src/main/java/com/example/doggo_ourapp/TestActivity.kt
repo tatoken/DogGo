@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,6 +18,13 @@ class TestActivity : AppCompatActivity() {
     private lateinit var getActualDog:Button
     private lateinit var selectActualDog:Button
 
+    private lateinit var addDietButton: Button
+    private lateinit var loadDietButton: Button
+    private lateinit var infoDiet:TextView
+
+    private lateinit var addDietRecipeButton: Button
+    private lateinit var loadDietRecipeButton: Button
+    private lateinit var infoDietRecipe:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +57,7 @@ class TestActivity : AppCompatActivity() {
 
         loadDogButton.setOnClickListener()
         {
-            DogFirebase.loadDog("-OU9JYKmtiQQUxkHcxoW") { dog ->
+            DogFirebase.loadDog(0) { dog ->
                 if (dog != null) {
                     infoDog.text="Nome: ${dog.name}, Razza: ${dog.breed}"
                 } else {
@@ -81,6 +89,70 @@ class TestActivity : AppCompatActivity() {
                 }
             }
         }
+
+        addDietButton=findViewById(R.id.addDiet)
+
+        addDietButton.setOnClickListener {
+            DietFirebase.saveDiet(
+                "-OUJoX8LxKcAmAJDz7Ln",
+                DietData(
+                    "Dieta Bilanciata per Cani Adulti",
+                    "35", "15", "25", "6", "Vitamina A, E, Calcio"
+                )
+            ) { success ->
+                if (success) {
+                    Toast.makeText(this, "Dieta salvata!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Errore nel salvataggio", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        loadDietButton=findViewById(R.id.loadDiet)
+        infoDiet=findViewById(R.id.dietInfo)
+
+        loadDietButton.setOnClickListener()
+        {
+            DietFirebase.loadDiet("-OUJoX8LxKcAmAJDz7Ln") { diet ->
+                if (diet != null) {
+                    infoDiet.text="Nome: ${diet.name}, Specifiche: ${diet.carbohydrates}, ${diet.vitamins}"
+                } else {
+                    infoDiet.text="Errore"
+                }
+            }
+        }
+
+        addDietRecipeButton=findViewById(R.id.addDietRecipe)
+
+        addDietRecipeButton.setOnClickListener()
+        {
+            DietFirebase.saveDietRecipe(
+                "-OUJoX8LxKcAmAJDz7Ln",
+                DietRecipeData("0", "03/07/2025"),
+            ) { success ->
+                if (success) {
+                    Toast.makeText(this, "Dieta-Ricetta salvata!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Errore nel salvataggio", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        loadDietRecipeButton=findViewById(R.id.loadDietRecipe)
+        infoDietRecipe=findViewById(R.id.dietRecipeInfo)
+
+        loadDietRecipeButton.setOnClickListener()
+        {
+            DietFirebase.loadDietRecipe("-OUJoX8LxKcAmAJDz7Ln",0) { dietRecipe ->
+                if (dietRecipe != null) {
+                    infoDietRecipe.text="Nome: ${dietRecipe.idRecipe}, LastDone: ${dietRecipe.lastDataDone}"
+                } else {
+                    infoDietRecipe.text="Errore"
+                }
+            }
+
+        }
+
 
     }
 }
