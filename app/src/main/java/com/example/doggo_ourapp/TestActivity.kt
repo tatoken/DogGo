@@ -35,7 +35,13 @@ class TestActivity : AppCompatActivity() {
 
         addDogButton.setOnClickListener()
         {
-            DogFirebase.saveDog(DogData(null,"Billo","Bastardino","Male","15","2312312312","80","030123123"))
+            DogFirebase.saveDog(DogData(null,"Billo","Bastardino","Male","15","2312312312","80","030123123")) { result ->
+                if (result) {
+                    infoDog.text="Cane caricato"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
         }
 
         loadDogButton=findViewById(R.id.loadDog)

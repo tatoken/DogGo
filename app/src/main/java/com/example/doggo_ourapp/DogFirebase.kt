@@ -2,11 +2,17 @@ package com.example.doggo_ourapp
 
 object DogFirebase {
 
-    fun saveDog(dog: DogData) {
+    fun saveDog(dog: DogData,onResult: (Boolean)->Unit) {
         val userId = FirebaseDB.getAuth().currentUser?.uid ?: return
         val dogRef = FirebaseDB.getMDbRef().child("user").child(userId).child("dog").push() // genera un ID univoco
         dog.id = dogRef.key
-        dogRef.setValue(dog)
+        dogRef.setValue(dog).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onResult(true)
+            } else {
+                onResult(false)
+            }
+        }
     }
 
     fun loadAllDog(onResult: (List<DogData>?) -> Unit) {
