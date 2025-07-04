@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.doggo_ourapp.TrainingFirebase.saveTraining
 
 class TestActivity : AppCompatActivity() {
 
@@ -17,6 +18,16 @@ class TestActivity : AppCompatActivity() {
     private lateinit var infoDog:TextView
     private lateinit var getActualDog:Button
     private lateinit var selectActualDog:Button
+
+    private lateinit var addTraining:Button
+    private lateinit var seeAllTrainings:Button
+    private lateinit var seeTraining:Button
+    private lateinit var infoTraining:TextView
+
+    private lateinit var addEvent:Button
+    private lateinit var seeAllEvents:Button
+    private lateinit var seeEvent:Button
+    private lateinit var infoEvent:TextView
 
     private lateinit var addDietButton: Button
     private lateinit var loadDietButton: Button
@@ -38,6 +49,16 @@ class TestActivity : AppCompatActivity() {
 
         addDogButton=findViewById(R.id.addDog)
 
+        addTraining=findViewById(R.id.addTraining)
+        seeAllTrainings=findViewById(R.id.seeAllTrainings)
+        seeTraining=findViewById(R.id.seeTraining)
+        infoTraining=findViewById(R.id.trainingInfo)
+
+        addEvent=findViewById(R.id.addEvent)
+        seeAllEvents=findViewById(R.id.seeAllEvents)
+        seeEvent=findViewById(R.id.seeEvent)
+        infoEvent=findViewById(R.id.eventInfo)
+
         getActualDog=findViewById(R.id.getActualDog)
         selectActualDog=findViewById(R.id.selectActualDog)
 
@@ -48,6 +69,92 @@ class TestActivity : AppCompatActivity() {
                     infoDog.text="Cane caricato"
                 } else {
                     infoDog.text="Errore"
+                }
+            }
+        }
+
+        seeAllTrainings.setOnClickListener()
+        {
+            TrainingFirebase.loadAllTrainings { trainings ->
+                if (trainings != null) {
+                    val trainingInfos = StringBuilder()
+                    var counter = 0
+
+                    trainings.forEach { training ->
+                        trainingInfos.append("Data:${training.date} - Km:${training.km}\n")
+                        counter++
+                        if (counter == trainings.size) {
+                            infoTraining.text = trainingInfos.toString()
+                        }
+                    }
+                } else {
+                    infoTraining.text = "Errore"
+                }
+            }
+
+        }
+
+        seeTraining.setOnClickListener()
+        {
+            TrainingFirebase.loadTraining("-OUJuyAdcem7wm3Hd8dX"){ training ->
+                if (training!=null) {
+                    infoTraining.text="Data:${training.date} - Km:${training.km}\n"
+                } else {
+                    infoTraining.text="Errore"
+                }
+            }
+        }
+
+        addTraining.setOnClickListener()
+        {
+            TrainingFirebase.saveTraining(TrainingData(null,"culo","Ottimo","12:20","1.8")){ result ->
+                if (result) {
+                    infoDog.text="Training caricato"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
+        }
+
+        seeAllEvents.setOnClickListener()
+        {
+            EventFirebase.loadAllEvents { events ->
+                if (events != null) {
+                    val eventsInfos = StringBuilder()
+                    var counter = 0
+
+                    events.forEach { event ->
+                        eventsInfos.append("Nome:${event.name} - Data:${event.date}\n")
+                        counter++
+                        if (counter == events.size) {
+                            infoEvent.text = eventsInfos.toString()
+                        }
+                    }
+                } else {
+                    infoEvent.text = "Errore"
+                }
+            }
+
+        }
+
+        seeEvent.setOnClickListener()
+        {
+            EventFirebase.loadEvent("-OULqA6JudNgEeihdZDz"){ event ->
+                if (event!=null) {
+                    infoEvent.text="Nome:${event.name} - Data:${event.date}\n"
+                } else {
+                    infoEvent.text="Errore"
+                }
+            }
+        }
+
+        addEvent.setOnClickListener()
+        {
+            EventFirebase.saveEvent(EventData(null,"Passeggiata cane","04-07-2025","18:00","Training","Stasera allenamento")){ result ->
+                if (result) {
+                    infoEvent.text="Evento caricato"
+                } else {
+                    infoEvent.text="Errore"
                 }
             }
         }
