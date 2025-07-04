@@ -1,9 +1,7 @@
 package com.example.doggo_ourapp
 
-import java.time.LocalDate
-
 data class PrizeAchievedData(
-    var idPrize: String?,
-    var achieveDate: LocalDate?,
-    var quantity: String?
+    var idPrize: String?=null,
+    var achieveDate: String?=null,
+    var quantity: String?="1"
 )

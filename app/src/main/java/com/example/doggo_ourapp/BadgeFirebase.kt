@@ -1,6 +1,5 @@
 package com.example.doggo_ourapp
 
-import com.example.doggo_ourapp.DogFirebase.loadAllDog
 import java.time.LocalDate
 
 object BadgeFirebase {
@@ -10,15 +9,15 @@ object BadgeFirebase {
         value: String,
         onComplete: (List<String>) -> Unit
     ) {
-            loadAllBadge { allBadges ->
+            loadAllBadges { allBadges ->
             if (allBadges == null) {
                 onComplete(emptyList())
-                return@loadAllBadge
+                return@loadAllBadges
             }
 
             val filteredBadges = allBadges.filter { it.type == type }
 
-            getUserBadges(UserFirebase.getCurrentUserId()) { userBadges ->
+            getUserBadges() { userBadges ->
                 val alreadyAchievedIds = userBadges?.mapNotNull { it.idBadge } ?: emptyList()
                 val newUnlockedBadges = mutableListOf<String>()
 
@@ -59,37 +58,8 @@ object BadgeFirebase {
         }
     }
 
-    /*
-    fun addBadgeToUser(badgeId: String, onComplete: (Boolean) -> Unit) {
-
-        val userRef = FirebaseDB.getMDbRef().child("user").child(UserFirebase.getCurrentUserId())
-
-        userRef.get().addOnSuccessListener { snapshot ->
-            val user = snapshot.getValue(UserData::class.java)
-            if (user != null) {
-                val badges = user.badgeAchieved ?: mutableListOf()
-
-                // Controlla se la badge è già presente
-                val alreadyAchieved = badges.any { it.idBadge == badgeId }
-                if (!alreadyAchieved) {
-                    badges.add(BadgeAchievedData(badgeId, LocalDate.now()))
-                    userRef.child("badgeAchieved").setValue(badges).addOnCompleteListener {
-                        onComplete(it.isSuccessful)
-                    }
-                } else {
-                    onComplete(false) // già presente
-                }
-            } else {
-                onComplete(false)
-            }
-        }.addOnFailureListener {
-            it.printStackTrace()
-            onComplete(false)
-        }
-    }
-    */
-    fun getUserBadges(userId: String, onResult: (List<BadgeAchievedData>?) -> Unit) {
-        val userRef = FirebaseDB.getMDbRef().child("user").child(userId).child("badgeAchieved")
+    fun getUserBadges(onResult: (List<BadgeAchievedData>?) -> Unit) {
+        val userRef = FirebaseDB.getMDbRef().child("user").child(UserFirebase.getCurrentUserId()).child("badgeAchieved")
 
         userRef.get().addOnSuccessListener { snapshot ->
             val badges = snapshot.children.mapNotNull { it.getValue(BadgeAchievedData::class.java) }
@@ -100,7 +70,7 @@ object BadgeFirebase {
         }
     }
 
-    fun loadAllBadge(onResult: (List<BadgeData>?) -> Unit) {
+    fun loadAllBadges(onResult: (List<BadgeData>?) -> Unit) {
         val badgeRef = FirebaseDB.getMDbRef().child("badge")
 
         badgeRef.get().addOnSuccessListener { dataSnapshot ->
@@ -119,12 +89,36 @@ object BadgeFirebase {
         }
     }
 
-    fun loadBadge(index: Int, onResult: (BadgeData?) -> Unit) {
-        loadAllBadge { badgeList ->
-            if (badgeList != null && index in badgeList.indices) {
-                onResult(badgeList[index])
+    fun getBadgeById(badgeId: String, onResult: (BadgeData?) -> Unit) {
+        val badgeRef = FirebaseDB.getMDbRef().child("badge").child(badgeId)
+
+        badgeRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val badgeData = snapshot.getValue(BadgeData::class.java)
+                onResult(badgeData)
             } else {
                 onResult(null)
+            }
+        }.addOnFailureListener {
+            it.printStackTrace()
+            onResult(null)
+        }
+    }
+
+
+    fun saveBadge(badge: BadgeData, onResult: (Boolean) -> Unit) {
+
+        val badgeRef = FirebaseDB.getMDbRef()
+            .child("badge")
+            .push()
+
+        badge.id = badgeRef.key
+
+        badgeRef.setValue(badge).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onResult(true)
+            } else {
+                onResult(false)
             }
         }
     }
