@@ -55,17 +55,7 @@ class TestActivity : AppCompatActivity() {
         loadDogButton=findViewById(R.id.loadDog)
         infoDog=findViewById(R.id.dogInfo)
 
-        loadDogButton.setOnClickListener()
-        {
-            DogFirebase.loadDog(0) { dog ->
-                if (dog != null) {
-                    infoDog.text="Nome: ${dog.name}, Razza: ${dog.breed}"
-                } else {
-                    infoDog.text="Errore"
-                }
-            }
 
-        }
 
         getActualDog.setOnClickListener()
         {
@@ -92,9 +82,12 @@ class TestActivity : AppCompatActivity() {
 
         addDietButton=findViewById(R.id.addDiet)
 
+        /**********************************/
+
+
         addDietButton.setOnClickListener {
+
             DietFirebase.saveDiet(
-                "-OUJoX8LxKcAmAJDz7Ln",
                 DietData(
                     "Dieta Bilanciata per Cani Adulti",
                     "35", "15", "25", "6", "Vitamina A, E, Calcio"
@@ -113,7 +106,7 @@ class TestActivity : AppCompatActivity() {
 
         loadDietButton.setOnClickListener()
         {
-            DietFirebase.loadDiet("-OUJoX8LxKcAmAJDz7Ln") { diet ->
+            DietFirebase.loadDiet() { diet ->
                 if (diet != null) {
                     infoDiet.text="Nome: ${diet.name}, Specifiche: ${diet.carbohydrates}, ${diet.vitamins}"
                 } else {
@@ -126,10 +119,8 @@ class TestActivity : AppCompatActivity() {
 
         addDietRecipeButton.setOnClickListener()
         {
-            DietFirebase.saveDietRecipe(
-                "-OUJoX8LxKcAmAJDz7Ln",
-                DietRecipeData("0", "03/07/2025"),
-            ) { success ->
+            DietFirebase.saveDietRecipe(DietRecipeData("0", "03/07/2025"))
+            { success ->
                 if (success) {
                     Toast.makeText(this, "Dieta-Ricetta salvata!", Toast.LENGTH_SHORT).show()
                 } else {
@@ -143,13 +134,7 @@ class TestActivity : AppCompatActivity() {
 
         loadDietRecipeButton.setOnClickListener()
         {
-            DietFirebase.loadDietRecipe("-OUJoX8LxKcAmAJDz7Ln",0) { dietRecipe ->
-                if (dietRecipe != null) {
-                    infoDietRecipe.text="Nome: ${dietRecipe.idRecipe}, LastDone: ${dietRecipe.lastDataDone}"
-                } else {
-                    infoDietRecipe.text="Errore"
-                }
-            }
+
 
         }
 
