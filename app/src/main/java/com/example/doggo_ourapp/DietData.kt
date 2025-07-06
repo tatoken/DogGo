@@ -1,11 +1,11 @@
 package com.example.doggo_ourapp
 
 data class DietData(
-    var name: String = "",
-    var carbohydrates: String = "",
-    var fats: String = "",
-    var proteins: String = "",
-    var fibers: String = "",
-    var vitamins: String = "",
-    var dietRecipe: Map<String, DietRecipeData> = emptyMap()
+    var name: String? =null,
+    var carbohydrates: String ? =null,
+    var fats: String? =null,
+    var proteins: String ? =null,
+    var fibers: String? =null,
+    var vitamins: String ? =null,
+    var dietRecipe: MutableList<DietRecipeData> = mutableListOf(),
 )

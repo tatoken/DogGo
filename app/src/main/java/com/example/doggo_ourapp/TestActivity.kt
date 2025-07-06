@@ -31,6 +31,7 @@ class TestActivity : AppCompatActivity() {
 
     private lateinit var addDietButton: Button
     private lateinit var loadDietButton: Button
+    private lateinit var addRecipe:Button
     private lateinit var addDietRecipeButton: Button
     private lateinit var loadDietRecipeButton: Button
     private lateinit var infoDiet:TextView
@@ -223,11 +224,24 @@ class TestActivity : AppCompatActivity() {
             }
         }
 
+        addRecipe=findViewById(R.id.addRecipe)
+        addRecipe.setOnClickListener()
+        {
+            DietFirebase.saveRecipe(RecipeData(null, "Tiramisu","20","Dolce buono","2","Basso","10","10","10","10","10"))
+            { success ->
+                if (success) {
+                    Toast.makeText(this, "Ricetta salvata!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Errore nel salvataggio", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         addDietRecipeButton=findViewById(R.id.addDietRecipe)
 
         addDietRecipeButton.setOnClickListener()
         {
-            DietFirebase.saveDietRecipe(DietRecipeData("0", "03/07/2025"))
+            DietFirebase.saveDietRecipe(DietRecipeData(null,"-OUU2HqICauZ9EO1YG_I", "03/07/2025"))
             { success ->
                 if (success) {
                     Toast.makeText(this, "Dieta-Ricetta salvata!", Toast.LENGTH_SHORT).show()
@@ -242,9 +256,18 @@ class TestActivity : AppCompatActivity() {
 
         loadDietRecipeButton.setOnClickListener()
         {
-            DietFirebase.loadDietRecipe("-OUM9kBIKpiIyqXfzIzD") { diet ->
-                if (diet != null) {
-                    infoDiet.text="IdRecipe: ${diet.idRecipe}, Data: ${diet.lastDataDone}"
+            DietFirebase.loadDietRecipe("-OUU5-HOqpsNGEskRgk6") { recipeDiet ->
+                if (recipeDiet != null) {
+                    DietFirebase.loadRecipeById(recipeDiet.idRecipe!!) { recipe ->
+                        if(recipe!=null)
+                        {
+                            infoDiet.text="Name Recipe: ${recipe.name}, Data: ${recipeDiet.lastDataDone}"
+                        }
+                        else
+                        {
+                            infoDiet.text="Errore"
+                        }
+                    }
                 } else {
                     infoDiet.text="Errore"
                 }

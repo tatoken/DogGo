@@ -1,6 +1,7 @@
 package com.example.doggo_ourapp
 
 data class DietRecipeData(
-    var idRecipe: String = "",
-    var lastDataDone: String = "",
+    var id:String?=null,
+    var idRecipe: String?= null,
+    var lastDataDone: String?=null
 )

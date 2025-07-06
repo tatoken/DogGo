@@ -55,6 +55,9 @@ object DogFirebase {
     }
 
     fun getActualDog(onResult: (String?) -> Unit) {
+        if(UserFirebase.getCurrentUserId()=="")
+            onResult(null)
+        val actualDog="-OU9JYKmtiQQUxkHcxoW"
         val actualDogRef = FirebaseDB.getMDbRef()
             .child("user")
             .child(UserFirebase.getCurrentUserId())

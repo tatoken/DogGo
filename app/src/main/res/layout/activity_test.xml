@@ -137,6 +137,13 @@
             />
 
         <Button
+            android:id="@+id/addRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aggiungi ricetta"
+            />
+
+        <Button
             android:id="@+id/addDietRecipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
