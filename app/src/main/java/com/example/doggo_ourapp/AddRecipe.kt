@@ -1,10 +1,13 @@
 package com.example.doggo_ourapp
 
+import java.time.LocalDateTime
+
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.time.format.DateTimeFormatter
 
 class AddRecipeActivity : AppCompatActivity() {
 
@@ -37,9 +40,11 @@ class AddRecipeActivity : AppCompatActivity() {
     }
 
     private fun addRecipeToDogDiet(recipe: RecipeData) {
+        val currentDateString = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+
         val newDietRecipe = DietRecipeData(
             idRecipe = recipe.id,
-            lastDataDone = null // O imposta una data se necessario
+            lastDataDone = currentDateString
         )
 
         DietFirebase.saveDietRecipe(newDietRecipe) { success ->

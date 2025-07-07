@@ -9,18 +9,39 @@
     android:background="@color/myWhite"
     android:padding="16dp">
 
-    <!-- RecyclerView delle ricette associate al cane -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipeRecyclerView"
+    <!-- Prima parte -->
+    <LinearLayout
+        android:id="@+id/firstSection"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/component_background"
+        android:padding="15dp"
+        android:layout_margin="5dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/secondSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.6" />
+        app:layout_constraintHeight_percent="0.6">
 
+        <TextView
+            android:id="@+id/titleSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My dog's recipes"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/myBlack"
+            android:paddingBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recipeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
 
     <!--Seconda parte-->
     <LinearLayout
@@ -28,7 +49,7 @@
         android:layout_margin="5dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/recipeRecyclerView"
+        app:layout_constraintTop_toBottomOf="@id/firstSection"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,6 +64,7 @@
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:textColor="@color/myBlack"
             android:text="Diet"/>
 
         <ImageView

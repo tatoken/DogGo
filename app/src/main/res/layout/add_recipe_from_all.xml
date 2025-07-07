@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/myWhite"
     android:padding="16dp">
 
     <TextView
@@ -14,6 +16,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:textColor="@color/myBlack"
         android:paddingBottom="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

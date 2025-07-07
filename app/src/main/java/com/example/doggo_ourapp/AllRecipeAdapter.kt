@@ -49,7 +49,7 @@ class AllRecipesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recipe_card, parent, false)
+            .inflate(R.layout.recipe_card_from_all, parent, false)
         return RecipeViewHolder(view)
     }
 
