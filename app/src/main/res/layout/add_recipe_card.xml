@@ -9,32 +9,57 @@
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="15dp"
-    android:background="@drawable/component_background">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:background="@drawable/component_background">
 
-        <ImageView
-            android:id="@+id/addRecipeIcon"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:src="@drawable/baseline_add_24"
-            android:contentDescription="Add a new recipe"
-            app:tint="@color/myBlack" />
-
+        <!-- Titolo in alto -->
         <TextView
-            android:id="@+id/recipeTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/titleSection"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Add a new recipe"
+            android:text="My dog's recipes"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/myBlack"
-            android:layout_marginTop="8dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+        <!-- Contenuto centrato verticalmente -->
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/titleSection"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/addRecipeIcon"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/baseline_add_24"
+                android:contentDescription="Add a new recipe"
+                app:tint="@color/myBlack" />
+
+            <TextView
+                android:id="@+id/recipeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add a new recipe"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/myBlack"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
