@@ -62,8 +62,8 @@ object DietFirebase {
         }
     }
 
-    fun loadRecipeById(recipeId: String, onResult: (RecipeData?) -> Unit) {
-        val recipeRef = FirebaseDB.getMDbRef().child("recipe").child(recipeId)
+    fun loadRecipeById(recipeId: String?, onResult: (RecipeData?) -> Unit) {
+        val recipeRef = FirebaseDB.getMDbRef().child("recipe").child(recipeId!!)
 
         recipeRef.get().addOnSuccessListener { dataSnapshot ->
             val recipe = dataSnapshot.getValue(RecipeData::class.java)
@@ -80,15 +80,11 @@ object DietFirebase {
         DogFirebase.getActualDog { dogId ->
             if (dogId == null) {
                 onResult(false)
-            }
-            else
-            {
+            } else {
                 val recipeId = dietRecipe.idRecipe
                 if (recipeId.isNullOrEmpty()) {
                     onResult(false)
-                }
-                else
-                {
+                } else {
                     val recipeRef = FirebaseDB.getMDbRef()
                         .child("recipe")
                         .child(recipeId)
@@ -192,5 +188,31 @@ object DietFirebase {
             onResult(emptyList())
         }
     }
+
+    fun loadCompleteRecipesForDiet(onResult: (List<RecipeData>?) -> Unit) {
+        loadDietRecipeList { dietRecipeList ->
+            if (dietRecipeList.isNullOrEmpty()) {
+                onResult(emptyList())
+                return@loadDietRecipeList
+            }
+
+            val recipes = mutableListOf<RecipeData>()
+            var loadedCount = 0
+
+            for (dietRecipe in dietRecipeList) {
+                loadRecipeById(dietRecipe.idRecipe) { recipe ->
+                    if (recipe != null) {
+                        recipes.add(recipe)
+                    }
+                    loadedCount++
+
+                    if (loadedCount == dietRecipeList.size) {
+                        onResult(recipes)
+                    }
+                }
+            }
+        }
+    }
+
 
 }

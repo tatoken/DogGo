@@ -1,7 +1,6 @@
 package com.example.doggo_ourapp
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -9,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.doggo_ourapp.TrainingFirebase.saveTraining
 
 class TestActivity : AppCompatActivity() {
 
@@ -189,10 +187,9 @@ class TestActivity : AppCompatActivity() {
             }
         }
 
-        addDietButton=findViewById(R.id.addDiet)
-
         /**********************************/
 
+        addDietButton=findViewById(R.id.addDiet)
 
         addDietButton.setOnClickListener {
 
@@ -227,7 +224,7 @@ class TestActivity : AppCompatActivity() {
         addRecipe=findViewById(R.id.addRecipe)
         addRecipe.setOnClickListener()
         {
-            DietFirebase.saveRecipe(RecipeData(null, "Tiramisu","20","Dolce buono","2","Basso","10","10","10","10","10"))
+            DietFirebase.saveRecipe(RecipeData(null, "Chicken breast","10","INGREDIENTS:\n• Chicken breast \nDESCRIPTION:\nCut the chicken and cook it","1","Low","10","10","10","10","10"))
             { success ->
                 if (success) {
                     Toast.makeText(this, "Ricetta salvata!", Toast.LENGTH_SHORT).show()
@@ -241,7 +238,7 @@ class TestActivity : AppCompatActivity() {
 
         addDietRecipeButton.setOnClickListener()
         {
-            DietFirebase.saveDietRecipe(DietRecipeData(null,"-OUU2HqICauZ9EO1YG_I", "03/07/2025"))
+            DietFirebase.saveDietRecipe(DietRecipeData(null,"-OU_Xbh_bTMRlOgOJSSj", "07/07/2025"))
             { success ->
                 if (success) {
                     Toast.makeText(this, "Dieta-Ricetta salvata!", Toast.LENGTH_SHORT).show()
@@ -256,7 +253,7 @@ class TestActivity : AppCompatActivity() {
 
         loadDietRecipeButton.setOnClickListener()
         {
-            DietFirebase.loadDietRecipe("-OUU5-HOqpsNGEskRgk6") { recipeDiet ->
+            DietFirebase.loadDietRecipe("-OU_XxzlYXy4PL8H_L5Z") { recipeDiet ->
                 if (recipeDiet != null) {
                     DietFirebase.loadRecipeById(recipeDiet.idRecipe!!) { recipe ->
                         if(recipe!=null)
