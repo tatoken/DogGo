@@ -44,6 +44,7 @@ class RecipeAdapter(
             itemView.findViewById<TextView>(R.id.recipeTitle).text = recipe.name
             itemView.findViewById<TextView>(R.id.recipeTime).text = "TIME: ${recipe.duration}"
             itemView.findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY: ${recipe.difficulty}"
+            itemView.findViewById<TextView>(R.id.recipeCost).text = "COST: ${recipe.cost}"
             itemView.findViewById<TextView>(R.id.recipeDescription).text = recipe.description
 
             itemView.findViewById<TextView>(R.id.carbohydratesValue).text = "Carbohydrates: ${recipe.carbohydrates}"
