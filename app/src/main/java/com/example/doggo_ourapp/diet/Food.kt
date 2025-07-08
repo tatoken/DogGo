@@ -3,6 +3,7 @@ package com.example.doggo_ourapp.diet
 import android.graphics.Color
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.VISIBLE
 import android.widget.TextView
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.firebase.database.FirebaseDatabase
 
 class Food : Fragment(R.layout.food_layout) {
 
@@ -48,6 +50,21 @@ class Food : Fragment(R.layout.food_layout) {
                 emptyText2.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        DietFirebase.clearDietIfNewDay { success ->
+            if (success) {
+                Log.d("DietReset", "Data dieta aggiornata")
+            } else {
+                Log.e("DietReset", "Errore o dieta già aggiornata")
+            }
+        }
+
+        loadRecipes()
+        loadAndDisplayNutrients()
     }
 
     private fun loadRecipes() {
@@ -100,8 +117,6 @@ class Food : Fragment(R.layout.food_layout) {
             valueTextSize = 12f
         }
 
-        hBarChart.setExtraLeftOffset(40f)
-
         hBarChart.apply {
             data = BarData(dataSet).apply {
                 barWidth = 0.7f
@@ -136,5 +151,8 @@ class Food : Fragment(R.layout.food_layout) {
             invalidate()
         }
     }
+
+
+
 
 }

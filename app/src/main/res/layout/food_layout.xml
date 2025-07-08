@@ -77,6 +77,7 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/myBlack"
+            android:layout_marginBottom="10dp"
             android:text="Diet" />
 
         <TextView
@@ -95,7 +96,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
             android:visibility="gone"/>
 
     </LinearLayout>

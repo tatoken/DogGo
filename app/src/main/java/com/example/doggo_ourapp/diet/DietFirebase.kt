@@ -1,8 +1,11 @@
 package com.example.doggo_ourapp.diet
 
+import android.util.Log
 import com.example.doggo_ourapp.DogFirebase
 import com.example.doggo_ourapp.FirebaseDB
 import com.example.doggo_ourapp.UserFirebase
+import com.google.firebase.database.FirebaseDatabase
+import java.time.LocalDate
 
 object DietFirebase {
 
@@ -304,6 +307,39 @@ object DietFirebase {
                         it.printStackTrace()
                         onResult(false)
                     }
+            }
+        }
+    }
+
+    fun clearDietIfNewDay(onResult: (Boolean) -> Unit) {
+        val today = LocalDate.now().toString() // "YYYY-MM-DD"
+
+        DogFirebase.getActualDog { dogId ->
+            if (dogId == null) {
+                onResult(false)
+            } else {
+                val dietRef = FirebaseDB.getMDbRef()
+                    .child("user")
+                    .child(UserFirebase.getCurrentUserId())
+                    .child("dog")
+                    .child(dogId)
+                    .child("diet")
+
+                dietRef.get().addOnSuccessListener { snapshot ->
+                    val lastCleared = snapshot.child("lastCleared").getValue(String::class.java)
+
+                    if (lastCleared != today) {
+                        // Cancella dietRecipe
+                        dietRef.child("dietRecipe").removeValue()
+                        // Aggiorna la data di ultimo svuotamento
+                        dietRef.child("lastCleared").setValue(today)
+                        Log.d("DietReset", "Dieta svuotata perché è un nuovo giorno")
+                    } else {
+                        Log.d("DietReset", "Dieta già svuotata oggi")
+                    }
+                }.addOnFailureListener {
+                    Log.e("DietReset", "Errore nel recupero della dieta", it)
+                }
             }
         }
     }

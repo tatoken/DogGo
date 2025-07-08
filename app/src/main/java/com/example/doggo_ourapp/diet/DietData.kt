@@ -7,5 +7,6 @@ data class DietData(
     var proteins: String ? =null,
     var fibers: String? =null,
     var vitamins: String ? =null,
-    var dietRecipe: Map<String, DietRecipeData>? = null
+    var dietRecipe: Map<String, DietRecipeData>? = null,
+    var lastCleared: String="2025-07-08"
 )
