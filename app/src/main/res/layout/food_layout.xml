@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@color/myWhite"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/myWhite">
 
-    <!-- Prima parte -->
+    <!-- Prima parte: 60% altezza -->
     <LinearLayout
         android:id="@+id/firstSection"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:background="@drawable/component_background"
         android:padding="15dp"
         android:layout_margin="5dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/secondSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.6">
+        app:layout_constraintHeight_percent="0.6"
+        >
 
         <TextView
             android:id="@+id/titleSection"
@@ -43,36 +42,38 @@
 
     </LinearLayout>
 
-    <!--Seconda parte-->
+    <!-- Seconda parte: 40% altezza -->
     <LinearLayout
         android:id="@+id/secondSection"
-        android:layout_margin="5dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/firstSection"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical"
         android:background="@drawable/component_background"
         android:padding="15dp"
+        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/firstSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
+
+        <!-- Titolo -->
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/myBlack"
-            android:text="Diet"/>
+            android:text="Diet" />
 
-        <ImageView
+        <!-- Grafico -->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:src="@drawable/food_chart"
-            />
+            android:layout_weight="1" />
 
     </LinearLayout>
 

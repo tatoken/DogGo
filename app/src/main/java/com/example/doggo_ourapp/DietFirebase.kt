@@ -1,5 +1,8 @@
 package com.example.doggo_ourapp
 
+import android.util.Log
+import android.widget.Toast
+
 object DietFirebase {
 
     fun saveDiet(diet: DietData, onResult: (Boolean) -> Unit) {
@@ -62,7 +65,26 @@ object DietFirebase {
         }
     }
 
-    fun loadRecipeById(recipeId: String?, onResult: (RecipeData?) -> Unit) {
+    fun loadAllRecipes(onResult: (List<RecipeData>) -> Unit) {
+        val recipeRef = FirebaseDB.getMDbRef().child("recipe")
+
+        recipeRef.get().addOnSuccessListener { dataSnapshot ->
+            val recipeList = mutableListOf<RecipeData>()
+            for (child in dataSnapshot.children) {
+                val recipe = child.getValue(RecipeData::class.java)
+                recipe?.let {
+                    it.id = child.key
+                    recipeList.add(it)
+                }
+            }
+            onResult(recipeList)
+        }.addOnFailureListener {
+            it.printStackTrace()
+            onResult(emptyList())
+        }
+    }
+
+    fun loadRecipe(recipeId: String?, onResult: (RecipeData?) -> Unit) {
         val recipeRef = FirebaseDB.getMDbRef().child("recipe").child(recipeId!!)
 
         recipeRef.get().addOnSuccessListener { dataSnapshot ->
@@ -170,24 +192,7 @@ object DietFirebase {
         }
     }
 
-    fun loadAllRecipes(onResult: (List<RecipeData>) -> Unit) {
-        val recipeRef = FirebaseDB.getMDbRef().child("recipe")
 
-        recipeRef.get().addOnSuccessListener { dataSnapshot ->
-            val recipeList = mutableListOf<RecipeData>()
-            for (child in dataSnapshot.children) {
-                val recipe = child.getValue(RecipeData::class.java)
-                recipe?.let {
-                    it.id = child.key
-                    recipeList.add(it)
-                }
-            }
-            onResult(recipeList)
-        }.addOnFailureListener {
-            it.printStackTrace()
-            onResult(emptyList())
-        }
-    }
 
     fun loadCompleteRecipesForDiet(onResult: (List<RecipeData>?) -> Unit) {
         loadDietRecipeList { dietRecipeList ->
@@ -200,7 +205,7 @@ object DietFirebase {
             var loadedCount = 0
 
             for (dietRecipe in dietRecipeList) {
-                loadRecipeById(dietRecipe.idRecipe) { recipe ->
+                loadRecipe(dietRecipe.idRecipe) { recipe ->
                     if (recipe != null) {
                         recipes.add(recipe)
                     }
@@ -214,5 +219,43 @@ object DietFirebase {
         }
     }
 
+    fun loadTotalNutrientsForDiet(onResult: (Map<String, Double>) -> Unit) {
+        loadCompleteRecipesForDiet { recipeList ->
+            if (recipeList.isNullOrEmpty()) {
+                onResult(mapOf(
+                    "carbohydrates" to 0.0,
+                    "fats" to 0.0,
+                    "proteins" to 0.0,
+                    "fibers" to 0.0,
+                    "vitamins" to 0.0
+                ))
+                return@loadCompleteRecipesForDiet
+            }
+
+            var totalCarbohydrates = 0.0
+            var totalFats = 0.0
+            var totalProteins = 0.0
+            var totalFibers = 0.0
+            var totalVitamins = 0.0
+
+            recipeList.forEach { recipe ->
+                totalCarbohydrates += recipe.carbohydrates?.toDoubleOrNull() ?: 0.0
+                totalFats += recipe.fats?.toDoubleOrNull() ?: 0.0
+                totalProteins += recipe.proteins?.toDoubleOrNull() ?: 0.0
+                totalFibers += recipe.fibers?.toDoubleOrNull() ?: 0.0
+                totalVitamins += recipe.vitamins?.toDoubleOrNull() ?: 0.0
+            }
+
+            Log.d("NutrientCheck", "Totali: C=$totalCarbohydrates, F=$totalFats, P=$totalProteins, Fi=$totalFibers, V=$totalVitamins")
+
+            onResult(mapOf(
+                "carbohydrates" to totalCarbohydrates,
+                "fats" to totalFats,
+                "proteins" to totalProteins,
+                "fibers" to totalFibers,
+                "vitamins" to totalVitamins
+            ))
+        }
+    }
 
 }

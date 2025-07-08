@@ -255,7 +255,7 @@ class TestActivity : AppCompatActivity() {
         {
             DietFirebase.loadDietRecipe("-OU_XxzlYXy4PL8H_L5Z") { recipeDiet ->
                 if (recipeDiet != null) {
-                    DietFirebase.loadRecipeById(recipeDiet.idRecipe!!) { recipe ->
+                    DietFirebase.loadRecipe(recipeDiet.idRecipe!!) { recipe ->
                         if(recipe!=null)
                         {
                             infoDiet.text="Name Recipe: ${recipe.name}, Data: ${recipeDiet.lastDataDone}"
