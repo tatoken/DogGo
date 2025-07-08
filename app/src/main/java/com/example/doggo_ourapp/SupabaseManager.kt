@@ -10,8 +10,6 @@ import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
 
 object SupabaseManager {
     private const val SUPABASE_URL = "https://axkdeohvorpiwoygumuv.supabase.co"
@@ -47,7 +45,7 @@ object SupabaseManager {
                 }
 
             } catch (e: Exception) {
-                Log.e("barbara", "File upload failed", e)
+                Log.e("Supabase error", "File upload failed", e)
             }
         }
     }
@@ -59,7 +57,7 @@ object SupabaseManager {
             val bytes = bucket.downloadPublic(fileName)
             BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
         } catch (e: Exception) {
-            Log.e("barbara", "File download failed", e)
+            Log.e("Supabase error", "File download failed", e)
             null
         }
     }
