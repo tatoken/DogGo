@@ -33,12 +33,23 @@
             android:textColor="@color/myBlack"
             android:paddingBottom="8dp" />
 
+        <TextView
+            android:id="@+id/noDietText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Insert diet"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recipeRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:clipToPadding="false" />
+            android:clipToPadding="false"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
@@ -68,12 +79,23 @@
             android:textColor="@color/myBlack"
             android:text="Diet" />
 
+        <TextView
+            android:id="@+id/noDietText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Insert diet"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
+
         <!-- Grafico -->
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

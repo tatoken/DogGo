@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.View.VISIBLE
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,62 +21,79 @@ class Food : Fragment(R.layout.food_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //startActivity(Intent(requireContext(), PieChartActivity::class.java))
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.recipeRecyclerView)
-
-        DietFirebase.loadCompleteRecipesForDiet { recipeList ->
-            if (recipeList != null) {
-                recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                recyclerView.adapter = RecipeAdapter(recipeList) {
-                    val intent = Intent(requireContext(), AddRecipeActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-        }
-
         val pieChart = view.findViewById<PieChart>(R.id.pieChart)
+        val emptyText1 = view.findViewById<TextView>(R.id.noDietText1)
+        val emptyText2 = view.findViewById<TextView>(R.id.noDietText2)
 
-        // Carica dati per il grafico
-        DietFirebase.loadTotalNutrientsForDiet { nutrientMap ->
-            val entries = nutrientMap.map { (label, value) ->
-                PieEntry(value.toFloat(), label.capitalize())
-            }.filter { it.value > 0f }
+        recyclerView.visibility = View.GONE
+        pieChart.visibility = View.GONE
+        emptyText1.visibility = View.GONE
+        emptyText2.visibility = View.GONE
 
-            val dataSet = PieDataSet(entries, "")
-            val colors = listOf(
-                Color.rgb(239, 83, 80),     // Red 400
-                Color.rgb(66, 165, 245),    // Blue 400
-                Color.rgb(102, 187, 106),   // Green 400
-                Color.rgb(255, 202, 40),    // Amber 400
-                Color.rgb(171, 71, 188)     // Purple 400
-            )
-            dataSet.colors = colors
-            //dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-            dataSet.valueTextSize = 14f
-            dataSet.valueTextColor = Color.WHITE
-            dataSet.sliceSpace = 2f
+        DietFirebase.checkIfDogHasDiet { hasDiet ->
+            if (hasDiet) {
+                recyclerView.visibility = VISIBLE
+                pieChart.visibility = VISIBLE
 
-            val data = PieData(dataSet)
+                // Carica le ricette
+                DietFirebase.loadCompleteRecipesForDiet { recipeList ->
+                    if (recipeList != null) {
+                        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        recyclerView.adapter = RecipeAdapter(recipeList) {
+                            val intent = Intent(requireContext(), AddRecipeActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
 
-            pieChart.apply {
-                this.data = data
-                description.isEnabled = false
+                // Carica nutrienti
+                DietFirebase.loadTotalNutrientsForDiet { nutrientMap ->
+                    val entries = nutrientMap.map { (label, value) ->
+                        PieEntry(value.toFloat(), label.capitalize())
+                    }.filter { it.value > 0f }
 
-                // Legenda a destra
-                legend.isEnabled = true
-                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-                legend.orientation = Legend.LegendOrientation.VERTICAL
-                legend.setDrawInside(false)
+                    val dataSet = PieDataSet(entries, "")
+                    val colors = listOf(
+                        Color.rgb(239, 83, 80),     // Red 400
+                        Color.rgb(66, 165, 245),    // Blue 400
+                        Color.rgb(102, 187, 106),   // Green 400
+                        Color.rgb(255, 202, 40),    // Amber 400
+                        Color.rgb(171, 71, 188)     // Purple 400
+                    )
+                    dataSet.colors = colors
+                    //dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+                    dataSet.valueTextSize = 14f
+                    dataSet.valueTextColor = Color.WHITE
+                    dataSet.sliceSpace = 2f
 
-                // Solo numeri nel grafico
-                setDrawEntryLabels(false)
+                    val data = PieData(dataSet)
 
-                // Anima il grafico
-                animateY(1000)
-                invalidate()
+                    pieChart.apply {
+                        this.data = data
+                        description.isEnabled = false
+
+                        // Legenda a destra
+                        legend.isEnabled = true
+                        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+                        legend.orientation = Legend.LegendOrientation.VERTICAL
+                        legend.setDrawInside(false)
+
+                        // Solo numeri nel grafico
+                        setDrawEntryLabels(false)
+
+                        // Anima il grafico
+                        animateY(1000)
+                        invalidate()
+                    }
+                }
+            } else {
+                // Nessuna dieta → mostra solo il messaggio
+                emptyText1.visibility = View.VISIBLE
+                emptyText2.visibility = View.VISIBLE
             }
         }
     }
+
 }

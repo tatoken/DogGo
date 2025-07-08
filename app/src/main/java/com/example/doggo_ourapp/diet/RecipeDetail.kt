@@ -16,9 +16,9 @@ class RecipeDetail : AppCompatActivity() {
 
         if (recipe != null) {
             findViewById<TextView>(R.id.recipeTitle).text = recipe.name
-            findViewById<TextView>(R.id.recipeTime).text = "TIME: ${recipe.duration}"
-            findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY: ${recipe.difficulty}"
-            findViewById<TextView>(R.id.recipeCost).text = "COST: ${recipe.cost}"
+            findViewById<TextView>(R.id.recipeTime).text = "TIME:\n${recipe.duration}"
+            findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY:\n${recipe.difficulty}"
+            findViewById<TextView>(R.id.recipeCost).text = "COST:\n${recipe.cost}"
             findViewById<TextView>(R.id.recipeDescription).text = recipe.description
 
             findViewById<TextView>(R.id.carbohydratesValue).text = "Carbohydrates: ${recipe.carbohydrates}"

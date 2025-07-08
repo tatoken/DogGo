@@ -44,9 +44,9 @@ class RecipeAdapter(
     class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(recipe: RecipeData) {
             itemView.findViewById<TextView>(R.id.recipeTitle).text = recipe.name
-            itemView.findViewById<TextView>(R.id.recipeTime).text = "TIME: ${recipe.duration}"
-            itemView.findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY: ${recipe.difficulty}"
-            itemView.findViewById<TextView>(R.id.recipeCost).text = "COST: ${recipe.cost}"
+            itemView.findViewById<TextView>(R.id.recipeTime).text = "TIME:\n${recipe.duration}"
+            itemView.findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY:\n${recipe.difficulty}"
+            itemView.findViewById<TextView>(R.id.recipeCost).text = "COST:\n${recipe.cost}"
 
             itemView.findViewById<TextView>(R.id.carbohydratesValue).text = "Carbohydrates: ${recipe.carbohydrates}"
             itemView.findViewById<TextView>(R.id.fatsValue).text = "Fats: ${recipe.fats}"

@@ -5,6 +5,10 @@ import com.example.doggo_ourapp.DietRecipeData
 import com.example.doggo_ourapp.DogFirebase
 import com.example.doggo_ourapp.FirebaseDB
 import com.example.doggo_ourapp.UserFirebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 object DietFirebase {
 
@@ -198,7 +202,6 @@ object DietFirebase {
     }
 
 
-
     fun loadCompleteRecipesForDiet(onResult: (List<RecipeData>?) -> Unit) {
         loadDietRecipeList { dietRecipeList ->
             if (dietRecipeList.isNullOrEmpty()) {
@@ -251,8 +254,6 @@ object DietFirebase {
                 totalVitamins += recipe.vitamins?.toDoubleOrNull() ?: 0.0
             }
 
-            Log.d("NutrientCheck", "Totali: C=$totalCarbohydrates, F=$totalFats, P=$totalProteins, Fi=$totalFibers, V=$totalVitamins")
-
             onResult(mapOf(
                 "carbohydrates" to totalCarbohydrates,
                 "fats" to totalFats,
@@ -263,4 +264,28 @@ object DietFirebase {
         }
     }
 
+    fun checkIfDogHasDiet(onResult: (Boolean) -> Unit) {
+        DogFirebase.getActualDog { dogId ->
+            if (dogId == null) {
+                onResult(false)
+            } else {
+                val dietRef = FirebaseDB.getMDbRef()
+                    .child("user")
+                    .child(UserFirebase.getCurrentUserId())
+                    .child("dog")
+                    .child(dogId)
+                    .child("diet")
+
+                dietRef.get()
+                    .addOnSuccessListener { snapshot ->
+                        val hasDiet = snapshot.exists() && snapshot.childrenCount > 0
+                        onResult(hasDiet)
+                    }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        onResult(false)
+                    }
+            }
+        }
+    }
 }
