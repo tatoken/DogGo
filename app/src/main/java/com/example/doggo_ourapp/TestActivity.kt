@@ -8,6 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.doggo_ourapp.diet.DietData
+import com.example.doggo_ourapp.diet.DietFirebase
+import com.example.doggo_ourapp.diet.RecipeData
 
 class TestActivity : AppCompatActivity() {
 
@@ -224,7 +227,20 @@ class TestActivity : AppCompatActivity() {
         addRecipe=findViewById(R.id.addRecipe)
         addRecipe.setOnClickListener()
         {
-            DietFirebase.saveRecipe(RecipeData(null, "Chicken breast","10","INGREDIENTS:\n• Chicken breast \nDESCRIPTION:\nCut the chicken and cook it","1","Low","10","10","10","10","10"))
+            DietFirebase.saveRecipe(
+                RecipeData(
+                    null,
+                    "Vegetarian Lentil Mix",
+                    "50 min",
+                    "INGREDIENTS:\n• Brown lentils\n• Brown rice\n• Carrots\n• Pumpkin puree\nDESCRIPTION:\nCook lentils and rice separately until tender. Steam carrots and mash them with pumpkin puree. Combine everything and let cool before serving. Perfect for dogs with meat sensitivity.",
+                    "Hard",
+                    "Medium",
+                    "35",
+                    "5",
+                    "17",
+                    "6",
+                    "5"
+                ))
             { success ->
                 if (success) {
                     Toast.makeText(this, "Ricetta salvata!", Toast.LENGTH_SHORT).show()

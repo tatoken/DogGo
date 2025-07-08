@@ -1,4 +1,4 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
 
 data class RecipeData(
     var id: String?=null,
@@ -12,5 +12,4 @@ data class RecipeData(
     var proteins: String?=null,
     var fibers: String?=null,
     var vitamins: String?=null
-
 )

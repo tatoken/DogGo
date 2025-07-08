@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.doggo_ourapp.databinding.MainAppLayoutBinding
+import com.example.doggo_ourapp.diet.Food
 import com.google.android.material.navigation.NavigationView
 
 

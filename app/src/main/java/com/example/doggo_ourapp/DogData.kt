@@ -1,5 +1,7 @@
 package com.example.doggo_ourapp
 
+import com.example.doggo_ourapp.diet.DietData
+
 data class DogData(
     var id: String? = null,
     var name: String? = null,

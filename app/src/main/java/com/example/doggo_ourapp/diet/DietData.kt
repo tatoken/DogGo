@@ -1,4 +1,6 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
+
+import com.example.doggo_ourapp.DietRecipeData
 
 data class DietData(
     var name: String? =null,

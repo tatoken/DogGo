@@ -1,9 +1,14 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
 
 import android.util.Log
-import android.widget.Toast
+import com.example.doggo_ourapp.DietRecipeData
+import com.example.doggo_ourapp.DogFirebase
+import com.example.doggo_ourapp.FirebaseDB
+import com.example.doggo_ourapp.UserFirebase
 
 object DietFirebase {
+
+    var selectedRecipe: RecipeData? = null
 
     fun saveDiet(diet: DietData, onResult: (Boolean) -> Unit) {
 

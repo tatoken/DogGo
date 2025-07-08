@@ -1,19 +1,18 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
 
 import android.graphics.Color
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doggo_ourapp.R
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 
 class Food : Fragment(R.layout.food_layout) {
 
@@ -47,7 +46,7 @@ class Food : Fragment(R.layout.food_layout) {
                 Color.rgb(239, 83, 80),     // Red 400
                 Color.rgb(66, 165, 245),    // Blue 400
                 Color.rgb(102, 187, 106),   // Green 400
-                Color.rgb(255, 238, 88),    // Yellow 400
+                Color.rgb(255, 202, 40),    // Amber 400
                 Color.rgb(171, 71, 188)     // Purple 400
             )
             dataSet.colors = colors

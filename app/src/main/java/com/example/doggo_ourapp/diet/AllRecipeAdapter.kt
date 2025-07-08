@@ -1,4 +1,4 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doggo_ourapp.R
 
 class AllRecipesAdapter(
     private val recipes: List<RecipeData>,

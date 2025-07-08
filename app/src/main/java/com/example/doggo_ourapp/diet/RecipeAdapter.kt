@@ -1,5 +1,6 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doggo_ourapp.R
 
 class RecipeAdapter(
     private val recipes: List<RecipeData>,
@@ -45,7 +47,6 @@ class RecipeAdapter(
             itemView.findViewById<TextView>(R.id.recipeTime).text = "TIME: ${recipe.duration}"
             itemView.findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY: ${recipe.difficulty}"
             itemView.findViewById<TextView>(R.id.recipeCost).text = "COST: ${recipe.cost}"
-            itemView.findViewById<TextView>(R.id.recipeDescription).text = recipe.description
 
             itemView.findViewById<TextView>(R.id.carbohydratesValue).text = "Carbohydrates: ${recipe.carbohydrates}"
             itemView.findViewById<TextView>(R.id.fatsValue).text = "Fats: ${recipe.fats}"
@@ -61,6 +62,14 @@ class RecipeAdapter(
 
             // Se usi un URL remoto
             // Glide.with(itemView).load(recipe.imageUrl).into(imageView)
+
+            itemView.setOnClickListener {
+                DietFirebase.selectedRecipe = recipe
+                val context = itemView.context
+                val intent = Intent(context, RecipeDetail::class.java)
+                context.startActivity(intent)
+            }
+
         }
     }
 

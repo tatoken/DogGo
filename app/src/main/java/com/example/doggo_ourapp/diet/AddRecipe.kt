@@ -1,4 +1,4 @@
-package com.example.doggo_ourapp
+package com.example.doggo_ourapp.diet
 
 import java.time.LocalDateTime
 
@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.doggo_ourapp.DietRecipeData
+import com.example.doggo_ourapp.R
 import java.time.format.DateTimeFormatter
 
 class AddRecipeActivity : AppCompatActivity() {
