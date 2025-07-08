@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.doggo_ourapp.diet.DietData
 import com.example.doggo_ourapp.diet.DietFirebase
+import com.example.doggo_ourapp.diet.DietRecipeData
 import com.example.doggo_ourapp.diet.RecipeData
 
 class TestActivity : AppCompatActivity() {

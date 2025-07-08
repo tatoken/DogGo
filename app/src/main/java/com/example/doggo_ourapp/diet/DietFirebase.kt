@@ -1,14 +1,8 @@
 package com.example.doggo_ourapp.diet
 
-import android.util.Log
-import com.example.doggo_ourapp.DietRecipeData
 import com.example.doggo_ourapp.DogFirebase
 import com.example.doggo_ourapp.FirebaseDB
 import com.example.doggo_ourapp.UserFirebase
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 object DietFirebase {
 
@@ -227,6 +221,10 @@ object DietFirebase {
         }
     }
 
+    /**
+     * Ogni ricetta associata al cane a dei nutrienti, il metodo calcola la somma di
+     * ogni categoria di nutrienti e la restituisce come una mappa
+     */
     fun loadTotalNutrientsForDiet(onResult: (Map<String, Double>) -> Unit) {
         loadCompleteRecipesForDiet { recipeList ->
             if (recipeList.isNullOrEmpty()) {
@@ -261,6 +259,27 @@ object DietFirebase {
                 "fibers" to totalFibers,
                 "vitamins" to totalVitamins
             ))
+        }
+    }
+
+    /**
+     * Ogni cane ha una dieta con dei valori massimi per ogni nutrienti,
+     * il metodo lì restituisce
+     */
+    fun loadMaxNutrientsForDiet(onResult: (Map<String, Double>?) -> Unit) {
+        loadDiet { diet ->
+            if (diet != null) {
+                val nutrientMap = mapOf(
+                    "carbohydrates" to diet.carbohydrates?.toDoubleOrNull(),
+                    "fats" to diet.fats?.toDoubleOrNull(),
+                    "proteins" to diet.proteins?.toDoubleOrNull(),
+                    "fibers" to diet.fibers?.toDoubleOrNull(),
+                    "vitamins" to diet.vitamins?.toDoubleOrNull()
+                ).filterValues { it != null } as Map<String, Double>
+                onResult(nutrientMap)
+            } else {
+                onResult(null)
+            }
         }
     }
 

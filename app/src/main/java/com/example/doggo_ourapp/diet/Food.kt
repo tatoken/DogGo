@@ -10,89 +10,126 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doggo_ourapp.R
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.charts.HorizontalBarChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 class Food : Fragment(R.layout.food_layout) {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var hBarChart: HorizontalBarChart
+    private lateinit var emptyText1: TextView
+    private lateinit var emptyText2: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recipeRecyclerView)
-        val pieChart = view.findViewById<PieChart>(R.id.pieChart)
-        val emptyText1 = view.findViewById<TextView>(R.id.noDietText1)
-        val emptyText2 = view.findViewById<TextView>(R.id.noDietText2)
+        recyclerView = view.findViewById(R.id.recipeRecyclerView)
+        hBarChart = view.findViewById(R.id.hBarChart)
+        emptyText1 = view.findViewById(R.id.noDietText1)
+        emptyText2 = view.findViewById(R.id.noDietText2)
 
         recyclerView.visibility = View.GONE
-        pieChart.visibility = View.GONE
+        hBarChart.visibility = View.GONE
         emptyText1.visibility = View.GONE
         emptyText2.visibility = View.GONE
 
         DietFirebase.checkIfDogHasDiet { hasDiet ->
             if (hasDiet) {
-                recyclerView.visibility = VISIBLE
-                pieChart.visibility = VISIBLE
+                recyclerView.visibility = View.VISIBLE
+                hBarChart.visibility = View.VISIBLE
 
-                // Carica le ricette
-                DietFirebase.loadCompleteRecipesForDiet { recipeList ->
-                    if (recipeList != null) {
-                        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        recyclerView.adapter = RecipeAdapter(recipeList) {
-                            val intent = Intent(requireContext(), AddRecipeActivity::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-
-                // Carica nutrienti
-                DietFirebase.loadTotalNutrientsForDiet { nutrientMap ->
-                    val entries = nutrientMap.map { (label, value) ->
-                        PieEntry(value.toFloat(), label.capitalize())
-                    }.filter { it.value > 0f }
-
-                    val dataSet = PieDataSet(entries, "")
-                    val colors = listOf(
-                        Color.rgb(239, 83, 80),     // Red 400
-                        Color.rgb(66, 165, 245),    // Blue 400
-                        Color.rgb(102, 187, 106),   // Green 400
-                        Color.rgb(255, 202, 40),    // Amber 400
-                        Color.rgb(171, 71, 188)     // Purple 400
-                    )
-                    dataSet.colors = colors
-                    //dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-                    dataSet.valueTextSize = 14f
-                    dataSet.valueTextColor = Color.WHITE
-                    dataSet.sliceSpace = 2f
-
-                    val data = PieData(dataSet)
-
-                    pieChart.apply {
-                        this.data = data
-                        description.isEnabled = false
-
-                        // Legenda a destra
-                        legend.isEnabled = true
-                        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-                        legend.orientation = Legend.LegendOrientation.VERTICAL
-                        legend.setDrawInside(false)
-
-                        // Solo numeri nel grafico
-                        setDrawEntryLabels(false)
-
-                        // Anima il grafico
-                        animateY(1000)
-                        invalidate()
-                    }
-                }
+                loadRecipes()
+                loadAndDisplayNutrients()
             } else {
-                // Nessuna dieta → mostra solo il messaggio
                 emptyText1.visibility = View.VISIBLE
                 emptyText2.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun loadRecipes() {
+        DietFirebase.loadCompleteRecipesForDiet { recipeList ->
+            if (recipeList != null) {
+                recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                recyclerView.adapter = RecipeAdapter(recipeList) {
+                    val intent = Intent(requireContext(), AddRecipeActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    private fun loadAndDisplayNutrients() {
+        DietFirebase.loadTotalNutrientsForDiet { totalMap ->
+            DietFirebase.loadMaxNutrientsForDiet { maxMap ->
+                if (totalMap != null && maxMap != null) {
+                    setupChartWithNutrients(totalMap, maxMap)
+                } else {
+                    hBarChart.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setupChartWithNutrients(totalMap: Map<String, Double>, maxMap: Map<String, Double>) {
+        val entries = mutableListOf<BarEntry>()
+        val labels = mutableListOf<String>()
+
+        val nutrientList = listOf("carbohydrates", "fats", "proteins", "fibers", "vitamins")
+
+        for ((index, nutrient) in nutrientList.withIndex()) {
+            val current = totalMap[nutrient]?.toFloat() ?: 0f
+            val max = maxMap[nutrient]?.toFloat() ?: 1f
+            val percentage = (current / max * 100).coerceAtMost(100f)
+
+            entries.add(BarEntry(index.toFloat(), percentage))
+            labels.add(nutrient.replaceFirstChar { it.uppercaseChar() })
+        }
+
+        val dataSet = BarDataSet(entries, "Nutrient Intake (%)").apply {
+            colors = listOf(
+                Color.rgb(239, 83, 80),
+                Color.rgb(66, 165, 245),
+                Color.rgb(102, 187, 106),
+                Color.rgb(255, 202, 40),
+                Color.rgb(171, 71, 188)
+            )
+            valueTextSize = 12f
+        }
+
+        hBarChart.apply {
+            data = BarData(dataSet).apply {
+                barWidth = 0.7f
+
+            }
+            description.isEnabled = false
+            legend.isEnabled = false
+
+            axisLeft.apply {
+                axisMinimum = 0f
+                axisMaximum = 100f
+                granularity = 20f
+                setDrawGridLines(false)
+            }
+
+            axisRight.isEnabled = false
+
+            xAxis.apply {
+                valueFormatter = IndexAxisValueFormatter(labels)
+                granularity = 1f
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+            }
+
+            setFitBars(true)
+            setVisibleXRangeMaximum(5f) // 👈 importante
+            animateY(1000)
+            invalidate()
+            visibility = View.VISIBLE
         }
     }
 
