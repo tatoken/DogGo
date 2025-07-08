@@ -82,6 +82,72 @@
             />
 
         <Button
+            android:id="@+id/addBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aggiungi badge"
+            />
+
+        <Button
+            android:id="@+id/seeBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vedi badge sbloccati"
+            />
+
+        <Button
+            android:id="@+id/checkBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Controlla badge"
+            />
+
+        <TextView
+            android:id="@+id/badgeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BadgeInfo"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/primaryColor"
+            />
+
+        <Button
+            android:id="@+id/addPrize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aggiungi premio"
+            />
+
+        <Button
+            android:id="@+id/getPrize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prendi crocchette"
+            />
+
+        <Button
+            android:id="@+id/seePrize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vedi miei premi"
+            />
+
+        <TextView
+            android:id="@+id/prizeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PrizeInfo"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/primaryColor"
+            />
+
+        <Button
             android:id="@+id/addDog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

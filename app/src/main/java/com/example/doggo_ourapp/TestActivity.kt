@@ -29,6 +29,16 @@ class TestActivity : AppCompatActivity() {
     private lateinit var seeEvent:Button
     private lateinit var infoEvent:TextView
 
+    private lateinit var checkBadgeButton: Button
+    private lateinit var addBadgeButton: Button
+    private lateinit var seeBadgeButton: Button
+    private lateinit var badgeInfo:TextView
+
+    private lateinit var addPrizeButton: Button
+    private lateinit var getPrizeButton: Button
+    private lateinit var seePrizeButton: Button
+    private lateinit var prizeInfo:TextView
+
     private lateinit var addDietButton: Button
     private lateinit var loadDietButton: Button
     private lateinit var addRecipe:Button
@@ -60,6 +70,16 @@ class TestActivity : AppCompatActivity() {
         seeAllEvents=findViewById(R.id.seeAllEvents)
         seeEvent=findViewById(R.id.seeEvent)
         infoEvent=findViewById(R.id.eventInfo)
+
+        addBadgeButton=findViewById(R.id.addBadge)
+        checkBadgeButton=findViewById(R.id.checkBadge)
+        seeBadgeButton=findViewById(R.id.seeBadge)
+        badgeInfo=findViewById(R.id.badgeInfo)
+
+        addPrizeButton=findViewById(R.id.addPrize)
+        getPrizeButton=findViewById(R.id.getPrize)
+        seePrizeButton=findViewById(R.id.seePrize)
+        prizeInfo=findViewById(R.id.prizeInfo)
 
         getActualDog=findViewById(R.id.getActualDog)
         selectActualDog=findViewById(R.id.selectActualDog)
@@ -188,6 +208,124 @@ class TestActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+        addBadgeButton.setOnClickListener()
+        {
+
+            BadgeFirebase.saveBadge(BadgeData(null,"Megadog","Do 5 km with your pet","5","trainingDistance")) { result ->
+                if (result) {
+                    badgeInfo.text ="Badge aggiunta"
+                }
+                else {
+                    badgeInfo.text="Errore"
+                }
+            }
+
+            BadgeFirebase.saveBadge(BadgeData(null,"Ultradog","Do 10 km with your pet","10","trainingDistance")) { result ->
+                if (result) {
+                    badgeInfo.text ="Badge aggiunta"
+                }
+                else {
+                    badgeInfo.text="Errore"
+                }
+            }
+
+            BadgeFirebase.saveBadge(BadgeData(null,"Gigadog","Do 20 km with your pet","20","trainingDistance")) { result ->
+                if (result) {
+                    badgeInfo.text ="Badge aggiunta"
+                }
+                else {
+                    badgeInfo.text="Errore"
+                }
+            }
+        }
+
+        checkBadgeButton.setOnClickListener()
+        {
+
+            BadgeFirebase.checkAndAssignBadgesByType("trainingDistance","11") { badges ->
+                if (badges != null) {
+                    val badgeNames = StringBuilder()
+                    badges.forEach { badge ->
+                        badge.let {
+                            badgeNames.append("• $it\n")
+                        }
+                    }
+                    badgeInfo.text = badgeNames.toString()
+                }
+                else {
+                    badgeInfo.text="Errore"
+                }
+            }
+        }
+        seeBadgeButton.setOnClickListener {
+            BadgeFirebase.getUserBadges() { badges ->
+                if (badges != null) {
+                    val badgeNames = StringBuilder()
+                    var counter = 0
+
+                    badges.forEach { badgeAchieved ->
+                        BadgeFirebase.getBadgeById(badgeAchieved.idBadge ?: "") { badgeData ->
+                            if (badgeData != null) {
+                                badgeNames.append("• ${badgeData.name} - ${badgeAchieved.achievedDate}\n")
+                            }
+
+                            counter++
+                            if (counter == badges.size) {
+                                badgeInfo.text = badgeNames.toString()
+                            }
+                        }
+                    }
+                } else {
+                    badgeInfo.text = "Errore"
+                }
+            }
+        }
+
+
+        addPrizeButton.setOnClickListener()
+        {
+            PrizeFirebase.savePrize(PrizeData(null,"3Kg di crocchette","3Kg di ottime crocchette di qualità","100")) { result ->
+                if (result) {
+                    infoDog.text="Premio aggiunto"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
+        }
+
+        getPrizeButton.setOnClickListener()
+        {
+            PrizeFirebase.getPrize("-OUIlEEqoJm7-mAyn6RW") { result ->
+                infoDog.text=result
+            }
+        }
+
+        seePrizeButton.setOnClickListener {
+            PrizeFirebase.getUserPrizes { prizes ->
+                if (prizes != null) {
+                    val prizeNames = StringBuilder()
+                    var counter = 0
+
+                    prizes.forEach { prizeAchieved ->
+                        PrizeFirebase.getPrizeById(prizeAchieved.idPrize ?: "") { prizeData ->
+                            if (prizeData != null) {
+                                prizeNames.append("• ${prizeData.name} - ${prizeAchieved.quantity}\n")
+                            }
+
+                            counter++
+                            if (counter == prizes.size) {
+                                infoDog.text = prizeNames.toString()
+                            }
+                        }
+                    }
+                } else {
+                    infoDog.text = "Errore"
+                }
+            }
+        }
+
 
         addDietButton=findViewById(R.id.addDiet)
 
