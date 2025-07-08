@@ -100,6 +100,8 @@ class Food : Fragment(R.layout.food_layout) {
             valueTextSize = 12f
         }
 
+        hBarChart.setExtraLeftOffset(40f)
+
         hBarChart.apply {
             data = BarData(dataSet).apply {
                 barWidth = 0.7f
@@ -120,16 +122,18 @@ class Food : Fragment(R.layout.food_layout) {
             xAxis.apply {
                 valueFormatter = IndexAxisValueFormatter(labels)
                 granularity = 1f
+                textSize = 10f  // Di default è circa 12-14f
                 setDrawGridLines(false)
                 setDrawAxisLine(false)
+
                 position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
             }
+
 
             setFitBars(true)
             setVisibleXRangeMaximum(5f) // 👈 importante
             animateY(1000)
             invalidate()
-            visibility = View.VISIBLE
         }
     }
 
