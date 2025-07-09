@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.database.FirebaseDatabase
 
 class Food : Fragment(R.layout.food_layout) {
@@ -55,16 +56,12 @@ class Food : Fragment(R.layout.food_layout) {
     override fun onResume() {
         super.onResume()
 
-        DietFirebase.clearDietIfNewDay { success ->
-            if (success) {
-                Log.d("DietReset", "Data dieta aggiornata")
-            } else {
-                Log.e("DietReset", "Errore o dieta già aggiornata")
-            }
-        }
 
-        loadRecipes()
-        loadAndDisplayNutrients()
+        DietFirebase.clearDietIfNewDay { _ ->
+            // Indipendentemente che venga svuotata o no, i dati vanno ricaricati
+            loadRecipes()
+            loadAndDisplayNutrients()
+        }
     }
 
     private fun loadRecipes() {
@@ -115,6 +112,11 @@ class Food : Fragment(R.layout.food_layout) {
                 Color.rgb(171, 71, 188)
             )
             valueTextSize = 12f
+            valueFormatter = object : ValueFormatter() {
+                override fun getBarLabel(barEntry: BarEntry): String {
+                    return String.format("%.1f%%", barEntry.y)
+                }
+            }
         }
 
         hBarChart.apply {

@@ -1,5 +1,6 @@
 package com.example.doggo_ourapp.diet
 
+import android.app.AlertDialog
 import java.time.LocalDateTime
 
 import android.os.Bundle
@@ -48,13 +49,34 @@ class AddRecipeActivity : AppCompatActivity() {
             lastDataDone = currentDateString
         )
 
-        DietFirebase.saveDietRecipe(newDietRecipe) { success ->
-            if (success) {
-                Toast.makeText(this, "Ricetta aggiunta alla dieta!", Toast.LENGTH_SHORT).show()
-                finish() // Torna indietro o aggiorna UI
-            } else {
-                Toast.makeText(this, "Errore nell'aggiunta", Toast.LENGTH_SHORT).show()
+        DietFirebase.tryAddRecipeToDiet(recipe) { result ->
+            if (!result) {
+                saveAndFinish(newDietRecipe)
+            }else{
+                runOnUiThread {
+                    AlertDialog.Builder(this)
+                        .setTitle("Warning")
+                        .setMessage("This recipe will exceed one or more nutrient limits. Do you want to add it anyway?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            saveAndFinish(newDietRecipe)
+                        }
+                        .setNegativeButton("No", null)
+                        .show()
+                }
+
             }
         }
     }
+
+    private fun saveAndFinish(dietRecipe: DietRecipeData) {
+        DietFirebase.saveDietRecipe(dietRecipe) { success ->
+            if (success) {
+                Toast.makeText(this, "Recipe added to the diet!", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Error adding the recipe.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

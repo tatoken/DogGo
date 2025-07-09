@@ -335,11 +335,41 @@ object DietFirebase {
                         dietRef.child("lastCleared").setValue(today)
                         Log.d("DietReset", "Dieta svuotata perché è un nuovo giorno")
                     } else {
+                        onResult(false)
                         Log.d("DietReset", "Dieta già svuotata oggi")
                     }
                 }.addOnFailureListener {
                     Log.e("DietReset", "Errore nel recupero della dieta", it)
                 }
+            }
+        }
+    }
+
+    fun tryAddRecipeToDiet(
+        recipe: RecipeData,
+        onResult: (Boolean) -> Unit
+    ) {
+        loadTotalNutrientsForDiet { totalMap ->
+            loadMaxNutrientsForDiet { maxMapNullable ->
+                val maxMap = maxMapNullable ?: return@loadMaxNutrientsForDiet
+
+                val nutrientMap = mapOf(
+                    "carbohydrates" to recipe.carbohydrates?.toDoubleOrNull(),
+                    "fats" to recipe.fats?.toDoubleOrNull(),
+                    "proteins" to recipe.proteins?.toDoubleOrNull(),
+                    "fibers" to recipe.fibers?.toDoubleOrNull(),
+                    "vitamins" to recipe.vitamins?.toDoubleOrNull()
+                ).filterValues { it != null } as Map<String, Double>
+
+                val exceeds = nutrientMap.any { (key, value) ->
+                    val current = totalMap[key] ?: 0.0
+                    val max = maxMap[key] ?: Double.MAX_VALUE
+                    Log.d("DietDebug", "Nutrients exceeded: $current,  $value")
+                    (current + value) > max
+                }
+                Log.d("DietDebug", "Nutrients exceeded: $exceeds")
+
+                onResult(exceeds)
             }
         }
     }
