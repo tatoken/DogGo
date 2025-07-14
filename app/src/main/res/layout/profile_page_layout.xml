@@ -16,49 +16,98 @@
         android:background="@color/myWhite"
         >
 
+        <!--
         <TextView
             android:id="@+id/textChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TestoPersonalizzabile"/>
+        -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="15sp"
             android:background="@drawable/component_background"
-            >
+            android:orientation="vertical">
 
-            <com.example.doggo_ourapp.ProfilePageInfoComponent
-                android:id="@+id/name_info"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:labelText="NAME"
-                app:valueText="Fido" />
+                android:orientation="vertical">
 
-            <com.example.doggo_ourapp.ProfilePageInfoComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="BREED"
-                app:valueText="Labrador" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="15sp"
+                    android:paddingHorizontal="15dp"
+                    android:gravity="center_vertical"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="PERSONAL DATA:"
+                        android:textColor="@color/myBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-            <com.example.doggo_ourapp.ProfilePageInfoComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="SEX"
-                app:valueText="Male" />
+                    <ImageButton
+                        android:id="@+id/btnEditPersonal"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icons8_modificare_24"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Edit Personal"
+                        android:padding="12dp"
+                        app:tint="@color/myGrayDark"/>
 
-            <com.example.doggo_ourapp.ProfilePageInfoComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="AGE"
-                app:valueText="8" />
+                </LinearLayout>
 
-            <com.example.doggo_ourapp.ProfilePageInfoComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="MICROCHIP"
-                app:valueText="2312312313" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#CCCCCC" />
+
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/name_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="NAME"
+                    app:valueText="Fido" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/breed_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="BREED"
+                    app:valueText="Labrador" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/sex_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="SEX"
+                    app:valueText="Male" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/age_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="AGE"
+                    app:valueText="8" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/microchip_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="MICROCHIP"
+                    app:valueText="2312312313" />
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -67,32 +116,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/component_background"
             android:layout_marginTop="15sp"
-            >
-
+            android:background="@drawable/component_background"
+            android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:textSize="50sp"
-                >
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textColor="@color/myBlack"
-                    android:textStyle="bold"
-                    android:text="HEALTH DATA:"
+                    android:orientation="horizontal"
                     android:layout_marginTop="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:layout_marginEnd="15sp"
-                    android:layout_marginStart="15sp"
-                    />
+                    android:layout_marginBottom="15sp"
+                    android:paddingHorizontal="15dp"
+                    android:gravity="center_vertical"
+                    >
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="HEALTH DATA:"
+                        android:textColor="@color/myBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btnEditHealth"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icons8_modificare_24"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Edit Personal"
+                        android:padding="12dp"
+                        app:tint="@color/myGrayDark"/>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -101,34 +165,129 @@
                     android:background="#CCCCCC" />
 
                 <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/weight_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelText="WEIGHT"
                     app:valueText="32 Kg" />
 
                 <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/vaccinations_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelText="VACCINATIONS"
                     app:valueText="Polyvalent" />
 
                 <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/allergies_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelText="ALLERGIES"
                     app:valueText="None" />
 
                 <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/interventions_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelText="INTERVENTIONS"
                     app:valueText="Sterilization" />
 
                 <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/treatments_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelText="TREATMENTS"
                     app:valueText="Anti-parasitics" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/component_background"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="15sp"
+                    android:paddingHorizontal="15dp"
+                    android:gravity="center_vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="DIET DATA:"
+                        android:textColor="@color/myBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btnEditDiet"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icons8_modificare_24"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Edit Personal"
+                        android:padding="12dp"
+                        app:tint="@color/myGrayDark"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#CCCCCC" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/carbs_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="CARBOHYDRATES"
+                    app:valueText="250gr" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/fats_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="FATS"
+                    app:valueText="150gr" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/proteins_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="PROTEINS"
+                    app:valueText="125gr" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/fibers_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="FIBERS"
+                    app:valueText="60gr" />
+
+                <com.example.doggo_ourapp.ProfilePageInfoComponent
+                    android:id="@+id/vitamins_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:labelText="VITAMINS"
+                    app:valueText="50gr" />
 
 
             </LinearLayout>

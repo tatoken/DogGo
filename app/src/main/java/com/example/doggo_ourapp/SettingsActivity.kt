@@ -72,7 +72,9 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-
+    /**
+     * bucketName: recipe
+     */
     private fun uploadImageOnSupabase() {
         if (imageBitmap == null) {
             Toast.makeText(this, "Nessuna immagine selezionata", Toast.LENGTH_SHORT).show()

@@ -86,4 +86,71 @@ object DogFirebase {
         }
     }
 
+    fun updateDogPersonalFields(
+        name: String,
+        breed: String,
+        sex: String,
+        age: String,
+        microchip: String,
+        onResult: (Boolean) -> Unit
+    ) {
+        getActualDog { dogId ->
+            if (dogId == null) {
+                onResult(false)
+                return@getActualDog
+            }
+
+            val updates = mapOf(
+                "name" to name,
+                "breed" to breed,
+                "sex" to sex,
+                "age" to age,
+                "microchip" to microchip
+            )
+
+            val dogRef = FirebaseDB.getMDbRef()
+                .child("user")
+                .child(UserFirebase.getCurrentUserId())
+                .child("dog")
+                .child(dogId)
+
+            dogRef.updateChildren(updates).addOnCompleteListener { task ->
+                onResult(task.isSuccessful)
+            }
+        }
+    }
+
+
+    fun updateDogHealthFields(
+        weight: String,
+        vaccinations: String,
+        allergies: String,
+        interventions: String,
+        treatments: String,
+        onResult: (Boolean) -> Unit
+    ) {
+        getActualDog { dogId ->
+            if (dogId == null) {
+                onResult(false)
+                return@getActualDog
+            }
+
+            val updates = mapOf(
+                "weight" to weight,
+            )
+
+            val dogRef = FirebaseDB.getMDbRef()
+                .child("user")
+                .child(UserFirebase.getCurrentUserId())
+                .child("dog")
+                .child(dogId)
+
+            dogRef.updateChildren(updates).addOnCompleteListener { task ->
+                onResult(task.isSuccessful)
+            }
+        }
+    }
+
+
+
 }

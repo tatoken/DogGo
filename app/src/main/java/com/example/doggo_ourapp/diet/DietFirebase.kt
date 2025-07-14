@@ -373,4 +373,38 @@ object DietFirebase {
             }
         }
     }
+
+    fun updateDietFields(
+        carbohydrates: String,
+        fats: String,
+        proteins: String,
+        fibers: String,
+        vitamins: String,
+        onResult: (Boolean) -> Unit
+    ) {
+        DogFirebase.getActualDog { dogId ->
+            if (dogId == null) {
+                onResult(false)
+            } else {
+                val dietRef = FirebaseDB.getMDbRef()
+                    .child("user")
+                    .child(UserFirebase.getCurrentUserId())
+                    .child("dog")
+                    .child(dogId)
+                    .child("diet")
+
+                val updates = mapOf(
+                    "carbohydrates" to carbohydrates,
+                    "fats" to fats,
+                    "proteins" to proteins,
+                    "fibers" to fibers,
+                    "vitamins" to vitamins
+                )
+
+                dietRef.updateChildren(updates).addOnCompleteListener { task ->
+                    onResult(task.isSuccessful)
+                }
+            }
+        }
+    }
 }
