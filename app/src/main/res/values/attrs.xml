@@ -10,6 +10,7 @@
     <declare-styleable name="ProfilePageInfoComponent">
         <attr name="labelText" format="string" />
         <attr name="valueText" format="string" />
+        <attr name="required" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="TrophyPageBadgeComponent">

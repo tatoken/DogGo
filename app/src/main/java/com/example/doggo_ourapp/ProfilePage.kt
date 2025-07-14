@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.doggo_ourapp.diet.DietFirebase
 import com.google.firebase.auth.FirebaseAuth
-
 
 class ProfilePage : Fragment(R.layout.profile_page_layout) {
 
@@ -30,7 +28,7 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         logoutButton = view.findViewById(R.id.btnLogout)
         logoutButton.setOnClickListener {
             mAuth.signOut()
-            Toast.makeText(requireContext(), "Logout done", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Logout successful", Toast.LENGTH_SHORT).show()
             startActivity(Intent(requireActivity(), Login::class.java))
             requireActivity().finish()
         }
@@ -46,14 +44,19 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             view.findViewById(R.id.btnEditPersonal),
             personalComponents
         ) {
+            if (!validateFields(personalComponents)) {
+                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
+                return@setupEditButton
+            }
+
             DogFirebase.updateDogPersonalFields(
                 name = nameInfo.getValue(),
                 breed = breedInfo.getValue(),
                 sex = sexInfo.getValue(),
                 age = ageInfo.getValue(),
                 microchip = microchipInfo.getValue()
-            ){ success ->
-                val msg = if (success) "Dog updated successfully" else "Error while saving dog"
+            ) { success ->
+                val msg = if (success) "Dog updated successfully" else "Error while saving dog data"
                 Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             }
         }
@@ -69,14 +72,19 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             view.findViewById(R.id.btnEditHealth),
             healthComponents
         ) {
+            if (!validateFields(healthComponents)) {
+                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
+                return@setupEditButton
+            }
+
             DogFirebase.updateDogHealthFields(
                 weight = weightInfo.getValue(),
                 vaccinations = vaccinationInfo.getValue(),
                 allergies = allergiesInfo.getValue(),
                 interventions = interventionsInfo.getValue(),
                 treatments = treatmentsInfo.getValue()
-            ){ success ->
-                val msg = if (success) "Dog updated successfully" else "Error while saving dog"
+            ) { success ->
+                val msg = if (success) "Dog updated successfully" else "Error while saving dog data"
                 Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             }
         }
@@ -92,6 +100,11 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             view.findViewById(R.id.btnEditDiet),
             dietComponents
         ) {
+            if (!validateFields(dietComponents)) {
+                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
+                return@setupEditButton
+            }
+
             DietFirebase.updateDietFields(
                 carbohydrates = carbsInfo.getValue(),
                 fats = fatsInfo.getValue(),
@@ -99,13 +112,12 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 fibers = fibersInfo.getValue(),
                 vitamins = vitaminsInfo.getValue()
             ) { success ->
-                val msg = if (success) "Diet updated successfully" else "Error while saving diet"
+                val msg = if (success) "Diet updated successfully" else "Error while saving diet data"
                 Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             }
         }
 
         loadCurrentDogData()
-
     }
 
     private fun loadCurrentDogData() {
@@ -117,12 +129,11 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
 
             DogFirebase.loadDog(dogId) { dogData ->
                 if (dogData == null) {
-                    Toast.makeText(requireContext(), "Failed to load dog data", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), "Failed to load dog data", Toast.LENGTH_SHORT).show()
                     return@loadDog
                 }
 
-                // Aggiorna i componenti UI con i dati del cane
+                // Update UI components with dog data
                 personalComponents[0].setValue(dogData.name ?: "")
                 personalComponents[1].setValue(dogData.breed ?: "")
                 personalComponents[2].setValue(dogData.sex ?: "")
@@ -130,14 +141,12 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 personalComponents[4].setValue(dogData.microchip ?: "")
 
                 healthComponents[0].setValue(dogData.weight ?: "")
-                // Per vaccinazioni, allergie, ecc, devi mappare i dati da dogData agli UI componenti
-                // Se dogData non ha quei campi, usa stringhe vuote o un placeholder
-                //healthComponents[1].setValue("") // vaccinations info
-                //healthComponents[2].setValue("") // allergies info
-                //healthComponents[3].setValue("") // interventions info
-                //healthComponents[4].setValue("") // treatments info
+                // Map the rest as needed, using empty strings if data missing
+                // healthComponents[1].setValue(dogData.vaccinations ?: "")
+                // healthComponents[2].setValue(dogData.allergies ?: "")
+                // healthComponents[3].setValue(dogData.interventions ?: "")
+                // healthComponents[4].setValue(dogData.treatments ?: "")
 
-                // Per la dieta
                 dietComponents[0].setValue(dogData.diet?.carbohydrates ?: "")
                 dietComponents[1].setValue(dogData.diet?.fats ?: "")
                 dietComponents[2].setValue(dogData.diet?.proteins ?: "")
@@ -147,32 +156,44 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         }
     }
 
-
-
     private fun setupEditButton(
         button: ImageButton,
         components: List<ProfilePageInfoComponent>,
         onSave: () -> Unit
     ) {
-        // Usa ID del bottone come chiave per lo stato
         val buttonId = button.id
         editingStates[buttonId] = false
 
         button.setOnClickListener {
             val isEditing = !(editingStates[buttonId] ?: false)
 
-            // Toggle editing
+            if (!isEditing) {
+                // Before saving, validate all fields
+                if (!validateFields(components)) {
+                    Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                onSave()
+            }
+
             components.forEach { it.setEditable(isEditing) }
             editingStates[buttonId] = isEditing
 
-            if (isEditing) {
-                button.setImageResource(R.drawable.icons8_segno_di_spunta_24)
-            } else {
-                button.setImageResource(R.drawable.icons8_modificare_24)
-                onSave()
-            }
+            button.setImageResource(
+                if (isEditing)
+                    R.drawable.icons8_segno_di_spunta_24
+                else
+                    R.drawable.icons8_modificare_24
+            )
         }
     }
 
-
+    // Validate all components in a list; returns true only if all valid
+    private fun validateFields(components: List<ProfilePageInfoComponent>): Boolean {
+        var allValid = true
+        components.forEach {
+            if (!it.validate()) allValid = false
+        }
+        return allValid
+    }
 }

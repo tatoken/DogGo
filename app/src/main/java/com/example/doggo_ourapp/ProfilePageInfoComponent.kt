@@ -3,12 +3,9 @@ package com.example.doggo_ourapp
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.ImageButton
-
 
 class ProfilePageInfoComponent @JvmOverloads constructor(
     context: Context,
@@ -18,6 +15,7 @@ class ProfilePageInfoComponent @JvmOverloads constructor(
 
     private val labelTextView: TextView
     private val valueEditText: EditText
+    private var required: Boolean = false   // memorizza se è obbligatorio
 
     init {
         LayoutInflater.from(context).inflate(R.layout.profile_page_info_component, this, true)
@@ -31,11 +29,17 @@ class ProfilePageInfoComponent @JvmOverloads constructor(
 
             val label = typedArray.getString(R.styleable.ProfilePageInfoComponent_labelText)
             val value = typedArray.getString(R.styleable.ProfilePageInfoComponent_valueText)
+            required = typedArray.getBoolean(R.styleable.ProfilePageInfoComponent_required, false)
 
-            labelTextView.text = label
-            valueEditText.setText(value)
+            labelTextView.text = label ?: ""
+            valueEditText.hint = "Insert"
 
             typedArray.recycle()
+        }
+
+        // Se è obbligatorio aggiungi asterisco alla label
+        if (required) {
+            labelTextView.text = "${labelTextView.text} *"
         }
 
         setEditable(false)
@@ -66,5 +70,21 @@ class ProfilePageInfoComponent @JvmOverloads constructor(
 
     fun isEditable(): Boolean {
         return valueEditText.isEnabled
+    }
+
+    fun setError(errorMsg: String?) {
+        valueEditText.error = errorMsg
+    }
+
+    // Funzione per validare campo obbligatorio
+    fun validate(): Boolean {
+        val text = getValue().trim()
+        return if (required && text.isEmpty()) {
+            valueEditText.error = "Required field"
+            false
+        } else {
+            valueEditText.error = null
+            true
+        }
     }
 }

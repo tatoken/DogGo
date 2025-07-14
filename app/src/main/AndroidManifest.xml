@@ -17,6 +17,9 @@
         android:theme="@style/Theme.DogGoourApp"
         tools:targetApi="31">
         <activity
+            android:name=".AddDog"
+            android:exported="false" />
+        <activity
             android:name=".diet.RecipeDetail"
             android:exported="false" />
         <activity

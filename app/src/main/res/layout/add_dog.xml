@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:animateLayoutChanges="true">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/add_dog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add your dog"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/myBlack"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Card container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/component_background"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:elevation="4dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp">
+
+            <!-- Section title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dog Information"
+                android:textColor="@color/myBlack"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Fields -->
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/name_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Name"
+                app:valueText="Insert the name"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/breed_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Breed"
+                app:valueText="Insert the breed"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/sex_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Sex"
+                app:valueText="Insert the sex"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/age_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Age"
+                app:valueText="Insert the age"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/microchip_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Microchip ID"
+                app:valueText="Insert the microchip ID"
+                app:required="true"/>
+        </LinearLayout>
+
+        <!-- Save button -->
+        <android.widget.Button
+            android:id="@+id/btn_save_dog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_black_bg"
+            android:text="Save Dog"
+            android:textAllCaps="false"
+            android:textColor="@color/myWhite"
+            android:textSize="16sp" />
+    </LinearLayout>
+</ScrollView>

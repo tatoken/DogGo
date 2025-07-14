@@ -53,6 +53,28 @@ class MainApp : AppCompatActivity() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        DogFirebase.loadAllDog { dogList ->
+            if (dogList.isNullOrEmpty()) {
+                // Nessun cane → reindirizza alla schermata per aggiungerlo
+                startActivity(Intent(this, AddDog::class.java))
+                finish()
+            } else {
+                // Se c'è almeno un cane ma nessuno è selezionato
+                DogFirebase.getActualDog { actualDogId ->
+                    if (actualDogId == null) {
+                        DogFirebase.selectDog(dogList.first().id!!) {
+                            Toast.makeText(this, "Dog automatically selected", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun setUpOffcanvasMenu() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
