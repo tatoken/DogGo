@@ -7,24 +7,43 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.doggo_ourapp.diet.AddDiet
 import com.example.doggo_ourapp.diet.DietFirebase
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfilePage : Fragment(R.layout.profile_page_layout) {
 
+    // Firebase Auth instance
     private lateinit var mAuth: FirebaseAuth
+
+    // Logout button
     private lateinit var logoutButton: Button
 
+    // InfoComponent groupings
     private lateinit var personalComponents: List<ProfilePageInfoComponent>
     private lateinit var healthComponents: List<ProfilePageInfoComponent>
     private lateinit var dietComponents: List<ProfilePageInfoComponent>
 
+    // Tracking which edit buttons are in "edit mode"
     private val editingStates = mutableMapOf<Int, Boolean>()
 
+    // UI components diet-related (lateinit per uso su più metodi)
+    private lateinit var btnInsertDiet: Button
+    private lateinit var btnEditDiet: ImageButton
+    private lateinit var carbsInfo: ProfilePageInfoComponent
+    private lateinit var fatsInfo: ProfilePageInfoComponent
+    private lateinit var proteinsInfo: ProfilePageInfoComponent
+    private lateinit var fibersInfo: ProfilePageInfoComponent
+    private lateinit var vitaminsInfo: ProfilePageInfoComponent
+
+    /** -------------------- onViewCreated -------------------- **/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inizializza Firebase Auth
         mAuth = FirebaseAuth.getInstance()
+
+        // Setup Logout
         logoutButton = view.findViewById(R.id.btnLogout)
         logoutButton.setOnClickListener {
             mAuth.signOut()
@@ -33,6 +52,7 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             requireActivity().finish()
         }
 
+        /** -------------------- Personal Info Setup -------------------- **/
         val nameInfo = view.findViewById<ProfilePageInfoComponent>(R.id.name_info)
         val breedInfo = view.findViewById<ProfilePageInfoComponent>(R.id.breed_info)
         val sexInfo = view.findViewById<ProfilePageInfoComponent>(R.id.sex_info)
@@ -48,7 +68,6 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
                 return@setupEditButton
             }
-
             DogFirebase.updateDogPersonalFields(
                 name = nameInfo.getValue(),
                 breed = breedInfo.getValue(),
@@ -56,11 +75,11 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 age = ageInfo.getValue(),
                 microchip = microchipInfo.getValue()
             ) { success ->
-                val msg = if (success) "Dog updated successfully" else "Error while saving dog data"
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                showToast(success, "Dog updated successfully", "Error while saving dog data")
             }
         }
 
+        /** -------------------- Health Info Setup -------------------- **/
         val weightInfo = view.findViewById<ProfilePageInfoComponent>(R.id.weight_info)
         val vaccinationInfo = view.findViewById<ProfilePageInfoComponent>(R.id.vaccinations_info)
         val allergiesInfo = view.findViewById<ProfilePageInfoComponent>(R.id.allergies_info)
@@ -76,7 +95,6 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
                 return@setupEditButton
             }
-
             DogFirebase.updateDogHealthFields(
                 weight = weightInfo.getValue(),
                 vaccinations = vaccinationInfo.getValue(),
@@ -84,42 +102,105 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 interventions = interventionsInfo.getValue(),
                 treatments = treatmentsInfo.getValue()
             ) { success ->
-                val msg = if (success) "Dog updated successfully" else "Error while saving dog data"
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                showToast(success, "Dog updated successfully", "Error while saving dog data")
             }
         }
 
-        val carbsInfo = view.findViewById<ProfilePageInfoComponent>(R.id.carbs_info)
-        val fatsInfo = view.findViewById<ProfilePageInfoComponent>(R.id.fats_info)
-        val proteinsInfo = view.findViewById<ProfilePageInfoComponent>(R.id.proteins_info)
-        val fibersInfo = view.findViewById<ProfilePageInfoComponent>(R.id.fibers_info)
-        val vitaminsInfo = view.findViewById<ProfilePageInfoComponent>(R.id.vitamins_info)
+        /** -------------------- Diet Info Setup -------------------- **/
+
+
+        btnInsertDiet = view.findViewById(R.id.btn_insert_diet)
+        btnEditDiet = view.findViewById(R.id.btnEditDiet)
+
+        btnInsertDiet.setOnClickListener {
+            val intent = Intent(requireContext(), AddDiet::class.java)
+            startActivity(intent)
+        }
+
+
+        carbsInfo = view.findViewById(R.id.carbs_info)
+        fatsInfo = view.findViewById(R.id.fats_info)
+        proteinsInfo = view.findViewById(R.id.proteins_info)
+        fibersInfo = view.findViewById(R.id.fibers_info)
+        vitaminsInfo = view.findViewById(R.id.vitamins_info)
         dietComponents = listOf(carbsInfo, fatsInfo, proteinsInfo, fibersInfo, vitaminsInfo)
 
-        setupEditButton(
-            view.findViewById(R.id.btnEditDiet),
-            dietComponents
-        ) {
-            if (!validateFields(dietComponents)) {
-                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
-                return@setupEditButton
-            }
+        DietFirebase.checkIfDogHasDiet { hasDiet ->
+            if (hasDiet) {
+                btnInsertDiet.visibility = View.GONE
+                btnEditDiet.visibility = View.VISIBLE
 
-            DietFirebase.updateDietFields(
-                carbohydrates = carbsInfo.getValue(),
-                fats = fatsInfo.getValue(),
-                proteins = proteinsInfo.getValue(),
-                fibers = fibersInfo.getValue(),
-                vitamins = vitaminsInfo.getValue()
-            ) { success ->
-                val msg = if (success) "Diet updated successfully" else "Error while saving diet data"
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                setupEditButton(
+                    btnEditDiet,
+                    dietComponents
+                ) {
+                    if (!validateFields(dietComponents)) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Please fill all required fields",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setupEditButton
+                    }
+                    DietFirebase.updateDietFields(
+                        carbohydrates = carbsInfo.getValue(),
+                        fats = fatsInfo.getValue(),
+                        proteins = proteinsInfo.getValue(),
+                        fibers = fibersInfo.getValue(),
+                        vitamins = vitaminsInfo.getValue()
+                    ) { success ->
+                        showToast(
+                            success,
+                            "Diet updated successfully",
+                            "Error while saving diet data"
+                        )
+                    }
+                }
+                setDietComponentsVisible(true)
+
+            } else {
+                btnInsertDiet.visibility = View.VISIBLE
+                btnEditDiet.visibility = View.GONE
+                btnInsertDiet.setBackgroundResource(R.drawable.button_black_bg)
+                setDietComponentsVisible(false)
             }
         }
 
+        // Carica i dati iniziali del cane
         loadCurrentDogData()
     }
 
+    /** -------------------- onResume: Ricarica stato dieta -------------------- **/
+    override fun onResume() {
+        super.onResume()
+        DietFirebase.checkIfDogHasDiet { hasDiet ->
+            updateDietUI(hasDiet)
+            loadCurrentDogData()
+        }
+    }
+
+    /** -------------------- UI Utility Methods -------------------- **/
+    private fun updateDietUI(hasDiet: Boolean) {
+        val visibility = if (hasDiet) View.VISIBLE else View.GONE
+        btnInsertDiet.visibility = if (hasDiet) View.GONE else View.VISIBLE
+        btnEditDiet.visibility = visibility
+        setDietComponentsVisible(hasDiet)
+    }
+
+    private fun setDietComponentsVisible(visible: Boolean) {
+        val visibility = if (visible) View.VISIBLE else View.GONE
+        carbsInfo.visibility = visibility
+        fatsInfo.visibility = visibility
+        proteinsInfo.visibility = visibility
+        fibersInfo.visibility = visibility
+        vitaminsInfo.visibility = visibility
+    }
+
+    private fun showToast(success: Boolean, successMsg: String, errorMsg: String) {
+        Toast.makeText(requireContext(), if (success) successMsg else errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    /** -------------------- Load current dog data -------------------- **/
     private fun loadCurrentDogData() {
         DogFirebase.getActualDog { dogId ->
             if (dogId == null) {
@@ -133,20 +214,21 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                     return@loadDog
                 }
 
-                // Update UI components with dog data
+                // Personal fields
                 personalComponents[0].setValue(dogData.name ?: "")
                 personalComponents[1].setValue(dogData.breed ?: "")
                 personalComponents[2].setValue(dogData.sex ?: "")
                 personalComponents[3].setValue(dogData.age ?: "")
                 personalComponents[4].setValue(dogData.microchip ?: "")
 
+                // Health fields
                 healthComponents[0].setValue(dogData.weight ?: "")
-                // Map the rest as needed, using empty strings if data missing
-                // healthComponents[1].setValue(dogData.vaccinations ?: "")
-                // healthComponents[2].setValue(dogData.allergies ?: "")
-                // healthComponents[3].setValue(dogData.interventions ?: "")
-                // healthComponents[4].setValue(dogData.treatments ?: "")
+                //healthComponents[1].setValue(dogData.vaccinations ?: "")
+                //healthComponents[2].setValue(dogData.allergies ?: "")
+                //healthComponents[3].setValue(dogData.interventions ?: "")
+                //healthComponents[4].setValue(dogData.treatments ?: "")
 
+                // Diet fields
                 dietComponents[0].setValue(dogData.diet?.carbohydrates ?: "")
                 dietComponents[1].setValue(dogData.diet?.fats ?: "")
                 dietComponents[2].setValue(dogData.diet?.proteins ?: "")
@@ -156,6 +238,7 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         }
     }
 
+    /** -------------------- Edit Button Setup -------------------- **/
     private fun setupEditButton(
         button: ImageButton,
         components: List<ProfilePageInfoComponent>,
@@ -167,8 +250,8 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         button.setOnClickListener {
             val isEditing = !(editingStates[buttonId] ?: false)
 
+            // Se si sta uscendo dalla modalità di editing, salva
             if (!isEditing) {
-                // Before saving, validate all fields
                 if (!validateFields(components)) {
                     Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
@@ -180,20 +263,14 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             editingStates[buttonId] = isEditing
 
             button.setImageResource(
-                if (isEditing)
-                    R.drawable.icons8_segno_di_spunta_24
-                else
-                    R.drawable.icons8_modificare_24
+                if (isEditing) R.drawable.icons8_segno_di_spunta_24
+                else R.drawable.icons8_modificare_24
             )
         }
     }
 
-    // Validate all components in a list; returns true only if all valid
+    /** -------------------- Field Validation -------------------- **/
     private fun validateFields(components: List<ProfilePageInfoComponent>): Boolean {
-        var allValid = true
-        components.forEach {
-            if (!it.validate()) allValid = false
-        }
-        return allValid
+        return components.all { it.validate() }
     }
 }

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:animateLayoutChanges="true">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/add_dog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add the dog's diet"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/myBlack"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Card container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/component_background"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:elevation="4dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp">
+
+            <!-- Section title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Diet Information"
+                android:textColor="@color/myBlack"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Fields -->
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/carbs_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Carbohydrates"
+                app:valueText="Insert the carbs"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/fats_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Fats"
+                app:valueText="Insert the fats"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/proteins_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Proteins"
+                app:valueText="Insert the proteins"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/fibers_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Fibers"
+                app:valueText="Insert the fibers"
+                app:required="true" />
+
+            <com.example.doggo_ourapp.ProfilePageInfoComponent
+                android:id="@+id/vitamins_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Vitamins"
+                app:valueText="Insert the vitamins"
+                app:required="true"/>
+        </LinearLayout>
+
+        <!-- Save button -->
+        <android.widget.Button
+            android:id="@+id/btn_save_diet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_black_bg"
+            android:text="Save Diet"
+            android:textAllCaps="false"
+            android:textColor="@color/myWhite"
+            android:textSize="16sp" />
+    </LinearLayout>
+</ScrollView>

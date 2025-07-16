@@ -184,6 +184,7 @@
             android:padding="20dp">
 
             <LinearLayout
+                android:id="@+id/dietDataSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -216,40 +217,57 @@
                 android:background="#CCCCCC"
                 android:layout_marginBottom="12dp" />
 
+            <Button
+                android:id="@+id/btn_insert_diet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_black_bg"
+                android:text="Insert Diet"
+                android:textAllCaps="false"
+                android:textColor="@color/myWhite"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
             <com.example.doggo_ourapp.ProfilePageInfoComponent
                 android:id="@+id/carbs_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:labelText="Carbohydrates"
-                app:valueText="250g" />
+                app:valueText="250g"
+                android:visibility="gone" />
 
             <com.example.doggo_ourapp.ProfilePageInfoComponent
                 android:id="@+id/fats_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:labelText="Fats"
-                app:valueText="150g" />
+                app:valueText="150g"
+                android:visibility="gone" />
 
             <com.example.doggo_ourapp.ProfilePageInfoComponent
                 android:id="@+id/proteins_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:labelText="Proteins"
-                app:valueText="125g" />
+                app:valueText="125g"
+                android:visibility="gone" />
 
             <com.example.doggo_ourapp.ProfilePageInfoComponent
                 android:id="@+id/fibers_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:labelText="Fibers"
-                app:valueText="60g" />
+                app:valueText="60g"
+                android:visibility="gone" />
 
             <com.example.doggo_ourapp.ProfilePageInfoComponent
                 android:id="@+id/vitamins_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:labelText="Vitamins"
-                app:valueText="50g" />
+                app:valueText="50g"
+                android:visibility="gone" />
         </LinearLayout>
 
         <!-- LOGOUT BUTTON -->

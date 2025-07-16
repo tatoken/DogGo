@@ -24,7 +24,7 @@
         >
 
         <TextView
-            android:id="@+id/titleSection"
+            android:id="@+id/titleSectionRecipes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="My dog's recipes"
@@ -33,15 +33,18 @@
             android:textColor="@color/myBlack"
             android:paddingBottom="8dp" />
 
-        <TextView
-            android:id="@+id/noDietText1"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btnInsertDiet1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Insert diet"
-            android:visibility="gone"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"/>
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_black_bg"
+            android:text="Insert Diet"
+            android:textAllCaps="false"
+            android:textColor="@color/myWhite"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recipeRecyclerView"
@@ -71,6 +74,7 @@
 
         <!-- Titolo -->
         <TextView
+            android:id="@+id/titleSectionDiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -80,15 +84,18 @@
             android:layout_marginBottom="10dp"
             android:text="Diet" />
 
-        <TextView
-            android:id="@+id/noDietText2"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btnInsertDiet2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Insert diet"
-            android:visibility="gone"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"/>
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_black_bg"
+            android:text="Insert Diet"
+            android:textAllCaps="false"
+            android:textColor="@color/myWhite"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
 
         <!-- Grafico -->
         <com.github.mikephil.charting.charts.HorizontalBarChart

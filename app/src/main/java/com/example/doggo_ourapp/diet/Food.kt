@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.VISIBLE
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,21 +24,21 @@ class Food : Fragment(R.layout.food_layout) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var hBarChart: HorizontalBarChart
-    private lateinit var emptyText1: TextView
-    private lateinit var emptyText2: TextView
+    private lateinit var insertDietBtn1: Button
+    private lateinit var insertDietBtn2: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recipeRecyclerView)
         hBarChart = view.findViewById(R.id.hBarChart)
-        emptyText1 = view.findViewById(R.id.noDietText1)
-        emptyText2 = view.findViewById(R.id.noDietText2)
+        insertDietBtn1 = view.findViewById(R.id.btnInsertDiet1)
+        insertDietBtn2 = view.findViewById(R.id.btnInsertDiet2)
 
         recyclerView.visibility = View.GONE
         hBarChart.visibility = View.GONE
-        emptyText1.visibility = View.GONE
-        emptyText2.visibility = View.GONE
+        insertDietBtn1.visibility = View.GONE
+        insertDietBtn2.visibility = View.GONE
 
         DietFirebase.checkIfDogHasDiet { hasDiet ->
             if (hasDiet) {
@@ -47,8 +48,20 @@ class Food : Fragment(R.layout.food_layout) {
                 loadRecipes()
                 loadAndDisplayNutrients()
             } else {
-                emptyText1.visibility = View.VISIBLE
-                emptyText2.visibility = View.VISIBLE
+                insertDietBtn1.visibility = View.VISIBLE
+                insertDietBtn2.visibility = View.VISIBLE
+                insertDietBtn1.setBackgroundResource(R.drawable.button_black_bg)
+                insertDietBtn2.setBackgroundResource(R.drawable.button_black_bg)
+
+                insertDietBtn1.setOnClickListener {
+                    val intent = Intent(requireContext(), AddDiet::class.java)
+                    startActivity(intent)
+                }
+
+                insertDietBtn2.setOnClickListener {
+                    val intent = Intent(requireContext(), AddDiet::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }
@@ -56,11 +69,24 @@ class Food : Fragment(R.layout.food_layout) {
     override fun onResume() {
         super.onResume()
 
+        DietFirebase.checkIfDogHasDiet { hasDiet ->
+            if (hasDiet) {
+                DietFirebase.clearDietIfNewDay { _ ->
 
-        DietFirebase.clearDietIfNewDay { _ ->
-            // Indipendentemente che venga svuotata o no, i dati vanno ricaricati
-            loadRecipes()
-            loadAndDisplayNutrients()
+                    recyclerView.visibility = View.VISIBLE
+                    hBarChart.visibility = View.VISIBLE
+                    insertDietBtn1.visibility = View.GONE
+                    insertDietBtn2.visibility = View.GONE
+
+                    loadRecipes()
+                    loadAndDisplayNutrients()
+                }
+            } else {
+                recyclerView.visibility = View.GONE
+                hBarChart.visibility = View.GONE
+                insertDietBtn1.visibility = View.VISIBLE
+                insertDietBtn2.visibility = View.VISIBLE
+            }
         }
     }
 
