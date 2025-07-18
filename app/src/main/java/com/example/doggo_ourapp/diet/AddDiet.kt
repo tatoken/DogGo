@@ -1,12 +1,10 @@
 package com.example.doggo_ourapp.diet
 
-import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.doggo_ourapp.ProfilePage
 import com.example.doggo_ourapp.ProfilePageInfoComponent
 import com.example.doggo_ourapp.R
 
@@ -59,6 +57,7 @@ class AddDiet : AppCompatActivity() {
             DietFirebase.saveDiet(diet) { success ->
                 if (success) {
                     Toast.makeText(this, "Diet successfully saved", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK)
                     finish()
                 } else {
                     Toast.makeText(this, "Error saving diet", Toast.LENGTH_SHORT).show()

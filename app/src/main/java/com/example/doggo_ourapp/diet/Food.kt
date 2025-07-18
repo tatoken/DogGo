@@ -1,5 +1,6 @@
 package com.example.doggo_ourapp.diet
 
+import android.app.Activity
 import android.graphics.Color
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +30,21 @@ class Food : Fragment(R.layout.food_layout) {
     private lateinit var insertDietBtn1: Button
     private lateinit var insertDietBtn2: Button
 
+    private lateinit var addDietLauncher: ActivityResultLauncher<Intent>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        addDietLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                // Dopo il ritorno da AddDiet, ricarica la UI
+                DietFirebase.checkIfDogHasDiet { hasDiet ->
+                    if (hasDiet) {
+                        showDietUI()
+                    }
+                }
+            }
+        }
 
         recyclerView = view.findViewById(R.id.recipeRecyclerView)
         hBarChart = view.findViewById(R.id.hBarChart)
@@ -55,12 +71,12 @@ class Food : Fragment(R.layout.food_layout) {
 
                 insertDietBtn1.setOnClickListener {
                     val intent = Intent(requireContext(), AddDiet::class.java)
-                    startActivity(intent)
+                    addDietLauncher.launch(intent)
                 }
 
                 insertDietBtn2.setOnClickListener {
                     val intent = Intent(requireContext(), AddDiet::class.java)
-                    startActivity(intent)
+                    addDietLauncher.launch(intent)
                 }
             }
         }
@@ -69,25 +85,36 @@ class Food : Fragment(R.layout.food_layout) {
     override fun onResume() {
         super.onResume()
 
+        // Verifica se il cane ha una dieta
         DietFirebase.checkIfDogHasDiet { hasDiet ->
             if (hasDiet) {
-                DietFirebase.clearDietIfNewDay { _ ->
-
-                    recyclerView.visibility = View.VISIBLE
-                    hBarChart.visibility = View.VISIBLE
-                    insertDietBtn1.visibility = View.GONE
-                    insertDietBtn2.visibility = View.GONE
-
-                    loadRecipes()
-                    loadAndDisplayNutrients()
+                // Se esiste, allora puoi fare il clear (solo se è un nuovo giorno)
+                DietFirebase.clearDietIfNewDay { cleared ->
+                    // In ogni caso, ricarica la UI
+                    showDietUI()
                 }
             } else {
-                recyclerView.visibility = View.GONE
-                hBarChart.visibility = View.GONE
-                insertDietBtn1.visibility = View.VISIBLE
-                insertDietBtn2.visibility = View.VISIBLE
+                // Se non esiste la dieta, mostra i pulsanti per inserirla
+                showInsertDietButtons()
             }
         }
+    }
+
+    private fun showDietUI() {
+        recyclerView.visibility = View.VISIBLE
+        hBarChart.visibility = View.VISIBLE
+        insertDietBtn1.visibility = View.GONE
+        insertDietBtn2.visibility = View.GONE
+
+        loadRecipes()
+        loadAndDisplayNutrients()
+    }
+
+    private fun showInsertDietButtons() {
+        recyclerView.visibility = View.GONE
+        hBarChart.visibility = View.GONE
+        insertDietBtn1.visibility = View.VISIBLE
+        insertDietBtn2.visibility = View.VISIBLE
     }
 
     private fun loadRecipes() {
