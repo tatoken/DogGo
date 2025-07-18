@@ -146,7 +146,7 @@ class TestActivity : AppCompatActivity() {
                     var counter = 0
 
                     events.forEach { event ->
-                        eventsInfos.append("Nome:${event.name} - Data:${event.date}\n")
+                        eventsInfos.append("Nome:${event.title} - Data:${event.date}\n")
                         counter++
                         if (counter == events.size) {
                             infoEvent.text = eventsInfos.toString()
@@ -159,11 +159,12 @@ class TestActivity : AppCompatActivity() {
 
         }
 
+
         seeEvent.setOnClickListener()
         {
             EventFirebase.loadEvent("-OULqA6JudNgEeihdZDz"){ event ->
                 if (event!=null) {
-                    infoEvent.text="Nome:${event.name} - Data:${event.date}\n"
+                    infoEvent.text="Nome:${event.title} - Data:${event.date}\n"
                 } else {
                     infoEvent.text="Errore"
                 }
@@ -172,7 +173,7 @@ class TestActivity : AppCompatActivity() {
 
         addEvent.setOnClickListener()
         {
-            EventFirebase.saveEvent(EventData(null,"Passeggiata cane","04-07-2025","18:00","Training","Stasera allenamento")){ result ->
+            EventFirebase.saveEvent(EventData(null,"Passeggiata cane","Good","18:00","04-07-2025")){ result ->
                 if (result) {
                     infoEvent.text="Evento caricato"
                 } else {
@@ -180,6 +181,7 @@ class TestActivity : AppCompatActivity() {
                 }
             }
         }
+
 
         loadDogButton=findViewById(R.id.loadDog)
         infoDog=findViewById(R.id.dogInfo)

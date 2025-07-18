@@ -1,7 +1,8 @@
 package com.example.doggo_ourapp
 
 import androidx.fragment.app.Fragment
+import com.example.doggo_ourapp.R
 
-class Calendar : Fragment(R.layout.calendar_layout) {
+class CalendarFragment : Fragment(R.layout.calendar_layout) {
 
 }
