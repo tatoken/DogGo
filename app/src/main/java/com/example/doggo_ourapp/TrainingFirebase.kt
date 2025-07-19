@@ -4,8 +4,7 @@ object TrainingFirebase {
 
     fun saveTraining(training: TrainingData, onResult: (Boolean) -> Unit) {
         DogFirebase.getActualDog(){ actualDogCorrect ->
-            val actualDog="-OU9JYKmtiQQUxkHcxoW"
-            if(actualDog==null)
+            if(actualDogCorrect==null)
             {
                 onResult(false)
             }
@@ -14,7 +13,7 @@ object TrainingFirebase {
                     .child("user")
                     .child(UserFirebase.getCurrentUserId())
                     .child("dog")
-                    .child(actualDog)
+                    .child(actualDogCorrect)
                     .child("training")
 
                 val actualTrainingRefId = actualTrainingRef.push()
@@ -31,18 +30,41 @@ object TrainingFirebase {
         }
     }
 
-    fun loadAllTrainings(onResult: (List<TrainingData>?) -> Unit) {
-        DogFirebase.getActualDog(){ actualDogCorrect ->
-            val actualDog="-OU9JYKmtiQQUxkHcxoW"
+    fun loadAllTrainingsOfDog(dogId:String,onResult: (List<TrainingData>?) -> Unit) {
+        val trainingList = mutableListOf<TrainingData>()
+        val trainingRef = FirebaseDB.getMDbRef()
+            .child("user")
+            .child(UserFirebase.getCurrentUserId())
+            .child("dog")
+            .child(dogId)
+            .child("training")
 
-            if (actualDog == null) {
+        trainingRef.get().addOnSuccessListener { dataSnapshot ->
+            for (child in dataSnapshot.children) {
+                val training = child.getValue(TrainingData::class.java)
+                training?.let {
+                    it.id = child.key
+                    trainingList.add(it)
+                }
+            }
+        }.addOnFailureListener { exception ->
+            exception.printStackTrace()
+            onResult(null)
+        }
+
+        onResult(trainingList)
+    }
+
+    fun loadAllTrainingsOfActualDog(onResult: (List<TrainingData>?) -> Unit) {
+        DogFirebase.getActualDog(){ actualDogCorrect ->
+            if (actualDogCorrect == null) {
                 onResult(null)
             } else {
                 val trainingRef = FirebaseDB.getMDbRef()
                     .child("user")
                     .child(UserFirebase.getCurrentUserId())
                     .child("dog")
-                    .child(actualDog)
+                    .child(actualDogCorrect)
                     .child("training")
 
                 trainingRef.get().addOnSuccessListener { dataSnapshot ->

@@ -38,39 +38,11 @@
             android:scrollbars="none"
             >
             <LinearLayout
+                android:id="@+id/badgeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="10dp">
-
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Strong"
-                    app:photoSrc="@drawable/badge_gym">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Chef"
-                    app:photoSrc="@drawable/badge_grape">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Best Friend"
-                    app:photoSrc="@drawable/badge_cat">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Navigator"
-                    app:photoSrc="@drawable/badge_compass">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
 
             </LinearLayout>
         </HorizontalScrollView>

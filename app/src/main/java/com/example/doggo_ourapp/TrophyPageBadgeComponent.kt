@@ -1,6 +1,7 @@
 package com.example.doggo_ourapp
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageButton
@@ -42,7 +43,12 @@ class TrophyPageBadgeComponent @JvmOverloads constructor(
         labelTextView.text = text
     }
 
-    fun setImageSrc(resId: Int) {
-        imageImageButton.setImageResource(resId)
+    fun setImageSrcWithBitmap(bitmap: Bitmap) {
+        imageImageButton.setImageBitmap(bitmap)
     }
+
+    fun setImageSrcWithDrawable(drawable: Int) {
+        imageImageButton.setImageResource(drawable)
+    }
+
 }

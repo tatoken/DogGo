@@ -97,7 +97,7 @@ class TestActivity : AppCompatActivity() {
 
         seeAllTrainings.setOnClickListener()
         {
-            TrainingFirebase.loadAllTrainings { trainings ->
+            TrainingFirebase.loadAllTrainingsOfActualDog { trainings ->
                 if (trainings != null) {
                     val trainingInfos = StringBuilder()
                     var counter = 0
@@ -118,7 +118,7 @@ class TestActivity : AppCompatActivity() {
 
         seeTraining.setOnClickListener()
         {
-            TrainingFirebase.loadTraining("-OUJuyAdcem7wm3Hd8dX"){ training ->
+            TrainingFirebase.loadTraining("-OVZ3jFBzTJXN-u_QyGC"){ training ->
                 if (training!=null) {
                     infoTraining.text="Data:${training.date} - Km:${training.km}\n"
                 } else {
@@ -129,7 +129,7 @@ class TestActivity : AppCompatActivity() {
 
         addTraining.setOnClickListener()
         {
-            TrainingFirebase.saveTraining(TrainingData(null,"culo","Ottimo","12:20","1.8")){ result ->
+            TrainingFirebase.saveTraining(TrainingData(null,"22/10/2025","Ottimo","12:20","1.8")){ result ->
                 if (result) {
                     infoDog.text="Training caricato"
                 } else {
