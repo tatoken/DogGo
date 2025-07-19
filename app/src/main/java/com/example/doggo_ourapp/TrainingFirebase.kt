@@ -47,12 +47,11 @@ object TrainingFirebase {
                     trainingList.add(it)
                 }
             }
+            onResult(trainingList)
         }.addOnFailureListener { exception ->
             exception.printStackTrace()
             onResult(null)
         }
-
-        onResult(trainingList)
     }
 
     fun loadAllTrainingsOfActualDog(onResult: (List<TrainingData>?) -> Unit) {
