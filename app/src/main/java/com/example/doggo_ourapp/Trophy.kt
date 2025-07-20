@@ -47,7 +47,7 @@ class Trophy: Fragment(R.layout.trophy_layout) {
             {
                 val fragmentManager = requireActivity().supportFragmentManager
                 val fragmentTransaction = fragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.frgContainer,Leaderboard())
+                fragmentTransaction.replace(R.id.frgContainer,Prizes())
                 fragmentTransaction.commit()
             }
         )
