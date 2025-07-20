@@ -288,13 +288,35 @@ class TestActivity : AppCompatActivity() {
 
         addPrizeButton.setOnClickListener()
         {
-            PrizeFirebase.savePrize(PrizeData(null,"3Kg di crocchette","3Kg di ottime crocchette di qualità","100")) { result ->
+            PrizeFirebase.savePrize(PrizeData(null,"Chicken Bowl","Ottime crocchette al gusto pollo","100")) { result ->
                 if (result) {
                     infoDog.text="Premio aggiunto"
                 } else {
                     infoDog.text="Errore"
                 }
             }
+            PrizeFirebase.savePrize(PrizeData(null,"Beef Bowl","Ottime crocchette al gusto manzo","150")) { result ->
+                if (result) {
+                    infoDog.text="Premio aggiunto"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
+            PrizeFirebase.savePrize(PrizeData(null,"Bowl Mix","Ottime crocchette miste","500")) { result ->
+                if (result) {
+                    infoDog.text="Premio aggiunto"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
+            PrizeFirebase.savePrize(PrizeData(null,"Bites Mix","Ottime crocchettine miste","500")) { result ->
+                if (result) {
+                    infoDog.text="Premio aggiunto"
+                } else {
+                    infoDog.text="Errore"
+                }
+            }
+
         }
 
         getPrizeButton.setOnClickListener()

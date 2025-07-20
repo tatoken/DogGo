@@ -1,5 +1,6 @@
 package com.example.doggo_ourapp
 
+import PrizeScrollAdapter
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +10,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.coroutines.launch
 
 
 class Trophy: Fragment(R.layout.trophy_layout) {
 
-    private lateinit var progress_bar_section: LinearLayout
-
     private lateinit var badge_section: LinearLayout
     private lateinit var badgeContainer: LinearLayout
 
+    private lateinit var prize_section: LinearLayout
 
 
 
@@ -28,18 +29,10 @@ class Trophy: Fragment(R.layout.trophy_layout) {
     }
 
     private fun setupClickableObject(view: View) {
-        progress_bar_section=view.findViewById(R.id.progress_bar_section)
         badge_section=view.findViewById(R.id.badge_section)
         badgeContainer = view.findViewById(R.id.badgeContainer)
 
-        progress_bar_section.setOnClickListener(
-            {
-                val fragmentManager = requireActivity().supportFragmentManager
-                val fragmentTransaction = fragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.frgContainer,Challenge())
-                fragmentTransaction.commit()
-            }
-        )
+        prize_section=view.findViewById(R.id.prize_section)
 
         badgeContainer.setOnClickListener(
             {
@@ -50,7 +43,32 @@ class Trophy: Fragment(R.layout.trophy_layout) {
             }
         )
 
+        prize_section.setOnClickListener(
+            {
+                val fragmentManager = requireActivity().supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.frgContainer,Leaderboard())
+                fragmentTransaction.commit()
+            }
+        )
+
+        setUpPrizeSection(view)
         populateBadgeContainer()
+    }
+
+    private fun setUpPrizeSection(view:View) {
+        val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
+        val dotsIndicator = view.findViewById<DotsIndicator>(R.id.dotsIndicator)
+
+        PrizeFirebase.loadAllPrizes() {prizes->
+            if(prizes!=null)
+            {
+                val adapter = PrizeScrollAdapter(prizes,viewLifecycleOwner.lifecycleScope)
+                viewPager.adapter = adapter
+
+                dotsIndicator.setViewPager2(viewPager)
+            }
+        }
     }
 
     private fun populateBadgeContainer() {

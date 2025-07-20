@@ -18,7 +18,7 @@
             android:layout_height="90dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
-            android:src="@drawable/badge_compass" />
+            android:src="@drawable/badge_loading_icon" />
     </androidx.cardview.widget.CardView>
 
     <TextView
