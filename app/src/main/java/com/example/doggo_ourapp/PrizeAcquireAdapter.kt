@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class PrizeAdapter(
+class PrizeAcquireAdapter(
     private val prizes: List<PrizeData>,
+    private val quantity:List<String>,
     private val scope: CoroutineScope
-) : RecyclerView.Adapter<PrizeAdapter.BadgeViewHolder>() {
+) : RecyclerView.Adapter<PrizeAcquireAdapter.BadgeViewHolder>() {
 
     inner class BadgeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val prizeName: TextView = view.findViewById(R.id.prizeName)
@@ -32,19 +33,11 @@ class PrizeAdapter(
         val prize = prizes[position]
         holder.prizeName.text = prize.name
         holder.prizeDescription.text = prize.description
-        holder.prizeThreshold.text = "${prize.threshold} punti"
+        holder.prizeThreshold.text = "Number acquired: "+quantity[position]
 
         scope.launch {
             val bitmap = SupabaseManager.downloadImage("prize", "${prize.name}.png")
             holder.prizeIcon.setImageBitmap(bitmap)
-
-            holder.itemView.setOnClickListener {
-                val fragment = PrizeDialogFragment(prize, bitmap!!)
-                val activity = holder.itemView.context as? AppCompatActivity
-                activity?.supportFragmentManager?.let {
-                    fragment.show(it, "PrizeDialog")
-                }
-            }
         }
     }
 

@@ -37,4 +37,15 @@ object UserFirebase {
     {
         return FirebaseDB.getAuth().currentUser?.uid ?: return ""
     }
+
+    fun getCurrentUserPoints(onResult: (String?) -> Unit)
+    {
+        val dbRef = FirebaseDB.getMDbRef()
+        val userRef = dbRef.child("user").child(getCurrentUserId())
+
+        userRef.child("points").get().addOnSuccessListener { snapshotPoints ->
+            val pointsStr = snapshotPoints.getValue(String::class.java)
+            onResult(pointsStr)
+        }
+    }
 }

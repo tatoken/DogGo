@@ -1,13 +1,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/pointText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Premi complessivi"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_marginEnd="8dp" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/coin"
+            android:contentDescription="Coin Icon" />
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/dataText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Premi complessivi"
+        android:text="Premi Riscattabili"
         android:textStyle="bold"
         android:textSize="20sp"
         android:padding="16dp" />
@@ -16,5 +44,25 @@
         android:id="@+id/recyclerViewPrize"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@drawable/component_background"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/dataTextAcquired"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Premi acquisiti"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:padding="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPrizeAcquired"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/component_background"
+        android:layout_margin="10dp"
+        />
 </LinearLayout>
