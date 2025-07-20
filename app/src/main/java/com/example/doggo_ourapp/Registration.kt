@@ -97,12 +97,17 @@ class Registration : AppCompatActivity() {
             val checkPassword = edtCheckPassword.editText?.text.toString()
 
             if(checkRegisterFields(name,surname,birthDate,email,password,checkPassword))
-                signup(name,surname,birthDate!!,"",email,password)
+            {
+                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                val formattedDate = birthDate?.format(formatter)
+                signup(name,surname,formattedDate!!,"",email,password)
+            }
+
         }
 
     }
 
-    private fun signup(name: String, surname: String, birthDate: LocalDate, bio: String, email: String, password: String) {
+    private fun signup(name: String, surname: String, birthDate: String, bio: String, email: String, password: String) {
 
         UserFirebase.signup(name,surname,birthDate,bio,email,password) { success ->
             if(success)

@@ -2,6 +2,7 @@ package com.example.doggo_ourapp
 
 import PrizeScrollAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -21,6 +22,8 @@ class Trophy: Fragment(R.layout.trophy_layout) {
 
     private lateinit var prize_section: LinearLayout
 
+    private lateinit var score_section: LinearLayout
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,6 +36,8 @@ class Trophy: Fragment(R.layout.trophy_layout) {
         badgeContainer = view.findViewById(R.id.badgeContainer)
 
         prize_section=view.findViewById(R.id.prize_section)
+
+        score_section=view.findViewById(R.id.scoreSection)
 
         badgeContainer.setOnClickListener(
             {
@@ -54,6 +59,7 @@ class Trophy: Fragment(R.layout.trophy_layout) {
 
         setUpPrizeSection(view)
         populateBadgeContainer()
+        populateScoreContainer()
     }
 
     private fun setUpPrizeSection(view:View) {
@@ -117,5 +123,30 @@ class Trophy: Fragment(R.layout.trophy_layout) {
 
     }
 
+    private fun populateScoreContainer() {
+
+        UserFirebase.loadTopUsers ()
+        { topUsers->
+            if (!topUsers.isNullOrEmpty()) {
+                for (i in topUsers.indices) {
+                    val scoreView = TrophyPageLeaderboardComponent(requireContext())
+                    scoreView.setName(topUsers[i].name ?: "Anonimo")
+                    scoreView.setPoints(topUsers[i].totalPoints)
+
+                    val resourceName = "medal_${i + 1}"
+                    val resId = requireContext().resources.getIdentifier(resourceName, "drawable", requireContext().packageName)
+
+                    if (resId != 0) {
+                        scoreView.setPositionImageSrc(resId)
+                    } else {
+                        Log.w("DrawableWarning", "Drawable not found for: $resourceName")
+                    }
+
+                    score_section.addView(scoreView)
+                }
+            }
+        }
+
+    }
 
 }

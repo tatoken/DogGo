@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 
 object UserFirebase {
-    fun signup(name: String, surname: String, birthDate: LocalDate, bio: String, email: String, password: String, onResult: (Boolean) -> Unit) {
+    fun signup(name: String, surname: String, birthDate: String, bio: String, email: String, password: String, onResult: (Boolean) -> Unit) {
         FirebaseDB.getAuth().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -18,7 +18,7 @@ object UserFirebase {
             }
     }
 
-    private fun addUserToDatabase(name: String, surname:String, birthDate: LocalDate, bio:String, email: String, uid: String) {
+    private fun addUserToDatabase(name: String, surname:String, birthDate: String, bio:String, email: String, uid: String) {
         FirebaseDB.getMDbRef().child("user").child(uid).setValue(UserData(name,surname,birthDate,bio,email,uid))
     }
 
@@ -48,4 +48,28 @@ object UserFirebase {
             onResult(pointsStr)
         }
     }
+
+    fun loadTopUsers(onResult: (List<UserData>?) -> Unit) {
+        val userRef = FirebaseDB.getMDbRef().child("user")
+
+        userRef.get().addOnSuccessListener { snapshot ->
+            val userList = mutableListOf<UserData>()
+
+            for (child in snapshot.children) {
+                val user = child.getValue(UserData::class.java)
+                user?.let {
+                    it.uid = child.key
+                    userList.add(it)
+                }
+            }
+
+            val sortedUsers = userList.sortedByDescending { it.totalPoints }.take(3)
+            onResult(sortedUsers)
+        }.addOnFailureListener {
+            it.printStackTrace()
+            onResult(null)
+        }
+    }
+
+
 }

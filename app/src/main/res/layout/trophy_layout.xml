@@ -73,41 +73,10 @@
             />
 
         <LinearLayout
+            android:id="@+id/scoreSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_photoSrc="@drawable/medal_1"
-                app:trophyPosition_nameText="Zelda"
-                app:trophyPosition_pointText="1250">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_photoSrc="@drawable/medal_2"
-                app:trophyPosition_nameText="Thor"
-                app:trophyPosition_pointText="1026">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_photoSrc="@drawable/medal_3"
-                app:trophyPosition_nameText="Billo"
-                app:trophyPosition_pointText="758">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_text="4023"
-                app:trophyPosition_nameText="Fido"
-                app:trophyPosition_pointText="125">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
 
         </LinearLayout>
     </LinearLayout>
