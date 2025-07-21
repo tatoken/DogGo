@@ -57,6 +57,15 @@ class Trophy: Fragment(R.layout.trophy_layout) {
             }
         )
 
+        score_section.setOnClickListener(
+            {
+                val fragmentManager = requireActivity().supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.frgContainer,Scoreboard())
+                fragmentTransaction.commit()
+            }
+        )
+
         setUpPrizeSection(view)
         populateBadgeContainer()
         populateScoreContainer()
@@ -125,13 +134,17 @@ class Trophy: Fragment(R.layout.trophy_layout) {
 
     private fun populateScoreContainer() {
 
-        UserFirebase.loadTopUsers ()
+        UserFirebase.loadTopUsers (3)
         { topUsers->
             if (!topUsers.isNullOrEmpty()) {
                 for (i in topUsers.indices) {
                     val scoreView = TrophyPageLeaderboardComponent(requireContext())
                     scoreView.setName(topUsers[i].name ?: "Anonimo")
                     scoreView.setPoints(topUsers[i].totalPoints)
+                    if(topUsers[i].uid.equals(UserFirebase.getCurrentUserId()))
+                    {
+                        scoreView.setBackground(R.drawable.score_selected)
+                    }
 
                     val resourceName = "medal_${i + 1}"
                     val resId = requireContext().resources.getIdentifier(resourceName, "drawable", requireContext().packageName)

@@ -49,7 +49,18 @@ object UserFirebase {
         }
     }
 
-    fun loadTopUsers(onResult: (List<UserData>?) -> Unit) {
+    fun getCurrentUserTotalPoints(onResult: (String?) -> Unit)
+    {
+        val dbRef = FirebaseDB.getMDbRef()
+        val userRef = dbRef.child("user").child(getCurrentUserId())
+
+        userRef.child("totalPoints").get().addOnSuccessListener { snapshotPoints ->
+            val pointsStr = snapshotPoints.getValue(String::class.java)
+            onResult(pointsStr)
+        }
+    }
+
+    fun loadTopUsers(number:Int,onResult: (List<UserData>?) -> Unit) {
         val userRef = FirebaseDB.getMDbRef().child("user")
 
         userRef.get().addOnSuccessListener { snapshot ->
@@ -63,7 +74,7 @@ object UserFirebase {
                 }
             }
 
-            val sortedUsers = userList.sortedByDescending { it.totalPoints }.take(3)
+            val sortedUsers = userList.sortedByDescending { it.totalPoints }.take(number)
             onResult(sortedUsers)
         }.addOnFailureListener {
             it.printStackTrace()

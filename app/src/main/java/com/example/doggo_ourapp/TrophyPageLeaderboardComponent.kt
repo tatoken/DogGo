@@ -9,6 +9,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 
 class TrophyPageLeaderboardComponent @JvmOverloads constructor(
     context: Context,
@@ -16,6 +19,7 @@ class TrophyPageLeaderboardComponent @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    private val component : LinearLayout
     private val positionImage: ImageView
     private val labelNameView: TextView
     private val valuePointsView: TextView
@@ -24,6 +28,7 @@ class TrophyPageLeaderboardComponent @JvmOverloads constructor(
     init {
         LayoutInflater.from(context).inflate(R.layout.trophy_page_leaderboard_component, this, true)
 
+        component=findViewById(R.id.component)
         positionImage = findViewById(R.id.positionImage)
         labelNameView = findViewById(R.id.name)
         valuePointsView = findViewById(R.id.points)
@@ -64,7 +69,12 @@ class TrophyPageLeaderboardComponent @JvmOverloads constructor(
         labelNameView.text = text
     }
 
+    fun setBackground(@DrawableRes resourceId: Int) {
+        component.setBackgroundResource(resourceId)
+    }
+
     fun setPoints(text: String) {
         valuePointsView.text = text
     }
+
 }
