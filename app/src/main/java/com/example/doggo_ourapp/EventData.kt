@@ -5,7 +5,7 @@ import java.time.LocalDate
 data class EventData(
     var id: String?,
     var name: String?,
-    var date: LocalDate?,
+    var date: String?,
     var type: String?,
     var description: String?
 )

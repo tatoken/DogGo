@@ -6,6 +6,11 @@
     <color name="myWhite">#fafafa</color>
     <color name="myGray">#e0e0e0</color>
     <color name="myGrayDark">#878787</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="teal_700">#00796B</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="orange_500">#FFA726</color>
+    <color name="orange_700">#FB8C00</color>
 
     <color name="primaryColor">#b75d69</color>
 

@@ -1,11 +1,10 @@
 package com.example.doggo_ourapp
 
-import java.time.LocalDate
-
 data class TrainingData(
     var id: String?,
-    var date: LocalDate?,
-    var status: String?,
+    var date: String?,
     var time: String?,
     var km: String?
-)
+){
+    constructor() : this(null, null, null, null)
+}
