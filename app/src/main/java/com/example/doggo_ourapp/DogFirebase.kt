@@ -24,7 +24,7 @@ object DogFirebase {
             for (child in dataSnapshot.children) {
                 val dog = child.getValue(DogData::class.java)
                 dog?.let {
-                    it.id = child.key // assegna l'ID Firebase al campo `id` del DogData
+                    it.id = child.key
                     dogList.add(it)
                 }
             }

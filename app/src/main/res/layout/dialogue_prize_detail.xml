@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/dialogPrizeIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:contentDescription="prize" />
+
+    <TextView
+        android:id="@+id/dialogPrizeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:paddingTop="16dp" />
+
+    <TextView
+        android:id="@+id/dialogPrizeDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp" />
+
+    <TextView
+        android:id="@+id/dialogPrizeThreshold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textColor="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/dialogPrizeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Acquisisci"
+        android:layout_marginTop="24dp" />
+</LinearLayout>

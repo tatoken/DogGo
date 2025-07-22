@@ -8,37 +8,44 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class Badge : Fragment(R.layout.badge_layout) {
+class Scoreboard : Fragment(R.layout.scoreboard_layout) {
+
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: BadgeAdapter
+    private lateinit var adapter: ScoreAdapter
     private lateinit var dataText: TextView
+
+    private lateinit var pointText:TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         dataText = view.findViewById(R.id.dataText)
-        recyclerView = view.findViewById(R.id.recyclerViewBadge)
+        recyclerView = view.findViewById(R.id.recyclerViewScores)
 
-        dataText.text = "Medaglie complessive"
+        pointText=view.findViewById(R.id.pointText)
 
-        getBadgePerData { badges ->
-            adapter = BadgeAdapter(badges, viewLifecycleOwner.lifecycleScope)
+        getTopFiftyUser { users ->
+            adapter = ScoreAdapter(users, viewLifecycleOwner.lifecycleScope)
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = adapter
         }
+
+        UserFirebase.getCurrentUserTotalPoints() { result->
+            pointText.text=result
+        }
+
     }
 
-    private fun getBadgePerData(callback: (List<BadgeData>) -> Unit) {
-        BadgeFirebase.loadAllBadges { result ->
+    private fun getTopFiftyUser(callback: (List<UserData>) -> Unit) {
+        UserFirebase.loadTopUsers(50) { result ->
             if (result.isNullOrEmpty()) {
-                println("⚠️ Nessun badge caricato!")
+                println("⚠️ Nessun user caricato!")
             } else {
-                println("✅ Badge caricati: ${result.size}")
+                println("✅ user caricati: ${result.size}")
                 callback(result)
             }
         }
     }
-
 
 
 }

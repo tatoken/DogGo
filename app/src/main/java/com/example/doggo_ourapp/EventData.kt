@@ -1,12 +1,11 @@
 package com.example.doggo_ourapp
 
-import java.time.LocalDate
+import java.io.Serializable
 
 data class EventData(
-    var id: String?=null,
-    var name: String?=null,
-    var date: String?=null,
-    var hour: String?=null,
-    var type: String?=null,
-    var description: String?=null
-)
+    var id: String? =null,
+    val title: String?=null,
+    val description: String?=null,
+    val time: String?=null,
+    val date: String?=null,
+): Serializable

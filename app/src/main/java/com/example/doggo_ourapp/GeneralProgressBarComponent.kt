@@ -40,12 +40,12 @@ class GeneralProgressBarComponent @JvmOverloads constructor(
         labelTextView.text = text
     }
 
-    fun setProgressBarUpperBound(text: String) {
-        progressBar.max = (text).toInt()
+    fun setProgressBarUpperBound(value: Int) {
+        progressBar.max = value
     }
 
-    fun setProgressBarProgress(text: String) {
-        progressBar.progress = (text).toInt()
+    fun setProgressBarProgress(value: Int) {
+        progressBar.progress = value
     }
 
 

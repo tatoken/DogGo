@@ -14,12 +14,11 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="10dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/component_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/progress_bar_section"
+        app:layout_constraintBottom_toTopOf="@id/prize_section"
         >
 
         <TextView
@@ -38,99 +37,17 @@
             android:scrollbars="none"
             >
             <LinearLayout
+                android:id="@+id/badgeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="10dp">
-
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Strong"
-                    app:photoSrc="@drawable/badge_gym">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Chef"
-                    app:photoSrc="@drawable/badge_grape">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Best Friend"
-                    app:photoSrc="@drawable/badge_cat">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
-
-                <com.example.doggo_ourapp.TrophyPageBadgeComponent
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:trophyBadge_labelText="Navigator"
-                    app:photoSrc="@drawable/badge_compass">
-                </com.example.doggo_ourapp.TrophyPageBadgeComponent>
 
             </LinearLayout>
         </HorizontalScrollView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/progress_bar_section"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:background="@drawable/component_background"
-        app:layout_constraintTop_toBottomOf="@id/badge_section"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/leaderboard_section"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ongoing challenge"
-            android:fontFamily="@font/roboto"
-            android:textStyle="bold"
-            android:textColor="@color/myBlack"/>
-
-
-
-        <com.example.doggo_ourapp.GeneralProgressBarComponent
-            android:id="@+id/progressBar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:progressBar_labelText="Km covered this month"
-            app:progressBar_valueText="30"
-            app:progressBar_upperBoundValueText="100"
-            >
-        </com.example.doggo_ourapp.GeneralProgressBarComponent>
-
-        <com.example.doggo_ourapp.GeneralProgressBarComponent
-            android:id="@+id/progressBar2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:progressBar_labelText="New recipes prepared"
-            app:progressBar_valueText="5"
-            app:progressBar_upperBoundValueText="10">
-        </com.example.doggo_ourapp.GeneralProgressBarComponent>
-
-        <com.example.doggo_ourapp.GeneralProgressBarComponent
-            android:id="@+id/progressBar3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:progressBar_labelText="Training progress"
-            app:progressBar_valueText="80"
-            app:progressBar_upperBoundValueText="100">
-        </com.example.doggo_ourapp.GeneralProgressBarComponent>
-
-
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/leaderboard_section"
@@ -141,9 +58,9 @@
         android:layout_marginEnd="4dp"
         android:orientation="vertical"
         android:background="@drawable/component_background"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar_section"
+        app:layout_constraintTop_toBottomOf="@id/prize_section"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/prize_section"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         >
         <TextView
@@ -156,41 +73,10 @@
             />
 
         <LinearLayout
+            android:id="@+id/scoreSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_photoSrc="@drawable/medal_1"
-                app:trophyPosition_nameText="Zelda"
-                app:trophyPosition_pointText="1250">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_photoSrc="@drawable/medal_2"
-                app:trophyPosition_nameText="Thor"
-                app:trophyPosition_pointText="1026">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_photoSrc="@drawable/medal_3"
-                app:trophyPosition_nameText="Billo"
-                app:trophyPosition_pointText="758">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
-
-            <com.example.doggo_ourapp.TrophyPageLeaderboardComponent
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:trophyPosition_text="4023"
-                app:trophyPosition_nameText="Fido"
-                app:trophyPosition_pointText="125">
-            </com.example.doggo_ourapp.TrophyPageLeaderboardComponent>
 
         </LinearLayout>
     </LinearLayout>
@@ -204,42 +90,36 @@
         android:layout_marginStart="4dp"
         android:padding="15dp"
         android:background="@drawable/component_background"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar_section"
-        app:layout_constraintStart_toEndOf="@id/leaderboard_section"
+        app:layout_constraintTop_toBottomOf="@id/badge_section"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/leaderboard_section"
         android:orientation="vertical"
         >
 
         <TextView
-            android:id="@+id/textPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Prizes available"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="Available prizes"
-            />
+            android:textColor="@color/myBlack"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dotsIndicator"
             android:layout_width="wrap_content"
-            android:layout_height="5dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:tabBackground="@drawable/trophy_page_tab_selector"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
-            android:layout_marginTop="30dp"
-            app:tabMode="fixed"
-            app:tabRippleColor="@android:color/transparent"/>
+            app:dotsColor="@color/myGray"
+            app:selectedDotColor="@color/myBlack"
+            />
 
 
     </LinearLayout>

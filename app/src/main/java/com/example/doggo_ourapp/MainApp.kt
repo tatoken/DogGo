@@ -12,9 +12,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.doggo_ourapp.databinding.MainAppLayoutBinding
 import com.example.doggo_ourapp.diet.Food
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 
 
 class MainApp : AppCompatActivity() {
@@ -120,6 +122,19 @@ class MainApp : AppCompatActivity() {
 
     private fun setUpNavbarHeaderButton() {
         profileImage = findViewById(R.id.profileImage);
+
+        val userLoggedId=UserFirebase.getCurrentUserId()
+        if(userLoggedId!="")
+        {
+            lifecycleScope.launch {
+                profileImage.setImageBitmap(
+                    SupabaseManager.downloadImage(
+                        "profile-image",
+                        "$userLoggedId.jpeg"
+                    )
+                )
+            }
+        }
 
         profileImage.setOnClickListener{
             resetButtonIcons()

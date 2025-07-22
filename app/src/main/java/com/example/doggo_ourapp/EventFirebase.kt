@@ -3,8 +3,7 @@ package com.example.doggo_ourapp
 object EventFirebase{
 
     fun saveEvent(event: EventData, onResult: (Boolean) -> Unit) {
-        DogFirebase.getActualDog(){ actualDogCorrect ->
-            val actualDog="-OU9JYKmtiQQUxkHcxoW"
+        DogFirebase.getActualDog(){ actualDog ->
             if(actualDog==null)
             {
                 onResult(false)
@@ -32,8 +31,7 @@ object EventFirebase{
     }
 
     fun loadAllEvents(onResult: (List<EventData>?) -> Unit) {
-        DogFirebase.getActualDog(){ actualDogCorrect ->
-            val actualDog="-OU9JYKmtiQQUxkHcxoW"
+        DogFirebase.getActualDog(){ actualDog ->
 
             if (actualDog == null) {
                 onResult(null)
@@ -65,8 +63,7 @@ object EventFirebase{
 
     fun loadEvent(eventId: String, onResult: (EventData?) -> Unit) {
 
-        DogFirebase.getActualDog(){ actualDogCorrect ->
-            val actualDog = "-OU9JYKmtiQQUxkHcxoW"
+        DogFirebase.getActualDog(){ actualDog ->
 
             if (actualDog == null) {
                 onResult(null)
@@ -82,6 +79,16 @@ object EventFirebase{
             }
         }
     }
+
+
+    fun loadEventsByDate(targetDate: String, onResult: (List<EventData>) -> Unit) {
+        loadAllEvents { allEvents ->
+            val filteredEvents = allEvents?.filter { it.date == targetDate } ?: emptyList()
+            onResult(filteredEvents)
+        }
+    }
+
+
 }
 
 

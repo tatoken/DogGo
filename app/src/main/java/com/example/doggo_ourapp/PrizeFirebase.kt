@@ -12,25 +12,25 @@ object PrizeFirebase {
 
         prizeRef.get().addOnSuccessListener { snapshotPrize ->
             if (!snapshotPrize.exists()) {
-                onComplete("Il premio non esiste in prize")
+                onComplete("Errore database")
                 return@addOnSuccessListener
             }
 
             val thresholdStr = snapshotPrize.child("threshold").getValue(String::class.java)
             val threshold = thresholdStr?.toIntOrNull() ?: run {
-                onComplete("threshold è null o non numerico")
+                onComplete("Errore generico")
                 return@addOnSuccessListener
             }
 
             userRef.child("points").get().addOnSuccessListener { snapshotPoints ->
                 val pointsStr = snapshotPoints.getValue(String::class.java)
                 val currentPoints = pointsStr?.toIntOrNull() ?: run {
-                    onComplete("pointsStr è null o non numerico")
+                    onComplete("Errore generico")
                     return@addOnSuccessListener
                 }
 
                 if (currentPoints < threshold) {
-                    onComplete("Non ci sono abbastanza punti")
+                    onComplete("Non hai abbastanza punti")
                     return@addOnSuccessListener
                 }
 
@@ -48,7 +48,7 @@ object PrizeFirebase {
                             child.ref.child("quantity").setValue(newQuantity).addOnCompleteListener {
                                 userRef.child("points").setValue((currentPoints - threshold).toString())
                                     .addOnCompleteListener {
-                                        onComplete("Tutto corretto - quantità aumentata")
+                                        onComplete("Premio riscattato")
                                     }
                             }
 
@@ -60,7 +60,7 @@ object PrizeFirebase {
                     if (!prizeFound) {
                         val newRef = prizeAchievedRef.push()
                         val newPrizeAchieved = PrizeAchievedData(
-                            idPrize = newRef.key,
+                            idPrize = snapshotPrize.child("id").getValue(String::class.java),
                             achieveDate = LocalDate.now().toString(),
                             quantity = "1"
                         )
@@ -68,21 +68,21 @@ object PrizeFirebase {
                         newRef.setValue(newPrizeAchieved).addOnCompleteListener {
                             userRef.child("points").setValue((currentPoints - threshold).toString())
                                 .addOnCompleteListener {
-                                    onComplete("inserito nuovo premio")
+                                    onComplete("Premio riscattato")
                                 }
                         }
                     }
 
                 }.addOnFailureListener {
-                    onComplete("Errore nel leggere prizeAchieved")
+                    onComplete("Errore database")
                 }
 
             }.addOnFailureListener {
-                onComplete("L'utente non ha points")
+                onComplete("Non hai abbastanza punti")
             }
 
         }.addOnFailureListener {
-            onComplete("Errore nel recupero del premio")
+            onComplete("Errore database")
         }
     }
 
