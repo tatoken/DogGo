@@ -1,12 +1,18 @@
 package com.example.doggo_ourapp.diet
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.doggo_ourapp.R
 
 class RecipeDetail : AppCompatActivity() {
+
+    private lateinit var deleteButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,6 +21,30 @@ class RecipeDetail : AppCompatActivity() {
         val recipe = DietFirebase.selectedRecipe
 
         if (recipe != null) {
+
+            deleteButton = findViewById<ImageButton>(R.id.btnDeleteRecipe)
+
+            deleteButton.setOnClickListener {
+                AlertDialog.Builder(this)
+                    .setTitle("Confirm Deletion")
+                    .setMessage("Are you sure you want to delete this recipe?")
+                    .setPositiveButton("Delete") { _, _ ->
+                        DietFirebase.deleteDietRecipe(recipe.id!!) { success ->
+                            runOnUiThread {
+                                if (success) {
+                                    Toast.makeText(this, "Recipe deleted successfully", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                } else {
+                                    Toast.makeText(this, "Failed to delete recipe", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+
+
             findViewById<TextView>(R.id.recipeTitle).text = recipe.name
             findViewById<TextView>(R.id.recipeTime).text = "TIME:\n${recipe.duration}"
             findViewById<TextView>(R.id.recipeDifficulty).text = "DIFFICULTY:\n${recipe.difficulty}"

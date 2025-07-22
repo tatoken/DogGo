@@ -29,9 +29,11 @@ class AddDiet : AppCompatActivity() {
         val vitaminsInfo = findViewById<ProfilePageInfoComponent>(R.id.vitamins_info)
         val btnSaveDiet = findViewById<Button>(R.id.btn_save_diet)
 
-        // Abilita la modifica se necessario
+
+        // Abilita la modifica se necessario e imposta che siano numeri interi
         listOf(carbsInfo, fatsInfo, proteinsInfo, fibersInfo, vitaminsInfo).forEach {
             it.setEditable(true)
+            it.setInputType(android.text.InputType.TYPE_CLASS_NUMBER)  // Imposta solo numeri interi
         }
 
         btnSaveDiet.setOnClickListener {

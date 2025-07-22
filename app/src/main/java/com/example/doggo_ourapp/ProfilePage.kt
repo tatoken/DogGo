@@ -117,7 +117,6 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             startActivity(intent)
         }
 
-
         carbsInfo = view.findViewById(R.id.carbs_info)
         fatsInfo = view.findViewById(R.id.fats_info)
         proteinsInfo = view.findViewById(R.id.proteins_info)

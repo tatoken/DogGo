@@ -56,6 +56,7 @@ object DietFirebase {
         }
     }
 
+
     fun saveRecipe(recipe: RecipeData, onResult: (Boolean) -> Unit) {
 
         val recipeRef = FirebaseDB.getMDbRef()
@@ -416,4 +417,45 @@ object DietFirebase {
             }
         }
     }
+
+    fun deleteDietRecipe(recipeId: String, onResult: (Boolean) -> Unit) {
+        DogFirebase.getActualDog { dogId ->
+            if (dogId == null) {
+                onResult(false)
+                return@getActualDog
+            }
+
+            val ref = FirebaseDB.getMDbRef()
+                .child("user")
+                .child(UserFirebase.getCurrentUserId())
+                .child("dog")
+                .child(dogId)
+                .child("diet")
+                .child("dietRecipe")
+
+            // Legge tutta la lista dietRecipe
+            ref.get().addOnSuccessListener { snapshot ->
+                val matchingEntry = snapshot.children.firstOrNull { child ->
+                    val dietRecipe = child.getValue(DietRecipeData::class.java)
+                    dietRecipe?.idRecipe == recipeId
+                }
+
+                if (matchingEntry != null) {
+                    matchingEntry.ref.removeValue()
+                        .addOnSuccessListener { onResult(true) }
+                        .addOnFailureListener {
+                            it.printStackTrace()
+                            onResult(false)
+                        }
+                } else {
+                    onResult(false) // Nessun match trovato
+                }
+
+            }.addOnFailureListener {
+                it.printStackTrace()
+                onResult(false)
+            }
+        }
+    }
+
 }

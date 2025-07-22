@@ -10,7 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <ImageButton
+                android:id="@+id/btnDeleteRecipe"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/icons8_rimuovere_30"
+                android:contentDescription="Delete recipe"
+                app:tint="@color/myGrayDark" />
+        </LinearLayout>
+
+
 
         <!-- Titolo -->
         <TextView
@@ -22,7 +41,9 @@
             android:textSize="20sp"
             android:lineSpacingExtra="2dp"
             android:textColor="@color/myBlack"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
 
         <!-- Immagine -->
         <androidx.cardview.widget.CardView

@@ -76,6 +76,10 @@ class ProfilePageInfoComponent @JvmOverloads constructor(
         valueEditText.error = errorMsg
     }
 
+    fun setInputType(type: Int) {
+        valueEditText.inputType = type
+    }
+
     // Funzione per validare campo obbligatorio
     fun validate(): Boolean {
         val text = getValue().trim()
