@@ -55,7 +55,6 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:gotrue-kt:1.3.1")
 
     implementation ("com.tbuonomo:dotsindicator:4.3")
-
     implementation ("com.google.android.material:material:1.12.0")
     implementation("com.kizitonwose.calendar:view:2.2.0")
 

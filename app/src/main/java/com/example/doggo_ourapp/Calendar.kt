@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kizitonwose.calendar.core.*
@@ -20,10 +23,12 @@ class Calendar : Fragment() {
     private lateinit var eventText: TextView
     private lateinit var addEventFab: FloatingActionButton
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: EventsAdapter
+
     private lateinit var monthTitle: TextView
 
     private var selectedDate: LocalDate? = null
-    private val eventsMap: MutableMap<LocalDate, MutableList<Event>> = mutableMapOf()
     private val dayFormatter = DateTimeFormatter.ofPattern("d")
 
     override fun onCreateView(
@@ -37,6 +42,7 @@ class Calendar : Fragment() {
         addEventFab = view.findViewById(R.id.addEventFab)
 
         monthTitle = view.findViewById(R.id.monthTitle)
+        recyclerView = view.findViewById(R.id.recyclerViewEvent)
 
 
         setupCalendar()
@@ -94,12 +100,14 @@ class Calendar : Fragment() {
             eventText.text = "Premi su una data per vedere o aggiungere eventi."
             addEventFab.visibility = View.GONE
         } else {
-            val events = eventsMap[date].orEmpty()
-            eventText.text = if (events.isEmpty()) {
-                "Nessun evento per il ${date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}."
-            } else {
-                "Eventi per il ${date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}:\n" +
-                        events.joinToString("\n") { "- ${it.time} - ${it.title}: ${it.description}" }
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val dateString = date.format(formatter)
+
+            EventFirebase.loadEventsByDate(dateString){
+                events->
+                adapter = EventsAdapter(events, viewLifecycleOwner.lifecycleScope)
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.adapter = adapter
             }
         }
     }
@@ -118,9 +126,10 @@ class Calendar : Fragment() {
                 val description = descInput.text.toString()
                 if (title.isNotBlank()) {
                     val time = timeInput.text.toString()
-                    val event = Event(title, description, time)
-                    eventsMap.getOrPut(date) { mutableListOf() }.add(event)
-                    updateEventText()
+                    EventFirebase.saveEvent(EventData(null,title,description,time,LocalDate.now().toString()))
+                    { result->
+                        updateEventText()
+                    }
                 }
             }
             .setNegativeButton("Annulla", null)
@@ -147,9 +156,6 @@ class Calendar : Fragment() {
         }
 
     }
-
-    data class Event(val title: String, val description: String, val time: String)
-
 
     class DayViewContainer(view: View) : ViewContainer(view) {
         val textView: TextView = view.findViewById(R.id.calendarDayText)

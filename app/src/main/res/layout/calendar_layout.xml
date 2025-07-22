@@ -81,6 +81,12 @@
             android:gravity="center"
             android:text="Premi su una data per vedere o aggiungere eventi."
             android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEvent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <!-- Floating Action Button -->
