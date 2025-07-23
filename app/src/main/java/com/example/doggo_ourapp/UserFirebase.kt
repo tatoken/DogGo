@@ -1,6 +1,9 @@
 package com.example.doggo_ourapp
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import java.time.LocalDate
 
 object UserFirebase {
@@ -33,10 +36,35 @@ object UserFirebase {
             }
     }
 
+    fun setPhotoOfUser(photo: String) {
+        val dbRef = FirebaseDB.getMDbRef()
+        val userRef = dbRef.child("user").child(getCurrentUserId())
+
+        userRef.child("photo").setValue(photo)
+    }
+
+
     fun getCurrentUserId():String
     {
         return FirebaseDB.getAuth().currentUser?.uid ?: return ""
     }
+
+    fun getCurrentUser(onResult: (UserData?) -> Unit) {
+        val dbRef = FirebaseDB.getMDbRef()
+        val userRef = dbRef.child("user").child(getCurrentUserId())
+
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(UserData::class.java)
+                onResult(user)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onResult(null)
+            }
+        })
+    }
+
 
     fun getCurrentUserPoints(onResult: (String?) -> Unit)
     {

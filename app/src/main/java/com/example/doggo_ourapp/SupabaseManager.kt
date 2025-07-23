@@ -32,25 +32,63 @@ object SupabaseManager {
         }
     }
 
+    /**
+     * Carica un'immagine. Se esiste già, la sovrascrive automaticamente.
+     */
     fun uploadImage(bucketName: String, fileName: String, byteArray: ByteArray) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val bucket = client.storage.from(bucketName)
 
-                val response = bucket.upload(
+                // Prova upload normale con upsert = false (non sovrascrive)
+                bucket.upload(
                     path = fileName,
                     data = byteArray
                 ) {
                     upsert = false
                 }
 
+                Log.d("Supabase", "Upload riuscito: $fileName")
+
             } catch (e: Exception) {
-                Log.e("Supabase error", "File upload failed", e)
+                val isAlreadyExistsError = e.message?.contains("The resource already exists", ignoreCase = true) == true
+
+                if (isAlreadyExistsError) {
+                    Log.w("Supabase", "File già esistente, sovrascrivo...")
+
+                    updateImage(bucketName, fileName, byteArray)
+
+                } else {
+                    Log.e("Supabase", "Errore durante l'upload: ${e.localizedMessage}", e)
+                }
             }
         }
     }
 
+    /**
+     * Sovrascrive un'immagine già esistente.
+     */
+    private suspend fun updateImage(bucketName: String, fileName: String, byteArray: ByteArray) {
+        try {
+            val bucket = client.storage.from(bucketName)
 
+            bucket.upload(
+                path = fileName,
+                data = byteArray
+            ) {
+                upsert = true // Sovrascrive
+            }
+
+            Log.d("Supabase", "Update riuscito: $fileName")
+
+        } catch (e: Exception) {
+            Log.e("Supabase", "Errore durante l'update: ${e.localizedMessage}", e)
+        }
+    }
+
+    /**
+     * Scarica un'immagine pubblica come Bitmap.
+     */
     suspend fun downloadImage(bucketName: String, fileName: String): Bitmap? {
         return try {
             val bucket = client.storage.from(bucketName)
@@ -61,5 +99,4 @@ object SupabaseManager {
             null
         }
     }
-
 }

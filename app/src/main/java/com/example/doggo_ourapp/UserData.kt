@@ -10,6 +10,7 @@ data class UserData(
     var email: String? = null,
     var uid: String? = null,
     var points: String = "0",
+    var photo:String? = null,
     var totalPoints: String = "0",
     var actualDog:String?=null
 ) {

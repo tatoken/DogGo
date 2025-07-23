@@ -1,15 +1,26 @@
 package com.example.doggo_ourapp
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.example.doggo_ourapp.SupabaseManager.downloadImage
+import com.example.doggo_ourapp.UserFirebase.setPhotoOfUser
 import com.example.doggo_ourapp.diet.AddDiet
 import com.example.doggo_ourapp.diet.DietFirebase
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class ProfilePage : Fragment(R.layout.profile_page_layout) {
 
@@ -19,9 +30,18 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
     // Logout button
     private lateinit var logoutButton: Button
 
+    // Personal section area
+    private lateinit var profileImage: ImageView
+    private lateinit var profileImageBig: ImageView
+    private lateinit var name: TextView
+    private lateinit var surname: TextView
+    private lateinit var birthDate: TextView
+    private lateinit var pickAPicture: Button
+
+    private var imageBitmap: Bitmap? = null
+
     // InfoComponent groupings
     private lateinit var personalComponents: List<ProfilePageInfoComponent>
-    private lateinit var healthComponents: List<ProfilePageInfoComponent>
     private lateinit var dietComponents: List<ProfilePageInfoComponent>
 
     // Tracking which edit buttons are in "edit mode"
@@ -53,6 +73,40 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         }
 
         /** -------------------- Personal Info Setup -------------------- **/
+
+        profileImage = requireActivity().findViewById(R.id.profileImage)
+        profileImageBig=view.findViewById(R.id.profileImageBig)
+        name=view.findViewById(R.id.name)
+        surname=view.findViewById(R.id.surname)
+        birthDate=view.findViewById(R.id.birthDate)
+        pickAPicture=view.findViewById(R.id.btnSelPic)
+
+
+
+        UserFirebase.getCurrentUser { user ->
+            name.text = user?.name ?: ""
+            surname.text= user?.surname ?: ""
+            birthDate.text= user?.birthDate ?: ""
+            if(user?.photo==null)
+            {
+                profileImageBig.setImageResource(R.drawable.blanck_people)
+                profileImage.setImageResource(R.drawable.blanck_people)
+            }
+            else
+            {
+                lifecycleScope.launch {
+                    val bitmap = downloadImage("profile-image", user.photo!!)
+                    profileImageBig.setImageBitmap(bitmap)
+                    profileImage.setImageBitmap(bitmap)
+                }
+            }
+        }
+
+        pickAPicture.setOnClickListener {
+            selectImageFromGallery()
+        }
+
+        /** -------------------- Dog Info Setup -------------------- **/
         val nameInfo = view.findViewById<ProfilePageInfoComponent>(R.id.name_info)
         val breedInfo = view.findViewById<ProfilePageInfoComponent>(R.id.breed_info)
         val sexInfo = view.findViewById<ProfilePageInfoComponent>(R.id.sex_info)
@@ -141,6 +195,45 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         // Carica i dati iniziali del cane
         loadCurrentDogData()
     }
+
+    /** -------------------- Photo picker section -------------------- **/
+
+    private fun uploadImageOnSupabase() {
+        if (imageBitmap == null) {
+            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val byteArray = bitmapToByteArray(imageBitmap!!)
+
+        lifecycleScope.launch {
+            SupabaseManager.uploadImage("profile-image", "${UserFirebase.getCurrentUserId()}.jpeg", byteArray)
+        }
+    }
+
+    private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val stream = java.io.ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        return stream.toByteArray()
+    }
+
+    private fun selectImageFromGallery()
+    {
+        selectImageFromGalleryResult.launch("image/*")
+    }
+
+    private val selectImageFromGalleryResult =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                profileImage.setImageURI(uri)
+                profileImageBig.setImageURI(uri)
+                val inputStream = requireContext().contentResolver.openInputStream(uri)
+                imageBitmap = BitmapFactory.decodeStream(inputStream)
+                uploadImageOnSupabase()
+                setPhotoOfUser(UserFirebase.getCurrentUserId()+".jpeg")
+                inputStream?.close()
+            }
+        }
 
     /** -------------------- onResume: Ricarica stato dieta -------------------- **/
     override fun onResume() {

@@ -109,16 +109,29 @@ class MainApp : AppCompatActivity() {
     private fun setUpNavbarHeaderButton() {
         profileImage = findViewById(R.id.profileImage);
 
-        val userLoggedId=UserFirebase.getCurrentUserId()
-        if(userLoggedId!="")
-        {
-            lifecycleScope.launch {
-                profileImage.setImageBitmap(
-                    SupabaseManager.downloadImage(
-                        "profile-image",
-                        "$userLoggedId.jpeg"
-                    )
-                )
+        UserFirebase.getCurrentUser(){
+            user->
+            if(user!=null)
+            {
+                if(user.photo!=null)
+                {
+                    lifecycleScope.launch {
+                        profileImage.setImageBitmap(
+                            SupabaseManager.downloadImage(
+                                "profile-image",
+                                "${user.photo}"
+                            )
+                        )
+                    }
+                }
+                else
+                {
+                    profileImage.setImageResource(R.drawable.blanck_people)
+                }
+            }
+            else
+            {
+                profileImage.setImageResource(R.drawable.blanck_people)
             }
         }
 
