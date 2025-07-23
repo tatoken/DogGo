@@ -13,7 +13,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="15dp"
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="0dp"
         android:background="@drawable/component_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/calendarSection"
@@ -27,13 +30,12 @@
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
             android:textColor="@color/myBlack"
-            style="?android:attr/actionDropDownStyle"
             />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/chart"
-            />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -163,8 +165,10 @@
         android:padding="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/component_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintTop_toBottomOf="@id/chartSection"
         app:layout_constraintBottom_toTopOf="@id/trophySection"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,26 +180,23 @@
             android:text="Daily receipe"
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
-            android:textColor="@color/myBlack"/>
+            android:textColor="@color/myBlack"
+            android:layout_marginBottom="5dp"
+            />
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:src="@drawable/receipe"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Flavored Watemelon with lemon"
-                />
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/recipeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                />
+        </HorizontalScrollView>
 
 
     </LinearLayout>
