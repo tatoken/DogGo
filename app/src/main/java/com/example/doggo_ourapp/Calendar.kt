@@ -92,19 +92,29 @@ class Calendar : Fragment() {
                 }
             }
         }
+
+        selectedDate = LocalDate.now()
+        calendarView.post {
+            calendarView.notifyDateChanged(selectedDate!!)
+            updateEventText()
+            addEventFab.visibility = View.VISIBLE
+        }
     }
+
 
     private fun updateEventText() {
         val date = selectedDate
-        if (date == null) {
-            eventText.text = "Premi su una data per vedere o aggiungere eventi."
-            addEventFab.visibility = View.GONE
-        } else {
+        if (date != null) {
+            eventText.visibility=View.GONE
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val dateString = date.format(formatter)
 
             EventFirebase.loadEventsByDate(dateString){
                 events->
+                if(events.isEmpty())
+                {
+                    eventText.visibility = View.VISIBLE
+                }
                 adapter = EventsAdapter(events, viewLifecycleOwner.lifecycleScope)
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.adapter = adapter

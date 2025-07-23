@@ -9,7 +9,7 @@
         android:id="@+id/monthTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Luglio 2025"
+        android:text="July 2025"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -79,14 +79,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Premi su una data per vedere o aggiungere eventi."
-            android:textSize="16sp" />
+            android:text="There are no events here"
+            android:textSize="16sp"
+            android:layout_marginTop="130dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewEvent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:padding="20dp"/>
     </LinearLayout>
 
     <!-- Floating Action Button -->
