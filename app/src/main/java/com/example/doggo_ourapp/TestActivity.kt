@@ -119,17 +119,6 @@ class TestActivity : AppCompatActivity() {
             }
         }
 
-        addTraining.setOnClickListener()
-        {
-            TrainingFirebase.saveTraining(TrainingData(null,"22/10/2025","Ottimo","12:20","1.8")){ result ->
-                if (result) {
-                    infoDog.text="Training caricato"
-                } else {
-                    infoDog.text="Errore"
-                }
-            }
-        }
-
         seeAllEvents.setOnClickListener()
         {
             EventFirebase.loadAllEvents { events ->
