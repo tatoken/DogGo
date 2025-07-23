@@ -115,7 +115,7 @@ class Calendar : Fragment() {
                 {
                     eventText.visibility = View.VISIBLE
                 }
-                adapter = EventsAdapter(events, viewLifecycleOwner.lifecycleScope)
+                adapter = EventsAdapter(events)
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.adapter = adapter
             }

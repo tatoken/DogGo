@@ -20,11 +20,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class ScoreAdapter(
-    private val users: List<UserData>,
-    private val scope: CoroutineScope
-) : RecyclerView.Adapter<ScoreAdapter.BadgeViewHolder>() {
+    private val users: List<UserData>
+) : RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>() {
 
-    inner class BadgeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ScoreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val conponent:LinearLayout=view.findViewById(R.id.component)
         val name: TextView = view.findViewById(R.id.name)
         val points: TextView = view.findViewById(R.id.points)
@@ -33,13 +32,13 @@ class ScoreAdapter(
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BadgeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.trophy_page_leaderboard_component, parent, false)
-        return BadgeViewHolder(view)
+        return ScoreViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: BadgeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ScoreViewHolder, position: Int) {
         val user = users[position]
 
         if(position<3)

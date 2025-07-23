@@ -13,22 +13,22 @@ import kotlinx.coroutines.launch
 class PrizeAdapter(
     private val prizes: List<PrizeData>,
     private val scope: CoroutineScope
-) : RecyclerView.Adapter<PrizeAdapter.BadgeViewHolder>() {
+) : RecyclerView.Adapter<PrizeAdapter.PrizeViewHolder>() {
 
-    inner class BadgeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class PrizeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val prizeName: TextView = view.findViewById(R.id.prizeName)
         val prizeDescription: TextView = view.findViewById(R.id.prizeDescription)
         val prizeThreshold: TextView = view.findViewById(R.id.prizeThreshold)
         val prizeIcon: ImageView = view.findViewById(R.id.prizeIcon)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BadgeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrizeViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recycler_prize, parent, false)
-        return BadgeViewHolder(view)
+        return PrizeViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: BadgeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PrizeViewHolder, position: Int) {
         val prize = prizes[position]
         holder.prizeName.text = prize.name
         holder.prizeDescription.text = prize.description

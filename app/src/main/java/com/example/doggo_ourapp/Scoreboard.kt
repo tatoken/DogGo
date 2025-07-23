@@ -25,7 +25,7 @@ class Scoreboard : Fragment(R.layout.scoreboard_layout) {
         pointText=view.findViewById(R.id.pointText)
 
         getTopFiftyUser { users ->
-            adapter = ScoreAdapter(users, viewLifecycleOwner.lifecycleScope)
+            adapter = ScoreAdapter(users)
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = adapter
         }

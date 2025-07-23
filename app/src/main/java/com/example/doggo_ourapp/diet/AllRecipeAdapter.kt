@@ -8,13 +8,17 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doggo_ourapp.R
+import com.example.doggo_ourapp.SupabaseManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class AllRecipesAdapter(
     private val recipes: List<RecipeData>,
+    private val scope: CoroutineScope,
     private val onRecipeSelected: (RecipeData) -> Unit
 ) : RecyclerView.Adapter<AllRecipesAdapter.RecipeViewHolder>() {
 
-    class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RecipeViewHolder(itemView: View, private val scope: CoroutineScope) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.recipeTitle)
         private val time: TextView = itemView.findViewById(R.id.recipeTime)
         private val difficulty: TextView = itemView.findViewById(R.id.recipeDifficulty)
@@ -40,7 +44,10 @@ class AllRecipesAdapter(
             vitamins.text = "Vitamins: ${recipe.vitamins}"
 
             val imageView = imageCard.getChildAt(0) as? ImageView
-            imageView?.setImageResource(R.drawable.receipe) // o Glide per immagini remote
+            scope.launch {
+                val bitmap= SupabaseManager.downloadImage("recipe", recipe.id!!+".png")
+                imageView?.setImageBitmap(bitmap)
+            }
 
             itemView.setOnClickListener {
                 onClick(recipe)
@@ -51,7 +58,7 @@ class AllRecipesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recipe_card_from_all, parent, false)
-        return RecipeViewHolder(view)
+        return RecipeViewHolder(view,scope)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {

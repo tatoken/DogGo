@@ -8,7 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.doggo_ourapp.R
+import com.example.doggo_ourapp.SupabaseManager
+import kotlinx.coroutines.launch
 
 class RecipeDetail : AppCompatActivity() {
 
@@ -58,7 +61,12 @@ class RecipeDetail : AppCompatActivity() {
             findViewById<TextView>(R.id.vitaminsValue).text = "Vitamins: ${recipe.vitamins}"
 
             val imageView = findViewById<ImageView>(R.id.recipeImage)
-            imageView.setImageResource(R.drawable.receipe) // o usa Glide se usi URL remoto
+
+            lifecycleScope.launch {
+                val bitmap= SupabaseManager.downloadImage("recipe", recipe.id!!+".png")
+                imageView?.setImageBitmap(bitmap)
+            }
+
         } else {
             // Se per qualche motivo la ricetta è nulla, torna indietro
             finish()

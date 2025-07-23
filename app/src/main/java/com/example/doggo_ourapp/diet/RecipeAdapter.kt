@@ -9,9 +9,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doggo_ourapp.R
+import com.example.doggo_ourapp.SupabaseManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class RecipeAdapter(
     private val recipes: List<RecipeData>,
+    private val scope: CoroutineScope,
     private val onAddClicked: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -26,7 +30,7 @@ class RecipeAdapter(
 
         return if (viewType == 0) {
             val view = inflater.inflate(R.layout.recipe_card, parent, false)
-            RecipeViewHolder(view)
+            RecipeViewHolder(view, scope) // 👈 passa il `scope` qui
         } else {
             val view = inflater.inflate(R.layout.add_recipe_card, parent, false)
             AddViewHolder(view)
@@ -41,7 +45,7 @@ class RecipeAdapter(
         }
     }
 
-    class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RecipeViewHolder(itemView: View, private val scope: CoroutineScope) : RecyclerView.ViewHolder(itemView) {
         fun bind(recipe: RecipeData) {
             itemView.findViewById<TextView>(R.id.recipeTitle).text = recipe.name
             itemView.findViewById<TextView>(R.id.recipeTime).text = "TIME:\n${recipe.duration}"
@@ -57,11 +61,10 @@ class RecipeAdapter(
             val imageCard = itemView.findViewById<CardView>(R.id.recipePhoto)
             val imageView = imageCard.getChildAt(0) as? ImageView
 
-            // Se usi un ID di risorsa locale
-            imageView?.setImageResource(R.drawable.receipe)
-
-            // Se usi un URL remoto
-            // Glide.with(itemView).load(recipe.imageUrl).into(imageView)
+            scope.launch {
+                val bitmap=SupabaseManager.downloadImage("recipe", recipe.id!!+".png")
+                imageView?.setImageBitmap(bitmap)
+            }
 
             itemView.setOnClickListener {
                 DietFirebase.selectedRecipe = recipe
@@ -69,7 +72,6 @@ class RecipeAdapter(
                 val intent = Intent(context, RecipeDetail::class.java)
                 context.startActivity(intent)
             }
-
         }
     }
 

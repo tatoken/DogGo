@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doggo_ourapp.R
@@ -121,7 +122,7 @@ class Food : Fragment(R.layout.food_layout) {
         DietFirebase.loadCompleteRecipesForDiet { recipeList ->
             if (recipeList != null) {
                 recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                recyclerView.adapter = RecipeAdapter(recipeList) {
+                recyclerView.adapter = RecipeAdapter(recipeList, viewLifecycleOwner.lifecycleScope) {
                     val intent = Intent(requireContext(), AddRecipeActivity::class.java)
                     startActivity(intent)
                 }

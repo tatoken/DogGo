@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doggo_ourapp.R
@@ -24,7 +25,7 @@ class AddRecipeActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerAllRecipes)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = AllRecipesAdapter(recipes) { selectedRecipe ->
+        adapter = AllRecipesAdapter(recipes, lifecycleScope) { selectedRecipe ->
             addRecipeToDogDiet(selectedRecipe)
         }
 

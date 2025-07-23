@@ -58,8 +58,7 @@
                 android:id="@+id/recipeImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/receipe"
+                android:src="@drawable/recipe_loading_icon"
                 android:contentDescription="Recipe image"
                 android:cropToPadding="true" />
         </androidx.cardview.widget.CardView>
