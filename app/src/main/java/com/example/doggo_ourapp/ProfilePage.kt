@@ -79,33 +79,6 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             }
         }
 
-        /** -------------------- Health Info Setup -------------------- **/
-        val weightInfo = view.findViewById<ProfilePageInfoComponent>(R.id.weight_info)
-        val vaccinationInfo = view.findViewById<ProfilePageInfoComponent>(R.id.vaccinations_info)
-        val allergiesInfo = view.findViewById<ProfilePageInfoComponent>(R.id.allergies_info)
-        val interventionsInfo = view.findViewById<ProfilePageInfoComponent>(R.id.interventions_info)
-        val treatmentsInfo = view.findViewById<ProfilePageInfoComponent>(R.id.treatments_info)
-        healthComponents = listOf(weightInfo, vaccinationInfo, allergiesInfo, interventionsInfo, treatmentsInfo)
-
-        setupEditButton(
-            view.findViewById(R.id.btnEditHealth),
-            healthComponents
-        ) {
-            if (!validateFields(healthComponents)) {
-                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
-                return@setupEditButton
-            }
-            DogFirebase.updateDogHealthFields(
-                weight = weightInfo.getValue(),
-                vaccinations = vaccinationInfo.getValue(),
-                allergies = allergiesInfo.getValue(),
-                interventions = interventionsInfo.getValue(),
-                treatments = treatmentsInfo.getValue()
-            ) { success ->
-                showToast(success, "Dog updated successfully", "Error while saving dog data")
-            }
-        }
-
         /** -------------------- Diet Info Setup -------------------- **/
 
 
@@ -219,13 +192,6 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
                 personalComponents[2].setValue(dogData.sex ?: "")
                 personalComponents[3].setValue(dogData.age ?: "")
                 personalComponents[4].setValue(dogData.microchip ?: "")
-
-                // Health fields
-                healthComponents[0].setValue(dogData.weight ?: "")
-                //healthComponents[1].setValue(dogData.vaccinations ?: "")
-                //healthComponents[2].setValue(dogData.allergies ?: "")
-                //healthComponents[3].setValue(dogData.interventions ?: "")
-                //healthComponents[4].setValue(dogData.treatments ?: "")
 
                 // Diet fields
                 dietComponents[0].setValue(dogData.diet?.carbohydrates ?: "")

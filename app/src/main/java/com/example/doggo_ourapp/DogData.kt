@@ -9,9 +9,5 @@ data class DogData(
     var sex: String? = null,
     var age: String? = null,
     var microchip: String? = null,
-    var weight: String? = null,
-    var vetTelephone: String? = null,
-    var events: MutableList<EventData>? = mutableListOf(),
-    var trainingAchieved: MutableList<TrainingData>? = mutableListOf(),
     var diet: DietData? = null
 )
