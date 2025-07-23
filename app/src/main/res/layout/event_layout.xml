@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:weightSum="6"
+    android:layout_margin="10dp"
     android:gravity="center">
 
     <TextView
@@ -13,7 +14,8 @@
         android:layout_weight="2"
         android:gravity="center"
         android:textStyle="bold"
-        android:textSize="25sp"
+        android:textColor="@color/myBlack"
+        android:textSize="20sp"
         android:text="22:00"
         app:layout_constraintBottom_toBottomOf="parent"
 
@@ -29,12 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
+            android:textColor="@color/myBlack"
             android:textStyle="bold"
             android:textSize="20sp"/>
         <TextView
             android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/myBlack"
             android:text="Description"
             android:textSize="15sp"/>
     </LinearLayout>

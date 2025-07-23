@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -64,7 +65,7 @@ class Calendar : Fragment() {
         calendarView.scrollToMonth(currentMonth)
 
         calendarView.monthScrollListener = { month ->
-            val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
+            val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
             monthTitle.text = month.yearMonth.format(formatter).capitalize()
         }
 
@@ -106,7 +107,7 @@ class Calendar : Fragment() {
         val date = selectedDate
         if (date != null) {
             eventText.visibility=View.GONE
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
             val dateString = date.format(formatter)
 
             EventFirebase.loadEventsByDate(dateString){
@@ -118,6 +119,7 @@ class Calendar : Fragment() {
                 adapter = EventsAdapter(events)
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.adapter = adapter
+
             }
         }
     }
@@ -136,7 +138,7 @@ class Calendar : Fragment() {
                 val description = descInput.text.toString()
                 if (title.isNotBlank()) {
                     val time = timeInput.text.toString()
-                    EventFirebase.saveEvent(EventData(null,title,description,time,LocalDate.now().toString()))
+                    EventFirebase.saveEvent(EventData(null,title,description,time,date.toString()))
                     { result->
                         updateEventText()
                     }

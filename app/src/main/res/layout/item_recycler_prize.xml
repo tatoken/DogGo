@@ -27,7 +27,7 @@
             android:id="@+id/prizeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome prize"
+            android:text="@string/name_prize"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:id="@+id/prizeDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text="@string/description_prize"
             android:textSize="14sp"
             android:textColor="#666666" />
 
@@ -43,7 +43,7 @@
             android:id="@+id/prizeThreshold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text="@string/threshold_prize"
             android:textSize="14sp"
             android:textColor="@color/myBlack" />
 

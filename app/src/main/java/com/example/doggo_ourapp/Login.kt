@@ -37,14 +37,14 @@ class Login : AppCompatActivity() {
             insets
         }
 
-        val buttonNavigate: Button = findViewById(R.id.btn_continue)
+        /*val buttonNavigate: Button = findViewById(R.id.btn_continue)
 
         buttonNavigate.setOnClickListener {
             val intent = Intent(this, MainApp::class.java)
             startActivity(intent)
             finish()
         }
-
+        */
         setUpRegistrationText()
 
         edtEmail=findViewById(R.id.edtTextEmail)

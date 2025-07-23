@@ -27,7 +27,7 @@
             android:id="@+id/badgeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome badge"
+            android:text="Badge name"
             android:textSize="16sp"
             android:textStyle="bold" />
 

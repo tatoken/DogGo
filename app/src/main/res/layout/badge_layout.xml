@@ -7,7 +7,7 @@
         android:id="@+id/dataText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Medaglie complessive"
+        android:text="@string/overall_medals"
         android:textStyle="bold"
         android:textSize="20sp"
         android:padding="16dp" />
