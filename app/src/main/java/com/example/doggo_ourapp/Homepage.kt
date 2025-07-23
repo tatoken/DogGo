@@ -41,11 +41,19 @@ class Homepage : Fragment(R.layout.homepage_layout) {
 
     //Gym
     private fun setupGymSection(view: View) {
+        val challengeSection = view.findViewById<View>(R.id.chartSection)
         val lineChart = view.findViewById<LineChart>(R.id.lineChart)
         val barChart = view.findViewById<BarChart>(R.id.barChart)
         val day = 30
 
+        // Clic per navigare al fragment Gym
+        challengeSection.setOnClickListener {
+            (activity as? MainApp)?.replaceFragment(Gym())
+        }
+
         TrainingFirebase.loadTrainingsOfLastDays(day) { trainingList ->
+            // Controllo ciclo di vita per evitare crash se fragment non è più attivo
+            if (!isAdded || view == null) return@loadTrainingsOfLastDays
 
             if (trainingList != null) {
                 val kmData = generateKmPerDayData(trainingList, day)
@@ -53,6 +61,7 @@ class Homepage : Fragment(R.layout.homepage_layout) {
             }
         }
     }
+
 
     fun generateKmPerDayData(trainingList: List<TrainingData>, days: Int): Map<String, Float> {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -127,10 +136,54 @@ class Homepage : Fragment(R.layout.homepage_layout) {
 
     //Event
     private fun setupEventSection(view: View) {
+        val eventSection = view.findViewById<View>(R.id.eventSection)
+        val calendarContainer = view.findViewById<LinearLayout>(R.id.calendarSectionInnerLayout)
 
+        // Clic per navigare al fragment Calendar
+        eventSection.setOnClickListener {
+            (activity as? MainApp)?.replaceFragment(Calendar())
+        }
+
+        val today = LocalDate.now().toString() // formato yyyy-MM-dd
+
+        EventFirebase.loadEventsByDate(today) { events ->
+            // Controllo importante per evitare crash se il fragment non è più attivo
+            if (!isAdded || view == null) return@loadEventsByDate
+
+            calendarContainer.removeAllViews() // Pulisce prima di aggiungere, evita duplicati
+
+            if (events.isEmpty()) {
+                val emptyText = TextView(requireContext()).apply {
+                    text = "Nothing to do today"
+                    textSize = 14f
+                    setTextColor(Color.GRAY)
+                }
+                calendarContainer.addView(emptyText)
+                return@loadEventsByDate
+            }
+
+            events.sortedBy { it.time }.forEach { event ->
+                val itemView = layoutInflater.inflate(R.layout.homepage_event_item, calendarContainer, false)
+
+                itemView.findViewById<TextView>(R.id.eventTime).text = event.time
+                itemView.findViewById<TextView>(R.id.eventName).text = event.title
+
+                calendarContainer.addView(itemView)
+
+                val divider = View(requireContext()).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 2
+                    )
+                    setBackgroundColor(Color.parseColor("#CCCCCC"))
+                }
+                calendarContainer.addView(divider)
+            }
+        }
     }
 
-    //Food
+
+
+
     private fun setupFoodSection(view: View) {
         val foodSection = view.findViewById<View>(R.id.foodSection)
         val recipeContainer = view.findViewById<LinearLayout>(R.id.recipeContainer)
@@ -140,8 +193,13 @@ class Homepage : Fragment(R.layout.homepage_layout) {
             (activity as? MainApp)?.replaceFragment(Food())
         }
 
-        // Caricamento ricette del giorno
         DietFirebase.loadCompleteRecipesForDiet { recipeList ->
+            // Controllo di sicurezza per evitare crash se fragment non più attivo
+            if (!isAdded || view == null) return@loadCompleteRecipesForDiet
+
+            // Pulisce il contenitore prima di aggiungere nuove view
+            recipeContainer.removeAllViews()
+
             if (recipeList.isNullOrEmpty()) {
                 Log.d("Homepage", "Nessuna ricetta trovata.")
                 return@loadCompleteRecipesForDiet
@@ -157,9 +215,12 @@ class Homepage : Fragment(R.layout.homepage_layout) {
 
                 titleView.text = recipe.name
 
-                lifecycleScope.launch {
+                viewLifecycleOwner.lifecycleScope.launch {
                     val bitmap = SupabaseManager.downloadImage("recipe", recipe.id!! + ".png")
-                    imageView?.setImageBitmap(bitmap)
+                    // Controllo extra nel caso la view venga distrutta durante il caricamento
+                    if (isAdded && bitmap != null) {
+                        imageView?.setImageBitmap(bitmap)
+                    }
                 }
 
                 recipeContainer.addView(itemView)
@@ -167,24 +228,32 @@ class Homepage : Fragment(R.layout.homepage_layout) {
         }
     }
 
-    //Challenge
-    private fun setupChallengesSection(view: View) {
 
+    private fun setupChallengesSection(view: View) {
+        val challengeSection = view.findViewById<View>(R.id.trophySection)
         val challengeRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewBadge)
 
+        // Clic per navigare al fragment Trophy
+        challengeSection.setOnClickListener {
+            (activity as? MainApp)?.replaceFragment(Trophy())
+        }
+
         BadgeFirebase.loadAllBadges { badges ->
+            // Controllo ciclo di vita per evitare crash se fragment non più attivo
+            if (!isAdded || view == null) return@loadAllBadges
+
             if (!badges.isNullOrEmpty()) {
-                // Mostra solo i primi 3-4 badge, se vuoi fare anteprima
                 val previewBadges = badges.take(4)
 
                 val adapter = BadgeAdapter(previewBadges, viewLifecycleOwner.lifecycleScope, compactMode = true)
                 challengeRecyclerView.layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 challengeRecyclerView.adapter = adapter
             } else {
                 println("No challenge has already started")
             }
         }
     }
+
 
 }

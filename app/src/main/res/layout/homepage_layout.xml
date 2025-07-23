@@ -18,8 +18,11 @@
         android:paddingEnd="15dp"
         android:paddingBottom="0dp"
         android:background="@drawable/component_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/calendarSection"
+        app:layout_constraintBottom_toTopOf="@id/eventSection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -41,7 +44,7 @@
 
     <!-- Sezione dedicata alla pagina Calendar ( Lista di eventi )-->
     <LinearLayout
-        android:id="@+id/calendarSection"
+        android:id="@+id/eventSection"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -51,110 +54,39 @@
         android:layout_marginBottom="10dp"
         android:gravity="center_vertical"
         android:background="@drawable/component_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintTop_toBottomOf="@id/chartSection"
         app:layout_constraintBottom_toTopOf="@id/trophySection"
         app:layout_constraintEnd_toStartOf="@id/foodSection"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Upcoming events"
+            android:text="Today's Events"
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
-            android:textColor="@color/myBlack"/>
+            android:textColor="@color/myBlack"
+            android:layout_marginBottom="5dp" />
 
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_weight="2"
-           >
-           <TextView
-               android:id="@+id/calendarSection_month_1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="3 March"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintBottom_toTopOf="@id/calendarSection_hour_1"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintEnd_toStartOf="@id/calendarSection_event_1"
-               />
-           <TextView
-               android:id="@+id/calendarSection_hour_1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="16:20"
-               app:layout_constraintTop_toBottomOf="@id/calendarSection_month_1"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintEnd_toStartOf="@id/calendarSection_event_1"
-
-               />
-
-           <TextView
-               android:id="@+id/calendarSection_event_1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Pill"
-               android:textStyle="bold"
-               android:gravity="center"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/calendarSection_month_1"
-               />
-
-       </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#CCCCCC" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            >
-            <TextView
-                android:id="@+id/calendarSection_month_2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/calendarSectionInnerLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="10 March"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/calendarSection_hour_2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/calendarSection_event_2"
-                />
-            <TextView
-                android:id="@+id/calendarSection_hour_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="09:00"
-                app:layout_constraintTop_toBottomOf="@id/calendarSection_month_2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/calendarSection_event_2"
-
-                />
-
-            <TextView
-                android:id="@+id/calendarSection_event_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vet"
-                android:textStyle="bold"
-                android:gravity="center"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/calendarSection_month_2"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:orientation="vertical" />
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
+
 
     <!-- Sezione dedicata alla pagina Food ( Ricetta giornaliera )-->
     <LinearLayout
@@ -176,12 +108,12 @@
         app:layout_constraintTop_toBottomOf="@id/chartSection"
         app:layout_constraintBottom_toTopOf="@id/trophySection"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/calendarSection"
+        app:layout_constraintStart_toEndOf="@id/eventSection"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Daily receipe"
+            android:text="Today's Recipes"
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
             android:textColor="@color/myBlack"
@@ -213,7 +145,10 @@
         android:orientation="vertical"
         android:padding="15dp"
         android:background="@drawable/component_background"
-        app:layout_constraintTop_toBottomOf="@id/calendarSection"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/eventSection"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -224,7 +159,8 @@
             android:text="Ongoing challenge"
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
-            android:textColor="@color/myBlack"/>
+            android:textColor="@color/myBlack"
+            android:layout_marginBottom="5dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewBadge"
