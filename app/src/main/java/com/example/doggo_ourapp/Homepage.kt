@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.doggo_ourapp.diet.DietFirebase
 import com.example.doggo_ourapp.diet.Food
 import com.github.mikephil.charting.charts.BarChart
@@ -168,5 +170,21 @@ class Homepage : Fragment(R.layout.homepage_layout) {
     //Challenge
     private fun setupChallengesSection(view: View) {
 
+        val challengeRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewBadge)
+
+        BadgeFirebase.loadAllBadges { badges ->
+            if (!badges.isNullOrEmpty()) {
+                // Mostra solo i primi 3-4 badge, se vuoi fare anteprima
+                val previewBadges = badges.take(4)
+
+                val adapter = BadgeAdapter(previewBadges, viewLifecycleOwner.lifecycleScope, compactMode = true)
+                challengeRecyclerView.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                challengeRecyclerView.adapter = adapter
+            } else {
+                println("No challenge has already started")
+            }
+        }
     }
+
 }

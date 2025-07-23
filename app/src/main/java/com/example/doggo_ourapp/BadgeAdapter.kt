@@ -1,5 +1,6 @@
 package com.example.doggo_ourapp
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class BadgeAdapter(
     private val badges: List<BadgeData>,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val compactMode: Boolean = false
 ) : RecyclerView.Adapter<BadgeAdapter.BadgeViewHolder>() {
 
     inner class BadgeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,10 +37,28 @@ class BadgeAdapter(
         return BadgeViewHolder(view)
     }
 
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
+    }
+
     override fun onBindViewHolder(holder: BadgeViewHolder, position: Int) {
         val badge = badges[position]
         holder.badgeName.text = badge.name
         holder.badgeType.text = badge.description ?: ""
+
+        if (compactMode) {
+            // Riduci dimensioni immagine
+            holder.badgeIcon.layoutParams.width = 50.dpToPx(holder.itemView.context)
+            holder.badgeIcon.layoutParams.height = 50.dpToPx(holder.itemView.context)
+            holder.badgeIcon.requestLayout()
+
+            // Riduci padding e margini
+            holder.itemView.setPadding(8, 4, 8, 4)
+
+            // Riduci dimensione testo
+            holder.badgeName.textSize = 13f
+            holder.badgeType.textSize = 11f
+        }
 
         val threshold = badge.threshold?.toIntOrNull() ?: 0
 
