@@ -29,7 +29,7 @@ class TrainingAdapter(
     override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
         val training = trainings[position]
         holder.trainingHour.text = training.hour
-        holder.trainingDistance.text = training.km
+        holder.trainingDistance.text = training.km+" km"
         holder.trainingTime.text = training.time
     }
 

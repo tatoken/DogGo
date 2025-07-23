@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
@@ -40,6 +41,7 @@ class Gym : Fragment(R.layout.training_layout) {
     private lateinit var noTrainingText:LinearLayout
 
     private lateinit var lineChart:LineChart
+    private lateinit var barChart:BarChart
     private lateinit var ourView:View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -48,6 +50,7 @@ class Gym : Fragment(R.layout.training_layout) {
 
         noTrainingText=view.findViewById(R.id.noTrainingText)
 
+        barChart=view.findViewById(R.id.barChart)
         lineChart = view.findViewById(R.id.lineChart)
         ourView=view
 
@@ -122,14 +125,19 @@ class Gym : Fragment(R.layout.training_layout) {
 
     private fun refreshData() {
         TrainingFirebase.loadTrainingsOfLastDays(7) { trainingList ->
+
             if (trainingList != null) {
                 val kmData = generateKmPerDayData(trainingList, 7)
                 setupLineChart(lineChart, kmData)
+
+                val timeData = generateTimePerDayData(trainingList, 7)
+                setupBarChartForTime(barChart, timeData)
+
             }
         }
 
         recyclerView = ourView.findViewById(R.id.recyclerViewTraining)
-        TrainingFirebase.loadTrainingsOfLastDays(1) { trainings ->
+        TrainingFirebase.loadTrainingsOfLastDays(0) { trainings ->
 
             if (trainings.isEmpty()) {
                 noTrainingText.visibility=View.VISIBLE
@@ -142,22 +150,19 @@ class Gym : Fragment(R.layout.training_layout) {
             }
         }
 
-        setupCombinedChart(ourView.findViewById(R.id.combinedChart))
     }
 
 
     fun generateKmPerDayData(trainingList: List<TrainingData>, days: Int): Map<String, Float> {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val today = LocalDate.now()
 
-        // Mappa per tutti i giorni degli ultimi X giorni, inizializzati a 0
         val kmMap = mutableMapOf<String, Float>()
         for (i in days downTo 0) {
             val date = today.minusDays(i.toLong())
             kmMap[date.format(formatter)] = 0f
         }
 
-        // Somma i km ai rispettivi giorni
         for (training in trainingList) {
             val date = training.date
             val km = training.km?.toFloatOrNull() ?: 0f
@@ -169,38 +174,82 @@ class Gym : Fragment(R.layout.training_layout) {
         return kmMap
     }
 
+    fun generateTimePerDayData(trainingList: List<TrainingData>, days: Int): Map<String, Float> {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val timeFormatter = DateTimeFormatter.ofPattern("mm:ss")
+        val today = LocalDate.now()
+
+        val timeMap = mutableMapOf<String, Float>()
+
+        for (i in days downTo 0) {
+            val date = today.minusDays(i.toLong())
+            timeMap[date.format(formatter)] = 0f
+        }
+
+        for (training in trainingList) {
+            val date = training.date
+            val timeString = training.time // formato mm:ss
+            if (!date.isNullOrBlank() && !timeString.isNullOrBlank() && timeMap.containsKey(date)) {
+                val parts = timeString.split(":")
+                if (parts.size == 2) {
+                    val minutes = parts[0].toFloatOrNull() ?: 0f
+                    val seconds = parts[1].toFloatOrNull() ?: 0f
+                    val totalMinutes = minutes + (seconds / 60f)
+                    timeMap[date] = timeMap[date]!! + totalMinutes
+                }
+            }
+        }
+
+        return timeMap
+    }
+
+
 
     private fun setupLineChart(chart: LineChart, kmPerDay: Map<String, Float>) {
         val entries = mutableListOf<Entry>()
         val labels = mutableListOf<String>()
 
         var index = 0f
+
+
+
         for ((date, km) in kmPerDay.entries) {
             entries.add(Entry(index, km))
-            labels.add(date.substring(5)) // mostra solo "MM-dd"
+            labels.add(date.substring(0,5))
             index++
         }
 
-        val dataSet = LineDataSet(entries, "Km per giorno")
-        dataSet.color = Color.rgb(70, 130, 180)
+        val dataSet = LineDataSet(entries, "Daily Km")
+        dataSet.color = Color.rgb(170, 0, 255)
         dataSet.setDrawFilled(true)
-        dataSet.setDrawCircles(false)
+        dataSet.setDrawCircles(true)
         dataSet.setDrawValues(false)
         dataSet.lineWidth = 2f
-        dataSet.fillColor = Color.rgb(200, 220, 255)
+        dataSet.fillColor = Color.rgb(143, 0, 255)
+
+        val legend = chart.legend
+        legend.isEnabled = true
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+        legend.textSize = 12f
+
 
         chart.data = LineData(dataSet)
         chart.description.isEnabled = false
         chart.axisRight.isEnabled = false
         chart.setTouchEnabled(true)
-        chart.setPinchZoom(true)
+        chart.setPinchZoom(false)
+        chart.setExtraOffsets(10f, 10f, 10f, 30f)
+
 
         // X Axis
         val xAxis = chart.xAxis
         xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
-        xAxis.labelRotationAngle = -45f
+        xAxis.labelRotationAngle = -25f
         xAxis.granularity = 1f
         xAxis.labelCount = 5 // Mostra meno date per evitare sovrapposizione
 
@@ -209,39 +258,60 @@ class Gym : Fragment(R.layout.training_layout) {
         chart.invalidate()
     }
 
-    private fun setupCombinedChart(chart: CombinedChart) {
-        // Line Data
-        val lineEntries = listOf(
-            Entry(0f, 30f),
-            Entry(1f, 50f),
-            Entry(2f, 45f),
-            Entry(3f, 60f)
-        )
-        val lineDataSet = LineDataSet(lineEntries, "Trend vendite")
-        lineDataSet.color = Color.MAGENTA
-        val lineData = LineData(lineDataSet)
+    private fun setupBarChartForTime(chart: BarChart, timePerDay: Map<String, Float>) {
+        val entries = mutableListOf<BarEntry>()
+        val labels = mutableListOf<String>()
 
-        // Bar Data
-        val barEntries = listOf(
-            BarEntry(0f, 10f),
-            BarEntry(1f, 20f),
-            BarEntry(2f, 25f),
-            BarEntry(3f, 15f)
-        )
-        val barDataSet = BarDataSet(barEntries, "Volume")
-        barDataSet.color = Color.GRAY
-        val barData = BarData(barDataSet)
+        var index = 0f
 
-        // Combine
-        val combinedData = CombinedData()
-        combinedData.setData(lineData)
-        combinedData.setData(barData)
+        for ((date, minutes) in timePerDay.entries) {
+            entries.add(BarEntry(index, minutes))
+            labels.add(date.substring(0,5)) // oppure .substring(5) per MM/dd
+            index++
+        }
 
-        chart.data = combinedData
-        chart.xAxis.valueFormatter = IndexAxisValueFormatter(listOf("Q1", "Q2", "Q3", "Q4"))
+        val dataSet = BarDataSet(entries, "Daily walking time (minutes)")
+        dataSet.color = Color.rgb(251, 175, 0)
+        dataSet.valueTextSize = 10f
+        dataSet.setDrawValues(false)
+
+        val barData = BarData(dataSet)
+        barData.barWidth = 0.4f
+
+        chart.data = barData
         chart.description.isEnabled = false
+        chart.axisRight.isEnabled = false
+        chart.setTouchEnabled(true)
+        chart.setPinchZoom(false)
+        chart.setExtraOffsets(10f, 10f, 10f, 30f)
+
+
+        val legend = chart.legend
+        legend.isEnabled = true
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+        legend.textSize = 12f
+
+
+        // X Axis
+        val xAxis = chart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.labelRotationAngle = -25f
+        xAxis.granularity = 1f
+        xAxis.labelCount = 7
+
+        // Y Axis
+        chart.axisLeft.axisMinimum = 0f
+        chart.axisLeft.granularity = 1f
+
         chart.animateY(1000)
+        chart.invalidate()
     }
+
 
 
 }
