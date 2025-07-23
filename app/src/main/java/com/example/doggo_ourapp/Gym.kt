@@ -1,54 +1,67 @@
 package com.example.doggo_ourapp
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.animation.Easing
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.CombinedChart
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.gms.location.LocationServices
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-class Gym : Fragment() {
+class Gym : Fragment(R.layout.training_layout) {
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: TrainingAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_training, container, false)
-    }
+    private lateinit var noTrainingText:LinearLayout
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private lateinit var lineChart:LineChart
+    private lateinit var ourView:View
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBarChart(view.findViewById(R.id.barChart))
-        setupCombinedChart(view.findViewById(R.id.combinedChart))
+        noTrainingText=view.findViewById(R.id.noTrainingText)
 
-        view.findViewById<Button>(R.id.btn_start).setOnClickListener {
+        lineChart = view.findViewById(R.id.lineChart)
+        ourView=view
+
+        refreshData()
+
+        view.findViewById<FloatingActionButton>(R.id.btn_start).setOnClickListener {
             if (areLocationPermissionsGranted()) {
                 try {
                     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
                     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                         if (location != null) {
-                            startActivity(Intent(requireContext(), TrackingActivity::class.java))
+                            val intent = Intent(requireContext(), TrackingActivity::class.java)
+                            trainingResultLauncher.launch(intent)
+
                         } else {
                             Toast.makeText(requireContext(), "Enable position", Toast.LENGTH_SHORT).show()
                         }
@@ -99,20 +112,101 @@ class Gym : Fragment() {
         }
     }
 
-    private fun setupBarChart(chart: BarChart) {
-        val entries = listOf(
-            BarEntry(0f, 120f),
-            BarEntry(1f, 80f),
-            BarEntry(2f, 140f),
-            BarEntry(3f, 100f)
-        )
-        val dataSet = BarDataSet(entries, "Utenti per giorno")
-        dataSet.color = Color.rgb(60, 130, 200)
+    private val trainingResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            refreshData()
+        }
+    }
 
-        chart.data = BarData(dataSet)
-        chart.xAxis.valueFormatter = IndexAxisValueFormatter(listOf("Lun", "Mar", "Mer", "Gio"))
+    private fun refreshData() {
+        TrainingFirebase.loadTrainingsOfLastDays(7) { trainingList ->
+            if (trainingList != null) {
+                val kmData = generateKmPerDayData(trainingList, 7)
+                setupLineChart(lineChart, kmData)
+            }
+        }
+
+        recyclerView = ourView.findViewById(R.id.recyclerViewTraining)
+        TrainingFirebase.loadTrainingsOfLastDays(1) { trainings ->
+
+            if (trainings.isEmpty()) {
+                noTrainingText.visibility=View.VISIBLE
+            }
+            else {
+                noTrainingText.visibility=View.GONE
+                adapter = TrainingAdapter(trainings)
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.adapter = adapter
+            }
+        }
+
+        setupCombinedChart(ourView.findViewById(R.id.combinedChart))
+    }
+
+
+    fun generateKmPerDayData(trainingList: List<TrainingData>, days: Int): Map<String, Float> {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val today = LocalDate.now()
+
+        // Mappa per tutti i giorni degli ultimi X giorni, inizializzati a 0
+        val kmMap = mutableMapOf<String, Float>()
+        for (i in days downTo 0) {
+            val date = today.minusDays(i.toLong())
+            kmMap[date.format(formatter)] = 0f
+        }
+
+        // Somma i km ai rispettivi giorni
+        for (training in trainingList) {
+            val date = training.date
+            val km = training.km?.toFloatOrNull() ?: 0f
+            if (date != null && kmMap.containsKey(date)) {
+                kmMap[date] = kmMap[date]!! + km
+            }
+        }
+
+        return kmMap
+    }
+
+
+    private fun setupLineChart(chart: LineChart, kmPerDay: Map<String, Float>) {
+        val entries = mutableListOf<Entry>()
+        val labels = mutableListOf<String>()
+
+        var index = 0f
+        for ((date, km) in kmPerDay.entries) {
+            entries.add(Entry(index, km))
+            labels.add(date.substring(5)) // mostra solo "MM-dd"
+            index++
+        }
+
+        val dataSet = LineDataSet(entries, "Km per giorno")
+        dataSet.color = Color.rgb(70, 130, 180)
+        dataSet.setDrawFilled(true)
+        dataSet.setDrawCircles(false)
+        dataSet.setDrawValues(false)
+        dataSet.lineWidth = 2f
+        dataSet.fillColor = Color.rgb(200, 220, 255)
+
+        chart.data = LineData(dataSet)
         chart.description.isEnabled = false
+        chart.axisRight.isEnabled = false
+        chart.setTouchEnabled(true)
+        chart.setPinchZoom(true)
+
+        // X Axis
+        val xAxis = chart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.labelRotationAngle = -45f
+        xAxis.granularity = 1f
+        xAxis.labelCount = 5 // Mostra meno date per evitare sovrapposizione
+
+        chart.axisLeft.axisMinimum = 0f
         chart.animateY(1000)
+        chart.invalidate()
     }
 
     private fun setupCombinedChart(chart: CombinedChart) {

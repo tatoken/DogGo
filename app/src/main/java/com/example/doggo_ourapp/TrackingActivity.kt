@@ -1,6 +1,7 @@
 package com.example.doggo_ourapp
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.SystemClock
@@ -19,6 +20,9 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import android.location.Location
 import androidx.annotation.RequiresPermission
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -132,52 +136,16 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
         // Formatta tempo come "mm:ss"
         val elapsedTimeStr = String.format("%02d:%02d", minutes, seconds)
 
-        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
-        val kmToday = distanceInMeters / 1000f
+        val today = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        val nowHour = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        val kmDone = (distanceInMeters + 100) / 1000f
 
-        TrainingFirebase.getTrainings { trainings ->
-            val todayTraining = trainings.find { it.date == today }
-
-            // Funzione per convertire tempo "mm:ss" in secondi totali
-            fun toSeconds(timeStr: String?): Int {
-                if (timeStr == null) return 0
-                val parts = timeStr.split(":")
-                val m = parts.getOrNull(0)?.toIntOrNull() ?: 0
-                val s = parts.getOrNull(1)?.toIntOrNull() ?: 0
-                return m * 60 + s
-            }
-
-            // Funzione per convertire secondi totali in "mm:ss"
-            fun secondsToTime(seconds: Int): String {
-                val m = seconds / 60
-                val s = seconds % 60
-                return String.format("%02d:%02d", m, s)
-            }
-
-            // Calcola nuovo tempo sommando quello esistente e quello appena registrato
-            val totalSeconds = toSeconds(todayTraining?.time) + elapsedSeconds
-            val newTimeStr = secondsToTime(totalSeconds)
-
-            // Calcola nuovi km sommando quelli esistenti e quelli della sessione attuale
-            val newKm = (todayTraining?.km?.replace(",", ".")?.toFloatOrNull() ?: 0f) + kmToday
-
-            val updatedTraining = TrainingData(
-                id = todayTraining?.id,
-                date = today,
-                time = newTimeStr,
-                km = String.format("%.2f", newKm).replace(".", ",")
-            )
-
-            if (todayTraining?.id != null) {
-                TrainingFirebase.updateTraining(updatedTraining) {
-                    finish()
-                }
-            } else {
-                TrainingFirebase.saveTraining(updatedTraining) {
-                    finish()
-                }
-            }
+        TrainingFirebase.saveTraining(TrainingData(null,today,nowHour,elapsedTimeStr,kmDone.toString()))
+        {
+            setResult(Activity.RESULT_OK)
+            finish()
         }
+
     }
 
 }

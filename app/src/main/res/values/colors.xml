@@ -7,6 +7,9 @@
     <color name="myGray">#e0e0e0</color>
     <color name="myGrayDark">#878787</color>
 
+    <color name="whiteTransparent">#62C5BDBD</color>
+    <color name="secondaryTransparent">#70FBAF00</color>
+
     <color name="primaryColor">#b75d69</color>
     <color name="secondaryColor">#FBAF00</color>
 </resources>

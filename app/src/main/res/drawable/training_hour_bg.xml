@@ -1,0 +1,14 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/secondaryColor" />
+
+    <corners android:radius="20dp" />
+    <!-- Oppure per personalizzare ogni angolo:
+    <corners
+        android:topLeftRadius="16dp"
+        android:topRightRadius="16dp"
+        android:bottomLeftRadius="8dp"
+        android:bottomRightRadius="8dp" />
+    -->
+</shape>

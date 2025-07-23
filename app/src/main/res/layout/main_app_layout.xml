@@ -19,9 +19,10 @@
         <!-- Toolbar -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:backgroundTint="@color/myWhite"
-            android:layout_marginTop="10dp">
+            android:layout_height="60dp"
+            android:background="@drawable/border_bottom"
+            android:layout_marginTop="10dp"
+            >
 
             <ImageButton
                 android:id="@+id/open_drawer_button"
@@ -88,8 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:backgroundTint="@color/myWhite"
             android:gravity="center"
+            android:background="@drawable/top_border"
             android:layout_marginBottom="30dp">
 
             <ImageButton

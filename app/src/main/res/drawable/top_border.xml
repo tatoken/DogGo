@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/myWhite" />
+        </shape>
+    </item>
+
+    <!-- Linea in alto -->
+    <item android:top="0dp" android:left="0dp" android:right="0dp" android:height="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/myGray" />
+        </shape>
+    </item>
+
+</layer-list>

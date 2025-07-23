@@ -3,6 +3,9 @@ package com.example.doggo_ourapp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 object TrainingFirebase {
 
@@ -107,14 +110,17 @@ object TrainingFirebase {
         }
     }
 
+    fun loadTrainingsOfLastDays(days: Int, onResult: (List<TrainingData>) -> Unit) {
+        DogFirebase.getActualDog { actualDog ->
+            if (actualDog == null) {
+                onResult(emptyList())
+                return@getActualDog
+            }
 
-    fun getTrainings(onResult: (List<TrainingData>) -> Unit) {
-        //val actualDog = DogFirebase.getActualDog()
-        val actualDog = "-OVSRjvLU7TVDVNcU53J"
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val today = LocalDate.now()
+            val trainingList = mutableListOf<TrainingData>()
 
-        if (actualDog == null) {
-            onResult(emptyList())
-        } else {
             val trainingRef = FirebaseDB.getMDbRef()
                 .child("user")
                 .child(UserFirebase.getCurrentUserId())
@@ -122,71 +128,32 @@ object TrainingFirebase {
                 .child(actualDog)
                 .child("training")
 
-            trainingRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val trainingList = mutableListOf<TrainingData>()
-                    for (child in snapshot.children) {
-                        val training = child.getValue(TrainingData::class.java)
-                        training?.let { trainingList.add(it) }
+            trainingRef.get().addOnSuccessListener { snapshot ->
+                for (child in snapshot.children) {
+                    val training = child.getValue(TrainingData::class.java)
+                    training?.let {
+                        it.id = child.key
+
+                        val dateString = it.date
+                        if (!dateString.isNullOrBlank()) {
+                            try {
+                                val trainingDate = LocalDate.parse(dateString, formatter)
+                                val daysBetween = ChronoUnit.DAYS.between(trainingDate, today)
+                                if (daysBetween in 0..days) {
+                                    trainingList.add(it)
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
                     }
-                    onResult(trainingList)
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(emptyList()) // oppure gestisci errore
-                }
-            })
-        }
-    }
-
-
-    fun getTraining(id: String, onResult: (TrainingData?) -> Unit) {
-        //val actualDog = DogFirebase.getActualDog()
-        val actualDog = "-OVSRjvLU7TVDVNcU53J"
-
-        if (actualDog == null) {
-            onResult(null)
-        } else {
-            val trainingRef = FirebaseDB.getMDbRef()
-                .child("user")
-                .child(UserFirebase.getCurrentUserId())
-                .child("dog")
-                .child(actualDog)
-                .child("training")
-                .child(id)
-
-            trainingRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val training = snapshot.getValue(TrainingData::class.java)
-                    onResult(training)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(null) // oppure gestisci errore
-                }
-            })
-        }
-    }
-
-    fun updateTraining(training: TrainingData, onResult: (Boolean) -> Unit) {
-        //val actualDog = DogFirebase.getActualDog()
-        val actualDog = "-OVSRjvLU7TVDVNcU53J"
-
-        if (actualDog == null || training.id == null) {
-            onResult(false)
-            return
-        }
-
-        val trainingRef = FirebaseDB.getMDbRef()
-            .child("user")
-            .child(UserFirebase.getCurrentUserId())
-            .child("dog")
-            .child(actualDog)
-            .child("training")
-            .child(training.id!!)
-
-        trainingRef.setValue(training).addOnCompleteListener { task ->
-            onResult(task.isSuccessful)
+                trainingList.reverse()
+                onResult(trainingList)
+            }.addOnFailureListener {
+                it.printStackTrace()
+                onResult(emptyList())
+            }
         }
     }
 
