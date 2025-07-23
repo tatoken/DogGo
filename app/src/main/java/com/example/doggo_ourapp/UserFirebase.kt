@@ -43,6 +43,20 @@ object UserFirebase {
         userRef.child("photo").setValue(photo)
     }
 
+    fun getUserByUid(uid: String, onResult: (UserData?) -> Unit) {
+        val dbRef = FirebaseDB.getMDbRef()
+        val userRef = dbRef.child("user").child(uid)
+
+        userRef.get().addOnSuccessListener { snapshot ->
+            val user = snapshot.getValue(UserData::class.java)
+            onResult(user)
+        }.addOnFailureListener {
+            it.printStackTrace()
+            onResult(null)
+        }
+    }
+
+
 
     fun getCurrentUserId():String
     {

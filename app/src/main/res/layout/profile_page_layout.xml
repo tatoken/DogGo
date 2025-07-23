@@ -104,6 +104,16 @@
                 android:textStyle="bold"
                 android:textSize="15dp"/>
 
+            <TextView
+                android:id="@+id/userId"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Id"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:textSize="10dp"/>
+
 
             <Button
                 android:id="@+id/btnSelPic"

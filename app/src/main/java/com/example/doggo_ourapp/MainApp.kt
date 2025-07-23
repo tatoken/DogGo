@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.doggo_ourapp.chat.Chat
 import com.example.doggo_ourapp.databinding.MainAppLayoutBinding
 import com.example.doggo_ourapp.diet.Food
 import com.google.android.material.navigation.NavigationView
@@ -30,6 +31,7 @@ class MainApp : AppCompatActivity() {
     private lateinit var foodNavbarFooterButton: ImageButton
     private lateinit var trophyNavbarFooterButton: ImageButton
     private lateinit var gymNavbarFooterButton: ImageButton
+    private lateinit var chatNavbarFooterButton: ImageButton
     private lateinit var profileImage:ImageView
 
     private lateinit var openDrawerButton:ImageButton
@@ -147,6 +149,7 @@ class MainApp : AppCompatActivity() {
         foodNavbarFooterButton=binding.navFood
         trophyNavbarFooterButton=binding.navTrophy
         gymNavbarFooterButton=binding.navGym
+        chatNavbarFooterButton=binding.navChat
 
         homeNavbarFooterButton.setOnClickListener{
             resetButtonIcons()
@@ -178,6 +181,12 @@ class MainApp : AppCompatActivity() {
             replaceFragment(Gym())
         }
 
+        chatNavbarFooterButton.setOnClickListener{
+            resetButtonIcons()
+            chatNavbarFooterButton.setImageResource(R.drawable.baseline_chat_24)
+            replaceFragment(Chat())
+        }
+
         replaceFragment(Homepage())
         homeNavbarFooterButton.setImageResource(R.drawable.home_dark_24)
     }
@@ -188,9 +197,10 @@ class MainApp : AppCompatActivity() {
         foodNavbarFooterButton.setImageResource(R.drawable.food_white_24)
         trophyNavbarFooterButton.setImageResource(R.drawable.trophy_white_24)
         gymNavbarFooterButton.setImageResource(R.drawable.gym_white_24)
+        chatNavbarFooterButton.setImageResource(R.drawable.baseline_chat_bubble_outline_24)
     }
 
-    private fun replaceFragment(fragment: Fragment){
+    fun replaceFragment(fragment: Fragment){
         val fragmentManager=supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer,fragment)

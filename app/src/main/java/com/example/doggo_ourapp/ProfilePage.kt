@@ -37,6 +37,7 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
     private lateinit var surname: TextView
     private lateinit var birthDate: TextView
     private lateinit var pickAPicture: Button
+    private lateinit var userId:TextView
 
     private var imageBitmap: Bitmap? = null
 
@@ -80,6 +81,7 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
         surname=view.findViewById(R.id.surname)
         birthDate=view.findViewById(R.id.birthDate)
         pickAPicture=view.findViewById(R.id.btnSelPic)
+        userId=view.findViewById(R.id.userId)
 
 
 
@@ -87,6 +89,7 @@ class ProfilePage : Fragment(R.layout.profile_page_layout) {
             name.text = user?.name ?: ""
             surname.text= user?.surname ?: ""
             birthDate.text= user?.birthDate ?: ""
+            userId.text=user?.uid?:""
             if(user?.photo==null)
             {
                 profileImageBig.setImageResource(R.drawable.blanck_people)
