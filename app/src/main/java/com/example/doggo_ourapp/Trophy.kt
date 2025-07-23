@@ -1,11 +1,16 @@
 package com.example.doggo_ourapp
 
 import PrizeScrollAdapter
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -115,18 +120,57 @@ class Trophy: Fragment(R.layout.trophy_layout) {
                     }
                 }
 
-                if(badges.isEmpty())
-                {
-                    val badgeView = TrophyPageBadgeComponent(requireContext())
-                    badgeView.setLabel("Niente di niente")
-                    badgeView.setImageSrcWithDrawable(R.drawable.blanck_people)
-                    val layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    )
-                    badgeView.layoutParams = layoutParams
-                    badgeContainer.addView(badgeView)
+                if (badges.isEmpty()) {
+                    val context = requireContext()
+
+                    val verticalLayout = LinearLayout(context).apply {
+                        orientation = LinearLayout.VERTICAL
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        gravity = Gravity.CENTER
+                    }
+
+                    fun Int.toPx(context: Context): Int =
+                        (this * context.resources.displayMetrics.density).toInt()
+
+                    val imageView = ImageView(context).apply {
+                        setImageResource(R.drawable.empty_inbox)
+                        layoutParams = LinearLayout.LayoutParams(
+                            70.toPx(context),
+                            70.toPx(context)
+                        ).apply {
+                            gravity = Gravity.CENTER_HORIZONTAL
+                        }
+                    }
+
+                    val paddingTopInPx = (20 * context.resources.displayMetrics.density).toInt()
+
+                    val textView = TextView(context).apply {
+                        text = "No badge achieved\nClick to see the missions"
+                        textSize = 16f
+                        gravity = Gravity.CENTER
+                        setPadding(0, paddingTopInPx, 0, 0)
+
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            topMargin = 8
+                            gravity = Gravity.CENTER_HORIZONTAL
+                        }
+                    }
+
+
+                    // Aggiungi le view al layout
+                    verticalLayout.addView(imageView)
+                    verticalLayout.addView(textView)
+
+                    // Aggiungi il layout al container
+                    badgeContainer.addView(verticalLayout)
                 }
+
             }
         }
 
