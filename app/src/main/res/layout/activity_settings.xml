@@ -1,63 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:padding="24dp"
+    android:background="#FAFAFA">
 
-
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="Back"/>
-
-    <Button
-        android:id="@+id/btnSelPic"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Pick a picture"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp" />
+        android:orientation="vertical"
+        android:background="@drawable/component_background"
+        android:padding="24dp"
+        android:elevation="4dp"
+        android:clipToPadding="false"
+        android:layout_marginBottom="24dp">
 
-    <Button
-        android:id="@+id/btnDownload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Download a picture"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp" />
+        <!-- Lingua -->
+        <TextView
+            android:id="@+id/tv_language_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleziona lingua"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:paddingBottom="12dp" />
 
-    <ImageView
-        android:id="@+id/ivPic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSelPic" />
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/component_background"
+            android:padding="8dp" />
 
-    <ImageView
-        android:id="@+id/dwldPic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSelPic" />
+        <!-- Notifiche -->
+        <CheckBox
+            android:id="@+id/checkbox_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abilita notifiche"
+            android:textSize="18sp"
+            android:textColor="#444444"
+            android:paddingTop="32dp" />
 
-</LinearLayout>
+        <!-- Font size -->
+        <TextView
+            android:id="@+id/tv_font_size_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dimensione font"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:paddingTop="32dp"
+            android:paddingBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup_font_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Piccolo"
+                android:textSize="16sp"
+                android:textColor="#555555"
+                android:paddingEnd="24dp" />
+
+            <RadioButton
+                android:id="@+id/rb_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medio"
+                android:textSize="16sp"
+                android:textColor="#555555"
+                android:paddingEnd="24dp"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rb_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grande"
+                android:textSize="16sp"
+                android:textColor="#555555" />
+        </RadioGroup>
+
+        <!-- Dark mode -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Modalità scura"
+                android:textSize="20sp"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <Switch
+                android:id="@+id/switch_dark_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
