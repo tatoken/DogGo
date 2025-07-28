@@ -2,6 +2,7 @@ package com.example.doggo_ourapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
@@ -91,10 +92,25 @@ class MainApp : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        UserFirebase.getCurrentUser() { result ->
+            if (result?.administrator == "1") {
+                navView.menu.findItem(R.id.adminItem)?.isVisible = true
+            } else {
+                navView.menu.findItem(R.id.adminItem)?.isVisible = false
+            }
+        }
+
         navView.setNavigationItemSelectedListener {
 
             when(it.itemId) {
                 R.id.settingsItem -> {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+
+                R.id.adminItem -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     val intent = Intent(this, SettingsActivity::class.java)
                     startActivity(intent)

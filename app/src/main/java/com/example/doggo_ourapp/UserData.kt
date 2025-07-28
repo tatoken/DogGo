@@ -1,7 +1,5 @@
 package com.example.doggo_ourapp
 
-import java.time.LocalDate
-
 data class UserData(
     var name: String? = null,
     var surname: String? = null,
@@ -12,7 +10,8 @@ data class UserData(
     var points: String = "0",
     var photo:String? = null,
     var totalPoints: String = "0",
-    var actualDog:String?=null
+    var actualDog:String?=null,
+    var administrator:String?="0"
 ) {
 
 }

@@ -7,4 +7,11 @@
         android:icon="@drawable/settings"
         />
 
+    <item
+        android:id="@+id/adminItem"
+        android:title="Admin"
+        android:icon="@drawable/settings"
+        android:visible="false"
+        />
+
 </menu>
