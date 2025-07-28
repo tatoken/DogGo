@@ -10,6 +10,8 @@ import com.example.doggo_ourapp.R
 import com.example.doggo_ourapp.UserData
 import com.example.doggo_ourapp.UserFirebase
 
+import android.content.Intent
+
 class ChatAdapter(
     val context: Context,
     val chatList: List<ChatData>)
@@ -24,27 +26,28 @@ class ChatAdapter(
         return ChatViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ChatViewHolder,position: Int) {
+    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val chat = chatList[position]
-        if(UserFirebase.getCurrentUserId()==chat.user1)
-        {
-            UserFirebase.getUserByUid(chat.user1){
-                user->
-                holder.text_name.text = user?.name?:""
+
+        // Impostiamo il nome come prima
+        if (UserFirebase.getCurrentUserId() == chat.user1) {
+            UserFirebase.getUserByUid(chat.user2!!) { user ->
+                holder.text_name.text = user?.name ?: ""
             }
-        }
-        else
-        {
-            UserFirebase.getUserByUid(chat.user2!!){
-                    user->
-                holder.text_name.text = user?.name?:""
+        } else {
+            UserFirebase.getUserByUid(chat.user1!!) { user ->
+                holder.text_name.text = user?.name ?: ""
             }
         }
 
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, Message::class.java)
+            intent.putExtra("chatId", chat.chatId)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
         return chatList.size
     }
-
 }

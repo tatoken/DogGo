@@ -10,23 +10,62 @@ object ChatFirebase {
     private fun getChatRef() = FirebaseDB.getMDbRef().child("chat")
     private fun getCurrentUserId() = UserFirebase.getCurrentUserId()
 
-    fun createChatWithUser(otherUserId: String, onComplete: (String?) -> Unit) {
-        val currentUserId = getCurrentUserId()
-        val chatRef = getChatRef().push()
+    fun createChatWithUser(otherUserUid: String, onComplete: (String?) -> Unit) {
+        val currentUserUid = getCurrentUserId()
+        val chatRef = getChatRef()
 
-        val chatData = mapOf(
-            "user1" to currentUserId,
-            "user2" to otherUserId
-        )
+        UserFirebase.getUserByUid(otherUserUid){
+            result->
+            if(result!=null)
+            {
+                chatRef.get().addOnSuccessListener { snapshot ->
+                    var existingChatId: String? = null
 
-        chatRef.setValue(chatData).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onComplete(chatRef.key) // chat ID
-            } else {
+                    for (child in snapshot.children) {
+                        val user1 = child.child("user1").value as? String
+                        val user2 = child.child("user2").value as? String
+
+                        if (
+                            (user1 == currentUserUid && user2 == otherUserUid) ||
+                            (user1 == otherUserUid && user2 == currentUserUid)
+                        ) {
+                            existingChatId = child.key
+                            break
+                        }
+                    }
+
+                    if (existingChatId != null) {
+                        onComplete(existingChatId)
+                    } else {
+                        // Non esiste una chat, la creiamo
+                        val newChatRef = chatRef.push()
+                        val chatData = mapOf(
+                            "user1" to currentUserUid,
+                            "user2" to otherUserUid
+                        )
+
+                        newChatRef.setValue(chatData).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onComplete(newChatRef.key)
+                            } else {
+                                onComplete(null)
+                            }
+                        }
+                    }
+                }.addOnFailureListener {
+                    onComplete(null)
+                }
+            }
+            else
+            {
                 onComplete(null)
             }
         }
+
+
     }
+
+
 
     fun sendMessage(chatId: String, content: String, onComplete: (Boolean) -> Unit) {
         val messageRef = getChatRef().child(chatId).child("messages").push()
