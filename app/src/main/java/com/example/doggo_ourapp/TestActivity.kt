@@ -19,7 +19,7 @@ class TestActivity : AppCompatActivity() {
     private lateinit var loadDogButton: Button
     private lateinit var infoDog:TextView
     private lateinit var getActualDog:Button
-    private lateinit var selectActualDog:Button
+    //private lateinit var selectActualDog:Button
 
     private lateinit var addTraining:Button
     private lateinit var seeAllTrainings:Button
@@ -43,9 +43,10 @@ class TestActivity : AppCompatActivity() {
 
     private lateinit var addDietButton: Button
     private lateinit var loadDietButton: Button
+    private lateinit var loadRecipeButton: Button
     private lateinit var addRecipe:Button
-    private lateinit var addDietRecipeButton: Button
-    private lateinit var loadDietRecipeButton: Button
+    //private lateinit var addDietRecipeButton: Button
+    //private lateinit var loadDietRecipeButton: Button
     private lateinit var infoDiet:TextView
 
 
@@ -54,7 +55,7 @@ class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.admin)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -84,7 +85,7 @@ class TestActivity : AppCompatActivity() {
         prizeInfo=findViewById(R.id.prizeInfo)
 
         getActualDog=findViewById(R.id.getActualDog)
-        selectActualDog=findViewById(R.id.selectActualDog)
+        //selectActualDog=findViewById(R.id.selectActualDog)
 
 
         seeAllTrainings.setOnClickListener()
@@ -180,7 +181,7 @@ class TestActivity : AppCompatActivity() {
             }
 
         }
-
+        /*
         selectActualDog.setOnClickListener()
         {
             DogFirebase.selectDog ("-OU9JYKmtiQQUxkHcxoW") { result ->
@@ -190,7 +191,7 @@ class TestActivity : AppCompatActivity() {
                     infoDog.text="Errore"
                 }
             }
-        }
+        }*/
 
 
         addBadgeButton.setOnClickListener()
@@ -332,10 +333,8 @@ class TestActivity : AppCompatActivity() {
         }
 
 
-        addDietButton=findViewById(R.id.addDiet)
-
         /**********************************/
-
+        infoDiet=findViewById(R.id.dietInfo)
         addDietButton=findViewById(R.id.addDiet)
 
         addDietButton.setOnClickListener {
@@ -355,7 +354,7 @@ class TestActivity : AppCompatActivity() {
         }
 
         loadDietButton=findViewById(R.id.loadDiet)
-        infoDiet=findViewById(R.id.dietInfo)
+
 
         loadDietButton.setOnClickListener()
         {
@@ -394,6 +393,23 @@ class TestActivity : AppCompatActivity() {
             }
         }
 
+        loadRecipeButton=findViewById(R.id.loadRecipe)
+
+        loadRecipeButton.setOnClickListener {
+            DietFirebase.loadAllRecipes { recipeList ->
+                if (recipeList.isEmpty()) {
+                    infoDiet.text = "No recipes found."
+                } else {
+                    // Costruiamo una stringa con i titoli di tutte le ricette
+                    val recipesText = recipeList.joinToString(separator = "\n") { recipe ->
+                        "- ${recipe.name ?: "Untitled recipe"}"
+                    }
+                    infoDiet.text = recipesText
+                }
+            }
+        }
+
+        /*
         addDietRecipeButton=findViewById(R.id.addDietRecipe)
 
         addDietRecipeButton.setOnClickListener()
@@ -430,7 +446,7 @@ class TestActivity : AppCompatActivity() {
                 }
             }
 
-        }
+        }*/
 
 
     }
