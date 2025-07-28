@@ -29,7 +29,6 @@ class ChatAdapter(
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val chat = chatList[position]
 
-        // Impostiamo il nome come prima
         if (UserFirebase.getCurrentUserId() == chat.user1) {
             UserFirebase.getUserByUid(chat.user2!!) { user ->
                 holder.text_name.text = user?.name ?: ""

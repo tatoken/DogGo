@@ -89,12 +89,11 @@ class Prizes : Fragment(R.layout.prizes_layout) {
         UserFirebase.getCurrentUserPoints() {points->
             if(points!=null)
             {
-                pointText.text="Punti rimanenti: "+points
+                pointText.text = getString(R.string.overall_awards) + ": " + points
             }
             else
             {
-
-                pointText.text="Punti rimanenti: 0"
+                pointText.text = getString(R.string.overall_awards) + ": 0"
             }
         }
     }
