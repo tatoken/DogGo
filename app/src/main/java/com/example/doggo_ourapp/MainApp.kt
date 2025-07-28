@@ -112,7 +112,7 @@ class MainApp : AppCompatActivity() {
 
                 R.id.adminItem -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
-                    val intent = Intent(this, SettingsActivity::class.java)
+                    val intent = Intent(this, TestActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

@@ -32,13 +32,6 @@ import java.util.Locale
 
 class SettingsActivity : AppCompatActivity() {
 
-    private var back_button: Button?=null
-    private lateinit var btnSelPic: Button
-    private lateinit var btnDwld: Button
-    private lateinit var ivPic: ImageView
-    private lateinit var dwldPic: ImageView
-    private var imageBitmap: Bitmap? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,78 +42,8 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
-        btnSelPic = findViewById(R.id.btnSelPic)
-        btnDwld=findViewById(R.id.btnDownload)
-        ivPic = findViewById(R.id.ivPic)
-        dwldPic=findViewById(R.id.dwldPic)
-
-        btnSelPic.setOnClickListener {
-            selectImageFromGallery()
-        }
-
-        btnDwld.setOnClickListener {
-            downloadImageFromSupabase()
-        }
-
-        back_button=findViewById(R.id.back_button)
-        back_button?.setOnClickListener{
-            val intent= Intent(this, MainApp::class.java)
-            startActivity(intent)
-            finish()
-        }
-
 
     }
 
-    /**
-     * bucketName: recipe
-     */
-    private fun uploadImageOnSupabase() {
-        if (imageBitmap == null) {
-            Toast.makeText(this, "Nessuna immagine selezionata", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val byteArray = bitmapToByteArray(imageBitmap!!)
-
-        lifecycleScope.launch {
-            Log.e("Supabase", "Inizio funzione upload")
-            SupabaseManager.uploadImage("profile-image", "user-image.jpeg", byteArray)
-            Log.e("Supabase", "Fine funzione upload")
-        }
-    }
-
-    private fun downloadImageFromSupabase()
-    {
-        lifecycleScope.launch {
-            val bitmap = downloadImage("profile-image", "user-image.jpeg")
-            dwldPic.setImageBitmap(bitmap)
-        }
-    }
-
-
-    private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
-        val stream = java.io.ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        return stream.toByteArray()
-    }
-
-
-
-    private fun selectImageFromGallery()
-    {
-        selectImageFromGalleryResult.launch("image/*")
-    }
-
-    private val selectImageFromGalleryResult =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let {
-                ivPic.setImageURI(uri)
-                val inputStream = contentResolver.openInputStream(uri)
-                imageBitmap = BitmapFactory.decodeStream(inputStream)
-                uploadImageOnSupabase()
-                inputStream?.close()
-            }
-        }
 
 }
