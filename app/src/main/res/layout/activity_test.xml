@@ -19,6 +19,8 @@
             android:id="@+id/addTraining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_black_bg"
+            android:textColor="@android:color/white"
             android:text="Aggiungi allenamento"
             />
 
