@@ -2,7 +2,7 @@
 *Unleash Innovation, Elevate Possibilities, Transform Tomorrow*
 
 <p align="center">
-    <img src="icon.png" width="300" alt="App Logo">
+    <img src="logo" width="300" alt="App Logo">
 </p>
 
 ---
