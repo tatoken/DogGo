@@ -1,8 +1,6 @@
 # DOGGO
-*Unleash Innovation, Elevate Possibilities, Transform Tomorrow*
-
 <p align="center">
-    <img src="logo" width="300" alt="App Logo">
+    <img src="logo.png" width="300" alt="App Logo">
 </p>
 
 ---
@@ -37,8 +35,6 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Usage](#usage)
-  - [Testing](#testing)
 
 ---
 
@@ -64,8 +60,4 @@ git clone https://github.com/tatoken/DogGo
 2. **Clone the repository:**
 ```sh
 cd DogGo
-```
-3. **Install the dependencies using Gradle:**
-```sh
-gradle build
 ```
