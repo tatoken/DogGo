@@ -1,15 +1,19 @@
 # DOGGO
-<p align="center">
-    <img src="logo.png" width="300" alt="App Logo">
-</p>
 
----
+![Demo](https://marco-lizza.onrender.com/images/projects/DOGGO.gif)
 
 <p align="center">
   <img alt="last-commit" src="https://img.shields.io/github/last-commit/tatoken/DogGo?style=flat&logo=git&logoColor=white&color=0080ff">
   <img alt="repo-top-language" src="https://img.shields.io/github/languages/top/tatoken/DogGo?style=flat&color=0080ff">
   <img alt="repo-language-count" src="https://img.shields.io/github/languages/count/tatoken/DogGo?style=flat&color=0080ff">
 </p>
+
+---
+
+<p align="center">
+    <img src="logo.png" width="300" alt="App Logo">
+</p>
+
 
 *Built with the tools and technologies:*
 
